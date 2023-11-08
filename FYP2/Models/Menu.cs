@@ -5,7 +5,7 @@ namespace FYP2.Models;
 
 public partial class Menu
 {
-    public byte[] ImageData { get; set; } = null!;
+    public string ImageData { get; set; } = null!;
 
     public string FoodName { get; set; } = null!;
 

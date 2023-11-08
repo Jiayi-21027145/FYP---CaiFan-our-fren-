@@ -63,8 +63,6 @@
     <ItemGroup>
       <Folder Include="Views\Account\" />
       <Folder Include="Views\DishIden\" />
-      <Folder Include="Views\FReview\" />
-      <Folder Include="Views\Menu\" />
       <Folder Include="Views\Stall\" />
       <Folder Include="wwwroot\images\imageAI\" />
     </ItemGroup>
