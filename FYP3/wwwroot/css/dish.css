@@ -1,0 +1,21 @@
+﻿
+
+h1 {
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.box {
+    position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.boxContent {
+    width: 450px;
+    height: min-content;
+    padding: 20px;
+    border-radius: 12px;
+    background: #FFFFFF;
+}
