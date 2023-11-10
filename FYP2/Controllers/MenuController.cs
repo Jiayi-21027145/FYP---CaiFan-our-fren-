@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-using FYP2.Models;
-using FYP2.Services;
+using FYP5.Models;
+using FYP5.Services;
 using Microsoft.EntityFrameworkCore;
 using System;
 
-namespace FYP2.Controllers;
+namespace FYP5.Controllers;
 
 public class MenuController : Controller
 {

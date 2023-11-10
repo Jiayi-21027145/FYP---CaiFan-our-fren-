@@ -1,5 +1,5 @@
-global using FYP2.Models;
-global using FYP2.Services;
+global using FYP5.Models;
+global using FYP5.Services;
 global using Microsoft.AspNetCore.Authentication;
 global using Microsoft.AspNetCore.Authentication.Cookies;
 global using Microsoft.AspNetCore.Authorization;

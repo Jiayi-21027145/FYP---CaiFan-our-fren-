@@ -4,7 +4,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-        <RootNamespace>Lesson03</RootNamespace>
+        <RootNamespace>FYP2</RootNamespace>
     </PropertyGroup>
     <ItemGroup>
       <None Include="wwwroot\js\site.js" />
