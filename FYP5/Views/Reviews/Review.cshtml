@@ -1,0 +1,85 @@
+﻿<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css" />
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#jsReview').DataTable({
+                ordering: true,
+                paging: true,
+                searching: true,
+                info: true,
+                lengthChange: true,
+                pageLength: 10
+            });
+        });
+    </script>
+</head>
+
+
+@model List<Reviews>
+
+@{
+    Layout = "_CaiFan";
+}
+
+<style>
+    body {
+        background: url('@(Url.Content("~/BG 1.jpg"))') no-repeat center center fixed;
+        background-size: cover;
+        font-size: small;
+    }
+</style>
+
+<p>
+    <a asp-controller="Reviews" asp-action="Create">Create New</a>
+</p>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-@TempData["MsgType"]">
+        @TempData["Message"]
+    </div>
+}
+
+<div class="container" style="background-color: white; border-radius: 10px;">
+    <div class="row p-3">           
+        <h1 class="text-center mb-2">Reviews</h1>
+        <div style="text-align:center">
+        </div>
+        <table id=jsReview class="table table-bordered table-condensed table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Rating</th>
+                    <th>Comment</th>
+                    <th>Image</th>
+                    @if (User.IsInRole("User"))
+                    {
+                        <th>Action</th>
+                    }
+                </tr>
+            </thead>
+            @foreach (Reviews row in Model)
+            {
+                <tr>
+                    <td>@row.ReviewId</td>
+                    <td>@row.Rating</td>
+                    <td>@row.Comment</td>
+                    <td><img src="/Reviews/@row.ImageData" width="100" height="100"/></td>
+                    @if (User.IsInRole("User"))
+                    {
+                        <td>
+                            <a asp-asp-controller="Reviews" asp-action="Update" asp-route-id="@row.ReviewId">Update
+                            </a> |
+                            <a asp-asp-controller="Reviews" asp-action=" Delete" asp-route-id="@row.ReviewId" onclick="return confirm ('Delete Review <@row.Comment>')"> Delete                            
+                            </a>
+                        </td>
+                    }       
+                </tr>
+            }
+        </table>
+    </div>
+</div>

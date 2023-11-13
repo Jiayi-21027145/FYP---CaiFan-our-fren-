@@ -1,4 +1,24 @@
-﻿@model DataRowCollection
+﻿<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css" />
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#jsMenu').DataTable({
+                ordering: true,
+                paging: true,
+                searching: true,
+                info: true,
+                lengthChange: true,
+                pageLength: 10
+            });
+        });
+    </script>
+</head>
+
+@model DataRowCollection
 
 @{
     Layout = "_CaiFan";
@@ -40,12 +60,12 @@
             @foreach (DataRow row in Model)
             {
                 <tr>
-                    <td><img src="/Menu/@row["ImageData"]" width="100" /></td>
+                    <td><img src="/Menu/@row["ImageData"]" width="100" height="100" /></td>
                     <td>@row["FoodName"]</td>
                     <td>@row["FoodType"]</td>
-                    <td>@row["LowestPrice"]</td>
-                    <td>@row["HighestPrice"]</td>
-                    <td>@row["AveragePrice"]</td>
+                    <td>@string.Format("{0:c}", row["LowestPrice"])</td>
+                    <td>@string.Format("{0:c}", row["HighestPrice"])</td>
+                    <td>@string.Format("{0:c}", row["AveragePrice"])</td>
                     <td>@row["NutrientName"]</td>
                     <td>@row["NutritionalValue"]</td>
                 </tr>
