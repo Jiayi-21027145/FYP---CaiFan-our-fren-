@@ -40,8 +40,8 @@
 		</Content>
 	</ItemGroup>
 	<ItemGroup>
-		<Folder Include="Views\Reviews\" />
 		<Folder Include="wwwroot\images\imageAI\" />
+		<Folder Include="wwwroot\Review\" />
 	</ItemGroup>
 	<ItemGroup>
 		<None Include="Views\Account\Forbidden.cshtml" />
