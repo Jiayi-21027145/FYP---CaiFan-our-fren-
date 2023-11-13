@@ -1,37 +1,105 @@
-﻿<div class="container border-bottom">
+﻿@* <div class="container border-bottom">
     <nav class="navbar navbar-expand-md">
-        <div class="container-fluid">
+        <div class="container-fluid"> *@
 
-            @* <img src="~/images/lcmlogo.jpg" height="50"> *@
+            @* <img src="~/images/air-travel.svg" height=50 />
+            <a class="navbar-brand" asp-controller="Travel" asp-action="Index">
+                <span class="navbar-brand ms-2">WhereWeWere</span>
+            </a> *@
 
             @*Button below (hamburger menu) appears when viewport too small.*@
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+           @*  <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent">
                 <span class="navbar-toggler-icon"></span>
-            </button>
+            </button> *@
 
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            @*<div class="collapse navbar-collapse" id="navbarSupportedContent">*@
+           @*  <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <div class="d-flex justify-content-between w-100">
                     <div>
-                        <ul class="nav navbar-nav">
+                        <ul class="navbar navbar-nav"> *@
+       @*          <button type="button" class="navbar-toggler"
+                        data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
                             <li class="nav-item">
-                                <a class="nav-link" asp-controller="Account" asp-action="SignUp">Sign Up</a>
+            <a class="nav-link" href="~/History/Index">History</a>
+                            </li>
+                            <li>
+                                <a class="nav-link" asp-controller="Travel" asp-action="Create">New Trip</a>
                             </li>
                         </ul>
                     </div>
                     <div>
-                        <ul class="nav navbar-nav">
+                        <ul class="navbar navbar-nav">
                             <li span class="nav-item">
                                 <div class="nav-link">
-                                    <a class="text-end bi-box-arrow-in-right text-decoration-none text-muted"
-                                       asp-controller="Account" asp-action="Login" data-toggle="tooltip"
-                                       title="Login">&nbsp;Login</a>
-                                </div>
+                                    Welcome @User.Identity!.Name
+                                    <a class="bi-box-arrow-right text-decoration-none text-muted" asp-controller="Account"
+                                       asp-action="Logoff" data-toggle="tooltip" title="Log out"></a>
+                                    @*<a class="nav-link" href="#">New Trip</a>*@
+                                @* </div>
                             </li>
                         </ul>
                     </div>
                 </div>
             </div>
+
         </div>
     </nav>
-</div>
+</div> *@ 
+@* <nav class="navbar navbar-expand-sm navbar-dark ps-2 fw-bold" style="background-color: purple;"> 
+    <div class="container-fluid">
+         <a class="navbar-brand" href="https://jiakpng.azurewebsites.net/">Jiakpng</a>
+        <button type="button" class="navbar-toggler"
+                data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Translate
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li>
+                            <div id="google_translate_element"></div>
+
+                            <script type="text/javascript">
+                                function googleTranslateElementInit() {
+                                    new google.translate.TranslateElement({ pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE }, 'google_translate_element');
+                                }
+                            </script>
+                            <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+                        </li>
+                    </ul>
+                <li class="nav-item">
+                    <a class="nav-link" href="~/Menu">Menu</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="~/DishIden/Index">Dish Identification</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="~/History/Index">History</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="~/Stall">Stalls</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="~/Review">Food Review</a>
+                </li>
+                <li span class="nav-item">
+                    <div class="nav-link">
+                        Welcome @User.Identity!.Name
+                        <a class="bi-box-arrow-right text-decoration-none text-muted" asp-controller="Account"
+                           asp-action="Logoff" data-toggle="tooltip" title="Log out"></a>
+                           </div>
+            </ul>
+        </div>
+    </div>
+</nav>
+ *@

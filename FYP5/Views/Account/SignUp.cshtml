@@ -1,0 +1,87 @@
+@model JiakUser
+
+@{
+    Layout = "_CaiFan";
+}
+
+<div class="container">
+
+    <div class="my-3">
+        <h2>Sign Up to Jiakpng</h2>
+    </div>
+
+    <form method="post" asp-controller="Account" asp-action="SignUp">
+
+        <div class="col-md-4 mb-3 form-floating">
+            <input asp-for="UserID" class="form-control"
+                   placeholder="UserId" />
+            <label asp-for="UserID">User Id</label>
+            <span asp-validation-for="UserID" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-4 mb-3 form-floating">
+            <input asp-for="Username" class="form-control"
+                   placeholder="UserName" />
+            <label asp-for="Username">Full Name</label>
+            <span asp-validation-for="Username" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-4 mb-3 form-floating">
+            <input asp-for="Email" class="form-control"
+                   placeholder="Email" />
+            <label asp-for="Email">Email</label>
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        @* <div class="col-md-4 mb-3 form-floating">
+            <input asp-for="UserPw2" class="form-control"
+                   placeholder="UserPw2" />
+            <label asp-for="UserPw2">Confirm password</label>
+            <span asp-validation-for="UserPw2" class="text-danger"></span>
+        </div> *@
+        <div class="col-md-4 mb-3 form-floating">
+            <input asp-for="Password" class="form-control"
+                   placeholder="Password" />
+            <label asp-for="Password">Password</label>
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+
+        <div>
+            <label style="margin-bottom: 15px;">Gender</label>
+            <input type="radio" name="Gender" id="Female" value="Female" />
+            <label for="Female">Female</label>
+            <input type="radio" name="Gender" id="Male" value="Male" />
+            <label for="Male">Male</label>
+            
+        </div>
+
+        <div class="col-md-4 mb-3 form-floating">
+            <input asp-for="Reference" class="form-control"
+                   placeholder="Reference" />
+            <label asp-for="Reference">Reference</label>
+            <span asp-validation-for="Reference" class="text-danger"></span>
+        </div>
+
+        <div class="col-auto mb-3">
+            <button class="btn btn-primary" type="submit">Sign Up</button>
+        </div>
+
+        @if (ViewData["Message"] != null)
+        {
+            <div class="form-group row">
+                <div class="col-6">
+                    <div class="alert alert-@ViewData["MsgType"]">
+                        <b>Message: </b>@ViewData["Message"]<br />
+                        @if (!String.IsNullOrEmpty(ViewData["ExecSQL"]?.ToString()))
+                        {
+                            <b>SQL: </b>
+
+                            @ViewData["ExecSQL"]?.ToString()
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </form>
+
+</div>

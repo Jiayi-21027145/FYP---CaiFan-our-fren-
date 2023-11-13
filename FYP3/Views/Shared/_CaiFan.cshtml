@@ -79,10 +79,28 @@
             </div>
         </div>
     </nav>
-
+    
     <div class="container-fluid p-2">
         @RenderBody()
     </div>
-
+  
+        @if (User.Identity!.IsAuthenticated)
+        {
+            if (User.IsInRole("Admin"))
+            {
+                // Manager users
+                <partial name="JiakAdmin" />
+            }
+            else
+            {
+                // Logged-in users
+                <partial name="JiakUser" />
+            }
+        }
+        else
+        @*For unauthenticated (guest) users*@
+        {
+            <partial name="JiakGuest" />
+        }
 </body>
 </html>

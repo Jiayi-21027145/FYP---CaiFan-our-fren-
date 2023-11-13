@@ -1,0 +1,88 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/lib/bootstrap/umd/popper.js"></script>
+    <script src="~/lib/jquery/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/lib/jquery/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery/jquery.validate.unobtrusive.min.js"></script>
+
+    @*  <style>
+    body {
+    background: url('@(Url.Content("~/CaiFan DG.jpg"))') no-repeat center center fixed;
+    background-size: cover;
+    font-size: small;
+    filter: brightness(1)
+    }
+    </style> *@
+
+    @RenderSection("Script", false)
+
+    @{
+        var pageTitle = "Jiakpng";
+        if (ViewData["Title"] != null)
+        {
+            pageTitle += " - " + ViewData["Title"];
+        }
+    }
+    <title>@pageTitle</title>
+
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-sm navbar-dark ps-2 fw-bold" style="background-color: purple;">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="https://jiakpng.azurewebsites.net/">Jiakpng</a>
+            <button type="button" class="navbar-toggler"
+                    data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Translate
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li>
+                                <div id="google_translate_element"></div>
+
+                                <script type="text/javascript">
+                                    function googleTranslateElementInit() {
+                                        new google.translate.TranslateElement({ pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE }, 'google_translate_element');
+                                    }
+                                </script>
+                                <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+                            </li>
+                        </ul>
+                    <li class="nav-item">
+                        <a class="nav-link" href="~/Menu">Menu</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="~/DishIden/Index">Dish Identification</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="~/Stall">Stalls</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="~/Review">Food Review</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="~/Account/Login">Login/Sign Up</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid p-2">
+        @RenderBody()
+    </div>
+
+</body>
+</html>
