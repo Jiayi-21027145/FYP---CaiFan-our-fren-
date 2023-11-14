@@ -4,7 +4,7 @@
 }
 <div class="container">
     <div class="my-3">
-        <h2>Please sign-in</h2>
+        <h2>Please sign-in to Jiakpng</h2>
     </div>
 
     <form method="post" asp-controller="Account" asp-action="Login">
@@ -12,7 +12,7 @@
         <div class="col-md-4 mb-3 form-floating">
             <input type="text" asp-for="UserID" class="form-control"
                    placeholder="userid" />
-            <label asp-for="UserID">User ID</label>
+            <label asp-for="UserID">UserID</label>
         </div>
 
         <div class="col-md-4 mb-3 form-floating">
@@ -21,12 +21,29 @@
             <label asp-for="Password">Password</label>
         </div>
 
+        <div class="form-control border-0 h-auto">
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" asp-for="RememberMe" />
+                <label class="form-check-label" asp-for="RememberMe">Remember Me?</label>
+            </div>
+        </div>
+
         <div class="mb-3 text-danger">
             @ViewData["Message"]
         </div>
 
         <div class="col-auto mb-3">
             <button class="btn btn-primary" type="submit">Login</button>
+        </div>
+        <div class="link">
+            <div>
+                <a href="/Account/ForgotPassword">Forgot Password</a>
+            </div>
+            <div>
+                Don't have an account? <a href="/Account/SignUp">
+                    Sign Up
+                
+            </div>
         </div>
     </form>
 </div>

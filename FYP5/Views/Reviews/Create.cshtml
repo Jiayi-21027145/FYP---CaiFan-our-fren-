@@ -11,14 +11,18 @@
 
         <h3 class="text-center"><b>New Review</b></h3>
 
-        <input asp-for="ReviewId" hidden />
+        @* <input asp-for="ReviewId" hidden /> *@
+
 
         <div class="row mb-2">
             <label class="col-sm-3 col-form-label fw-bold" asp-for="Rating">Rating:</label>
             <div class="col-sm-6">
-                <input class="form-control" id="Rating" Name="Date" placeholder="Rate from 1 to 5" />
+                <input type="number" asp-for="Rating" class="form-control"
+                       placeholder="Rating (1-5)" />
+                
+                <span asp-validation-for="Rating" class="text-danger"></span>
             </div>
-        </div>
+            </div>
 
         <div class="row mb-2">
             <label class="col-sm-3 col-form-label fw-bold" asp-for="Comment">Comment:</label>
@@ -29,9 +33,9 @@
         </div>
 
         <div class="row mb-2">
-            <label class="col-sm-3 col-form-label fw-bold" asp-for="ImageData">Insert your picture:</label>
+            <label class="col-sm-3 col-form-label fw-bold" asp-for="Photo">Insert your picture:</label>
             <div class="col-sm-6">
-                <input type="file" class="form-control mb-3" asp-for="ImageData"
+                <input type="file" class="form-control mb-3" asp-for="Photo"
                        onchange="preview()">
                 <img id="frame" height="100" src="" />
             </div>

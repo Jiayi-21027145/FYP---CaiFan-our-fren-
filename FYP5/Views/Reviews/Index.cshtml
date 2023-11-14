@@ -19,7 +19,7 @@
 </head>
 
 
-@model List<Reviews>
+@model DataRowCollection
 
 @{
     Layout = "_CaiFan";
@@ -62,19 +62,19 @@
                     }
                 </tr>
             </thead>
-            @foreach (Reviews row in Model)
+            @foreach (DataRow row in Model)
             {
                 <tr>
-                    <td>@row.ReviewId</td>
-                    <td>@row.Rating</td>
-                    <td>@row.Comment</td>
-                    <td><img src="/Reviews/@row.ImageData" width="100" height="100"/></td>
+                    <td>@row["ReviewId"]</td>
+                    <td>@row["Rating"]</td>
+                    <td>@row["Comment"]</td>
+                    <td><img src="/Reviews/@row["ImageData"]" width="100" height="100"/></td>
                     @if (User.IsInRole("User"))
                     {
                         <td>
-                            <a asp-asp-controller="Reviews" asp-action="Update" asp-route-id="@row.ReviewId">Update
+                            <a asp-asp-controller="Reviews" asp-action="Update" asp-route-id="@row["ReviewId"]">Update
                             </a> |
-                            <a asp-asp-controller="Reviews" asp-action=" Delete" asp-route-id="@row.ReviewId" onclick="return confirm ('Delete Review <@row.Comment>')"> Delete                            
+                            <a asp-asp-controller="Reviews" asp-action=" Delete" asp-route-id="@row["ReviewId"]" onclick="return confirm ('Delete Review <@row["Comment"]>')"> Delete                            
                             </a>
                         </td>
                     }       

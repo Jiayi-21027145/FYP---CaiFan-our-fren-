@@ -7,9 +7,6 @@
 		<RootNamespace>FYP5</RootNamespace>
 	</PropertyGroup>
 	<ItemGroup>
-	  <Content Remove="Views\Account\SignUp.cshtml" />
-	</ItemGroup>
-	<ItemGroup>
 		<PackageReference Include="Microsoft.Azure.CognitiveServices.Vision.CustomVision.Prediction" Version="2.0.0" />
 		<PackageReference Include="Microsoft.Azure.CognitiveServices.Vision.CustomVision.Training" Version="2.0.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.10" />
@@ -41,11 +38,9 @@
 	</ItemGroup>
 	<ItemGroup>
 		<Folder Include="wwwroot\images\imageAI\" />
-		<Folder Include="wwwroot\Review\" />
 	</ItemGroup>
 	<ItemGroup>
 		<None Include="Views\Account\Forbidden.cshtml" />
-		<None Include="Views\Account\SignUp.cshtml" />
 		<None Include="Views\History\Index.cshtml" />
 		<None Include="Views\Shared\Error.cshtml" />
 		<None Include="Views\Shared\JiakUser.cshtml" />
