@@ -85,4 +85,58 @@ public class AccountController : Controller
         }
         return false;
     }
+    [AllowAnonymous]
+    public IActionResult SignUp()
+    {
+        return View();
+    }
+    [AllowAnonymous]
+    [HttpPost]
+    public IActionResult SignUp(JiakUser usr)
+    {
+        ModelState.Remove("UserRole");     // All new users have role set to 'member'.
+        if (!ModelState.IsValid)
+        {
+            foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+            {
+                ViewData["Message"] += string.Format(error.ErrorMessage);
+            }
+            ViewData["MsgType"] = "danger";
+            return View("SignUp");
+        }
+        else
+        {
+
+            string insert = @"INSERT INTO JiakUser(UserId, UserPw, FUllName, Email, UserRole) VALUES
+                 ('{0}', HASHBYTES('SHA1', '{1}'), '{2}', '{3}', 'User')";
+            if (DBUtl.ExecSQL(insert, usr.UserId, usr.UserPw, usr.FullName, usr.Email) == 1)
+            {
+                string template = "Hi {0}, \n\r" +
+                                  "Welcome to Lemonade Chamber Music! \n\r" +
+                                  "Your userid is <b>{1}</b> and your password is <b>{2}</b>. \n\r" +
+                                  "Manager";
+                string title = "Registration Successful - Welcome";
+                string message = String.Format(template, usr.FullName, usr.UserId, usr.UserPw);
+
+                bool outcome = !string.IsNullOrEmpty(title);
+                string result = "Something went wrong.";
+                if (outcome)
+                {
+                    ViewData["Message"] = "User Successfully Registered";
+                    ViewData["MsgType"] = "success";
+                }
+                else
+                {
+                    ViewData["Message"] = result;
+                    ViewData["MsgType"] = "warning";
+                }
+            }
+            else
+            {
+                ViewData["Message"] = DBUtl.DB_Message;
+                ViewData["MsgType"] = "danger";
+            }
+            return View("SignUp");
+        }
+    }
 }

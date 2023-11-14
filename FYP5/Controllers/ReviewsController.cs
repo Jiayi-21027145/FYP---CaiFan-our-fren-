@@ -7,25 +7,13 @@ namespace FYP5.Controllers
 {
     public class ReviewsController : Controller
     {
-        private readonly IWebHostEnvironment _env;
+       
+        
+        public IActionResult Index()
+        {
+            DataTable dt = DBUtl.GetTable("SELECT * FROM Reviews");
+            return View("Index", dt.Rows);
 
-        public ReviewsController(IWebHostEnvironment environment)
-        {
-            _env = environment;
-        }
-        private string UploadFile(IFormFile ufile, string fname)
-        {
-            string fullpath = Path.Combine(_env.WebRootPath, fname);
-            using (FileStream fs = new(fullpath, FileMode.Create))
-            {
-                ufile.CopyToAsync(fs);
-            }
-            return fname;
-        }
-        public IActionResult Review()
-        {
-            List<Reviews> list = DBUtl.GetList<Reviews>("SELECT * FROM Reviews");
-            return View(list);
         }
         [HttpGet]
         public IActionResult Create()
@@ -33,25 +21,25 @@ namespace FYP5.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create(Reviews r, IFormFile photo)
+        public IActionResult Create(Reviews r)
         {
+            ModelState.Remove("ImageData"); // No Need to Validate "Picture" - derived from "Photo".
             if (!ModelState.IsValid)
             {
-                return View(r);
+                ViewData["Message"] = "Invalid Input";
+                ViewData["MsgType"] = "warning";
+                return View("Create");
             }
             else
             {
-                r.ImageData = Path.GetFileName(photo.FileName);
-                string fname = "reviews/" + r.ImageData;
-                UploadFile(photo, fname);
+                string picfilename = DoPhotoUpload(r.Photo);
 
-                string sql = @"INSERT Reviews(ReviewID, Rating, 
-                                            Comment, ImageData) 
-                           VALUES({0},{1},'{2}','{3}')";
+                string sql = @"INSERT Reviews(Rating, Comment, ImageData) 
+                           VALUES({0},'{1}','{2}')";
 
                 string insert =
-                   string.Format(sql, r.ReviewId, r.Rating, r.Comment,
-                                      r.ImageData);
+                   string.Format(sql, r.Rating, r.Comment,
+                                     picfilename);
                 if (DBUtl.ExecSQL(insert) == 1)
                 {
                     TempData["Message"] = $"Review created Successfully";
@@ -63,9 +51,27 @@ namespace FYP5.Controllers
                     ViewData["Message"] = DBUtl.DB_Message;
                     ViewData["ExecSQL"] = DBUtl.DB_SQL;
                     ViewData["MsgType"] = "danger";
-                    return View(r);
+                    return View("Create");
                 }
             }
+        }
+        private string DoPhotoUpload(IFormFile photo)
+        {
+            string fext = Path.GetExtension(photo.FileName);
+            string uname = Guid.NewGuid().ToString();
+            string fname = uname + fext;
+            string fullpath = Path.Combine(_env.WebRootPath, "reviews/" + fname);
+            using (FileStream fs = new(fullpath, FileMode.Create))
+            {
+                photo.CopyTo(fs);
+            }
+            return fname;
+        }
+
+        private readonly IWebHostEnvironment _env;
+        public ReviewsController(IWebHostEnvironment environment)
+        {
+            _env = environment;
         }
     }
 
