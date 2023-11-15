@@ -2,16 +2,6 @@ global using FYP5.Models;
 global using RP.SOI.DotNet.Utils;
 global using System.Data;
 
-using Microsoft.Azure.CognitiveServices.Vision.CustomVision.Prediction;
-using Microsoft.Azure.CognitiveServices.Vision.CustomVision.Training;
-using Microsoft.Azure.CognitiveServices.Vision.CustomVision.Training.Models;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using Newtonsoft.Json;
-
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Net.NetworkInformation;
 

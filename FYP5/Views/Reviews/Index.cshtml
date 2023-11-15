@@ -69,13 +69,13 @@
                     <td>@row["Rating"]</td>
                     <td>@row["Comment"]</td>
                     <td><img src="/Reviews/@row["ImageData"]" width="100" height="100"/></td>
->>>>>>> 75f3ad972a032c69b3e9fa7ea49ad8cda2a265a2:FYP5/Views/Reviews/Index.cshtml
+
                     @if (User.IsInRole("User"))
                     {
                         <td>
-                            <a asp-asp-controller="Reviews" asp-action="Update" asp-route-id="@row["ReviewId"]">Update
+                            <a asp-controller="Reviews" asp-action="Update" asp-route-id="@row["ReviewId"]">Update
                             </a> |
-                            <a asp-asp-controller="Reviews" asp-action=" Delete" asp-route-id="@row["ReviewId"]" onclick="return confirm ('Delete Review <@row["Comment"]>')"> Delete                            
+                            <a asp-controller="Reviews" asp-action="Delete" asp-route-id="@row["ReviewId"]" onclick="return confirm ('Delete Review <@row["Comment"]>')"> Delete                          
                             </a>
                         </td>
                     }       

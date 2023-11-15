@@ -55,6 +55,68 @@ namespace FYP5.Controllers
                 }
             }
         }
+        [Authorize(Roles ="Users")]
+        [HttpGet]
+        public IActionResult Update(int id)
+        {
+            //string userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+
+            string select = @"SELECT * FROM Reviews  
+                         WHERE ReviewId={0}";
+
+            // TODO: Lesson09 Task 2c - Make insecure DB SELECT secure.
+            string sql = string.Format(select, id);
+            List<Reviews> r = DBUtl.GetList<Reviews>(select, id);
+            if (r.Count == 1)
+            {
+                Reviews trip = r[0];
+                return View(trip);
+            }
+            else
+            {
+                TempData["Message"] = "Trip Record does not exist";
+                TempData["MsgType"] = "warning";
+                return RedirectToAction("Index");
+            }
+        }
+
+        [Authorize(Roles = "Users")]
+        [HttpPost]
+        public IActionResult Update(Reviews r)
+        {
+            //ModelState.Remove("Photo");       // No Need to Validate "Photo"
+            //ModelState.Remove("SubmittedBy"); // Ignore "SubmittedBy". See claim below.
+
+            if (!ModelState.IsValid)
+            {
+                ViewData["Message"] = "Invalid Input";
+                ViewData["Message"] = "Warning";
+                return View("Update", r);
+            }
+            else
+            {
+                //string userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+
+                string update = @"UPDATE Reviews   
+                              SET Rating={1}, Comment='{2}', ImageData='{3}'
+                              WHERE Id={0}'";
+                //TODO: Lesson09 Task 2d - Make insecure DB UPDATE secure.
+                string sql = string.Format(update, r.ReviewId,
+                                          r.Rating, r.Comment, r.ImageData);
+                if (DBUtl.ExecSQL(sql) == 1)
+                {
+                    TempData["Message"] = "Trip Updated";
+                    TempData["MsgType"] = "success";
+                }
+                else
+                {
+                    TempData["Message"] = DBUtl.DB_Message;
+                    ViewData["ExecSQL"] = DBUtl.DB_SQL;
+                    TempData["MsgType"] = "danger";
+                }
+                return RedirectToAction("Index");
+            }
+        }
         private string DoPhotoUpload(IFormFile photo)
         {
             string fext = Path.GetExtension(photo.FileName);
