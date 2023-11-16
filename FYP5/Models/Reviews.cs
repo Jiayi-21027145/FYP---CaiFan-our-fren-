@@ -7,7 +7,7 @@ public class Reviews
 {
     public int ReviewId { get; set; }
 
-    public int? Rating { get; set; }
+    public int Rating { get; set; }
 
     [Required(ErrorMessage = "Please enter Title")]
     [StringLength(100, ErrorMessage = "Max 100 chars")]

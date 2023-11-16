@@ -55,32 +55,32 @@ namespace FYP5.Controllers
                 }
             }
         }
-        [Authorize(Roles ="Users")]
+        //[Authorize(Roles ="Users")]
         [HttpGet]
         public IActionResult Update(int id)
         {
-            //string userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+            string userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
 
             string select = @"SELECT * FROM Reviews  
-                         WHERE ReviewId={0}";
+                         WHERE ReviewID={0}";
 
             // TODO: Lesson09 Task 2c - Make insecure DB SELECT secure.
-            string sql = string.Format(select, id);
-            List<Reviews> r = DBUtl.GetList<Reviews>(select, id);
+            string sql = string.Format(select, id, userid);
+            List<Reviews> r = DBUtl.GetList<Reviews>(select, id, userid);
             if (r.Count == 1)
             {
-                Reviews trip = r[0];
-                return View(trip);
+                Reviews review = r[0];
+                return View(review);
             }
             else
             {
-                TempData["Message"] = "Trip Record does not exist";
+                TempData["Message"] = "Review Record does not exist";
                 TempData["MsgType"] = "warning";
                 return RedirectToAction("Index");
             }
         }
 
-        [Authorize(Roles = "Users")]
+        //[Authorize(Roles = "Users")]
         [HttpPost]
         public IActionResult Update(Reviews r)
         {
@@ -98,14 +98,14 @@ namespace FYP5.Controllers
                 //string userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
 
                 string update = @"UPDATE Reviews   
-                              SET Rating={1}, Comment='{2}', ImageData='{3}'
-                              WHERE Id={0}'";
+                              SET Rating={2}, Comment='{3}', ImageData='{4}'
+                              WHERE ReviewID={0} AND UserId={1}";
                 //TODO: Lesson09 Task 2d - Make insecure DB UPDATE secure.
                 string sql = string.Format(update, r.ReviewId,
                                           r.Rating, r.Comment, r.ImageData);
                 if (DBUtl.ExecSQL(sql) == 1)
                 {
-                    TempData["Message"] = "Trip Updated";
+                    TempData["Message"] = "Review Updated";
                     TempData["MsgType"] = "success";
                 }
                 else
