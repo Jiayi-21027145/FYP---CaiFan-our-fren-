@@ -33,10 +33,6 @@
     }
 </style>
 
-<p>
-    <a asp-controller="Reviews" asp-action="Create">Create New</a>
-</p>
-
 @if (TempData["Message"] != null)
 {
     <div class="alert alert-@TempData["MsgType"]">
@@ -73,9 +69,9 @@
                     @if (User.IsInRole("User"))
                     {
                         <td>
-                            <a asp-controller="Reviews" asp-action="Update" asp-route-id="@row["ReviewId"]">Update
+                            <a asp-controller="Reviews" asp-action="Update" asp-route-id="@row["ReviewID"]">Update
                             </a> |
-                            <a asp-controller="Reviews" asp-action="Delete" asp-route-id="@row["ReviewId"]" onclick="return confirm ('Delete Review <@row["Comment"]>')"> Delete                          
+                            <a asp-controller="Reviews" asp-action="Delete" asp-route-id="@row["ReviewID"]" onclick="return confirm ('Delete Review <@row["ReviewID"]>')"> Delete                          
                             </a>
                         </td>
                     }       

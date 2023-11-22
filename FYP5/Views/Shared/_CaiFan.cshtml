@@ -83,14 +83,35 @@
                             <a class="nav-link" href="~/DishIden/Index">Dish Identification</a>
                         </li>
                         }
-                       
-                    <li class="nav-item">
-                        <a class="nav-link" href="~/Stall">Stalls</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="~/Reviews/Index">Food Review</a>
-                    </li>
-                    @* <li class="nav-item">
+
+                        @if (User.IsInRole("User"))
+                        {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" role="button"
+                               href="~/Reviews/Index" id="navbarDropdown" data-bs-toggle="dropdown">
+                                Food Review
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item bi bi-binoculars" href="~/Reviews/Create"> Create Review</a></li>
+
+                            </ul>
+                        </li>
+                        }
+                        else
+                        {
+                        <li class="nav-item">
+                            <a class="nav-link" href="~/Reviews/Index">Food Review</a>
+                        </li>
+                        }
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                            <a class="nav-link" href="~/Summary/Index">Summary</a>
+                            </li>
+             
+                        }
+
+                        @* <li class="nav-item">
                         <a class="nav-link" href="~/Account/Login">Login/Sign Up</a>
                     </li> *@
                     @if (User.Identity!.IsAuthenticated)
