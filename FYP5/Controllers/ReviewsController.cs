@@ -84,7 +84,7 @@ namespace FYP5.Controllers
         [HttpPost]
         public IActionResult Update(Reviews r)
         {
-            //ModelState.Remove("Photo");       // No Need to Validate "Photo"
+            //ModelState.Remove("ImageData");       // No Need to Validate "Photo"
             //ModelState.Remove("SubmittedBy"); // Ignore "SubmittedBy". See claim below.
 
             if (!ModelState.IsValid)
@@ -96,13 +96,12 @@ namespace FYP5.Controllers
             else
             {
                 //string userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
-
+                string picfilename = DoPhotoUpload(r.Photo);
                 string update = @"UPDATE Reviews   
-                              SET Rating={2}, Comment='{3}', ImageData='{4}'
-                              WHERE ReviewID={0} AND UserId={1}";
+                              SET Rating={1}, Comment='{2}', ImageData='{3}'
+                              WHERE ReviewID={0}";
                 //TODO: Lesson09 Task 2d - Make insecure DB UPDATE secure.
-                string sql = string.Format(update, r.ReviewId,
-                                          r.Rating, r.Comment, r.ImageData);
+                string sql = string.Format(update,r.ReviewId, r.Rating, r.Comment, picfilename);
                 if (DBUtl.ExecSQL(sql) == 1)
                 {
                     TempData["Message"] = "Review Updated";
