@@ -77,7 +77,7 @@ public class AccountController : Controller
                   new ClaimsIdentity(
                      new Claim[] {
                         new Claim(ClaimTypes.NameIdentifier, uid),
-                        new Claim(ClaimTypes.Name, ds.Rows[0]["FullName"]!.ToString()!),
+                        new Claim(ClaimTypes.Name, ds.Rows[0]["UserName"]!.ToString()!),
                         new Claim(ClaimTypes.Role, ds.Rows[0]["UserRole"]!.ToString()!)
                      },
                      CookieAuthenticationDefaults.AuthenticationScheme));
@@ -107,16 +107,13 @@ public class AccountController : Controller
         else
         {
 
-            string insert = @"INSERT INTO JiakUser(UserId, UserPw, FUllName, Email, UserRole) VALUES
+            string insert = @"INSERT INTO JiakUser(UserId, UserPw, UserName, Email, UserRole) VALUES
                  ('{0}', HASHBYTES('SHA1', '{1}'), '{2}', '{3}', 'User')";
-            if (DBUtl.ExecSQL(insert, usr.UserId, usr.UserPw, usr.FullName, usr.Email) == 1)
+            if (DBUtl.ExecSQL(insert, usr.UserId, usr.UserPw, usr.UserName, usr.Email) == 1)
             {
-                string template = "Hi {0}, \n\r" +
-                                  "Welcome to Lemonade Chamber Music! \n\r" +
-                                  "Your userid is <b>{1}</b> and your password is <b>{2}</b>. \n\r" +
-                                  "Manager";
+                
                 string title = "Registration Successful - Welcome";
-                string message = String.Format(template, usr.FullName, usr.UserId, usr.UserPw);
+                string message = String.Format(usr.UserName, usr.UserId, usr.UserPw);
 
                 bool outcome = !string.IsNullOrEmpty(title);
                 string result = "Something went wrong.";
