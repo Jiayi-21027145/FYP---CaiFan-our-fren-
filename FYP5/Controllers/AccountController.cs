@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using FYP5.Models;
 
 namespace FYP5.Controllers;
 
@@ -165,6 +166,11 @@ public class AccountController : Controller
         return false;
     }
     public IActionResult ForgotPassword()
+    {
+        return View();
+    }
+
+    public IActionResult Update()
     {
         return View();
     }

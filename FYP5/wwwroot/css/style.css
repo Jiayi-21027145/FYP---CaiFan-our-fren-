@@ -14,7 +14,7 @@
 }
 .slide-track {
     display: flex;
-    width: 3000px;
+    width: 3600px;
     animation: scroll 40s linear infinite;
 }
 
@@ -24,7 +24,7 @@
     }
 
     100%{
-        transform: translateX(-1000px);
+        transform: translateX(-1200px);
     }
 }
 
