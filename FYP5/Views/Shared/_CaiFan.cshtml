@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/profile.css">
     <script src="~/lib/bootstrap/umd/popper.js"></script>
     <script src="~/lib/jquery/jquery.min.js"></script>
     <script src="~/lib/bootstrap/js/bootstrap.min.js"></script>
@@ -34,7 +35,7 @@
 
 </head>
 <body>
-
+   
     <nav class="navbar navbar-expand-sm navbar-dark ps-2 fw-bold" style="background-color: purple;">
         <div class="container-fluid">
             <a class="navbar-brand" href="https://jiakpng.azurewebsites.net/">Jiakpng</a>
@@ -117,10 +118,22 @@
                     </li> *@
                     @if (User.Identity!.IsAuthenticated)
                     {
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" role="button"
-                               href="#" id="navbarDropdown" data-bs-toggle="dropdown">
-                                Welcome @User.Identity!.Name
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" role="button"
+                                href="#" id="navbarDropdown" data-bs-toggle="dropdown">
+                              
+                                    @* @if(Model.JiakUser.Gender == "M")
+                                    { *@
+                                        <img src="/images/male.png" class="avatar">
+                                    @* } *@
+                                    
+                             
+
+                                        
+                                        @* <img src="/images/female.png" class="avatar"> *@
+                                        
+                             
+                                @User.Identity!.Name
                             </a>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item bi bi-binoculars" href="~/Account/Logoff"> Logout</a></li>

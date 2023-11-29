@@ -1,4 +1,5 @@
 ﻿using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Dynamic;
 using System.Reflection;
 
@@ -6,13 +7,11 @@ namespace RP.SOI.DotNet.Utils;
 
 public static class DBUtl
 {
-    /* DB_SQL property to return the final SQL string
-       after substitutions to assist debugging 2022 PK */
     public static string DB_Message { get; set; } = "";
     public static string DB_SQL { get; set; } = "";
 
     static readonly string? env =
-       Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+    Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
     private static readonly IConfiguration config =
        new ConfigurationBuilder()
@@ -22,7 +21,7 @@ public static class DBUtl
           .Build()
           .GetSection("ConnectionStrings");
 
-    private static readonly string DB_CONNECTION = config.GetValue<string>("DefaultConnection") ?? "";
+    private static readonly string DB_CONNECTION = config.GetValue<String>("DefaultConnection") ?? "";
 
     public static List<dynamic> GetList(string sql, params object[] list)
     {
@@ -44,12 +43,15 @@ public static class DBUtl
             {
                 PropertyInfo? Prop = obj.GetType().GetProperty(column.ColumnName, BindingFlags.Public | BindingFlags.Instance);
                 if (row[column] == DBNull.Value)
+                {
                     Prop?.SetValue(obj, null);
+                }
                 else
                 {
-                    //Debug.WriteLine(row[column].GetType() + " " + Prop?.PropertyType); 
                     if (row[column].GetType() == Prop?.PropertyType)
+                    {
                         Prop?.SetValue(obj, row[column]);
+                    }
                 }
             }
             list.Add(obj);
@@ -79,7 +81,7 @@ public static class DBUtl
         {
             if (list[i] is string parameter)
             {
-                list[i] = parameter?.EscQuote(); // Prevent SQL injection
+                list[i] = parameter?.EscQuote(); // prevent SQL Injection
             }
         }
 
@@ -107,19 +109,12 @@ public static class DBUtl
         {
             if (list[i] is string parameter)
             {
-                list[i] = parameter?.EscQuote(); // Prevent SQL injection
+                list[i] = parameter?.EscQuote(); // prevent SQL Injection
             }
         }
 
         DB_Message = "";
         DB_SQL = string.Format(sql, list);
-
-        /* Prohibit modification non-development databases 2022 PK*/
-        if (env is not null && env.ToUpper() != "DEVELOPMENT")
-        {
-            DB_Message = "C236: Data modification only permitted in development database";
-            return 0;
-        }
 
         int rowsAffected = 0;
         using (SqlConnection dbConn = new(DB_CONNECTION))
@@ -140,9 +135,6 @@ public static class DBUtl
         }
         return rowsAffected;
     }
-
-    // Following line is the expression body equivalent of EscQuote. Either may be used.
-    //public static string EscQuote(this string line) => line?.Replace("\"", "\"\"")!;
 
     public static string EscQuote(this string line)
     {
