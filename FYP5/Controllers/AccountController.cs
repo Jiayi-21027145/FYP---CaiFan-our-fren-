@@ -107,7 +107,7 @@ public class AccountController : Controller
             {
                 
                 string title = "Registration Successful - Welcome";
-                string message = String.Format(template, usr.FullName, usr.UserId, usr.UserPw);
+                string message = String.Format(usr.UserName, usr.UserId, usr.UserPw);
 
                 bool outcome = !string.IsNullOrEmpty(title);
                 string result = "Something went wrong.";
