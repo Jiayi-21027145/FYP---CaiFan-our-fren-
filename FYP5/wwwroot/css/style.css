@@ -66,3 +66,21 @@ img:hover{
     top:0;
     transform: rotateZ(180deg);
 }
+
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.video-container {
+    position: fixed;
+    bottom: 0;
+    left: 100px;
+    margin: 20px;
+}
+
+video {
+    max-width: 100%;
+    height: auto;
+}

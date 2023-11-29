@@ -16,7 +16,7 @@ public partial class JiakUser
     [DataType(DataType.Password)]
     public string UserPw2 { get; set; } = null!;
     [Required(ErrorMessage = "Please enter a full name.")]
-    public string FullName { get; set; } = null!;
+    public string UserName { get; set; } = null!;
     [Required(ErrorMessage = "Please enter an email address.")]
     [EmailAddress(ErrorMessage = "Email address is not valid.")]
     public string Email { get; set; } = null!;

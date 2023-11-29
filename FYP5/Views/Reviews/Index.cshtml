@@ -52,10 +52,12 @@
                     <th>Rating</th>
                     <th>Comment</th>
                     <th>Image</th>
-                    @if (User.IsInRole("User"))
+                    <th>Date</th>
+                    @if (User.IsInRole("Admin"))
                     {
                         <th>Action</th>
                     }
+
                 </tr>
             </thead>
             @foreach (DataRow row in Model)
@@ -65,7 +67,16 @@
                     <td>@row["Rating"]</td>
                     <td>@row["Comment"]</td>
                     <td><img src="/Reviews/@row["ImageData"]" width="100" height="100"/></td>
-
+                    <td>@string.Format("{0:dd MMMM yyyy}", row["PublishDate"])</td>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <td>
+                            <a asp-controller="Reviews" asp-action="Delete" asp-route-id="@row["ReviewID"]" onclick="return confirm ('Delete Review <@row["ReviewID"]>')">
+                                Delete
+                            </a>
+                        </td>
+                    }
+                    @*
                     @if (User.IsInRole("User"))
                     {
                         <td>
@@ -74,7 +85,8 @@
                             <a asp-controller="Reviews" asp-action="Delete" asp-route-id="@row["ReviewID"]" onclick="return confirm ('Delete Review <@row["ReviewID"]>')"> Delete                          
                             </a>
                         </td>
-                    }       
+                    } 
+                    *@
                 </tr>
             }
         </table>

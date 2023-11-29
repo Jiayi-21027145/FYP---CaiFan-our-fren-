@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
+    <meta charset="ut-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
@@ -84,15 +84,27 @@
                             <a class="nav-link" href="~/DishIden/Index">Dish Identification</a>
                         </li>
                         }
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" role="button"
+                           href="~/Reviews/Index" id="navbarDropdown" data-bs-toggle="dropdown">
+                            Web Review
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item bi bi-binoculars" href="~/Reviews/Index"> Review</a></li>
+                            <li><a class="dropdown-item bi bi-binoculars" href="~/Reviews/Create"> Create Review</a></li>
 
+                        </ul>
+                    </li>
+                        @*
                         @if (User.IsInRole("User"))
                         {
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" role="button"
                                href="~/Reviews/Index" id="navbarDropdown" data-bs-toggle="dropdown">
-                                Food Review
+                                Web Review
                             </a>
                             <ul class="dropdown-menu">
+                                <li><a class="dropdown-item bi bi-binoculars" href="~/Reviews/Index"> Review</a></li>
                                 <li><a class="dropdown-item bi bi-binoculars" href="~/Reviews/Create"> Create Review</a></li>
 
                             </ul>
@@ -104,6 +116,7 @@
                             <a class="nav-link" href="~/Reviews/Index">Food Review</a>
                         </li>
                         }
+                        *@
                         @if (User.IsInRole("Admin"))
                         {
                             <li class="nav-item">
