@@ -1,7 +1,10 @@
-﻿<!DOCTYPE html>
+﻿@{
+    Layout = "_CaiFan";
+}
+<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
+    @* <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
@@ -10,7 +13,7 @@
     <script src="~/lib/bootstrap/js/bootstrap.min.js"></script>
     <script src="~/lib/jquery/jquery.validate.min.js"></script>
     <script src="~/lib/jquery/jquery.validate.unobtrusive.min.js"></script>
-
+ *@
     <style>
         body {
             background: url('@(Url.Content("~/images/mainpage.jpg"))') no-repeat center center fixed;
@@ -22,10 +25,6 @@
     
 </head>
 <body>
-
-    @{
-        Layout = "_CaiFan";
-    }
 
     <div class="container-fluid p-2">
         @RenderBody()

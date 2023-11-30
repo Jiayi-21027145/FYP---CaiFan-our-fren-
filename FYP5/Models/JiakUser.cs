@@ -19,7 +19,7 @@ public partial class JiakUser
     [DataType(DataType.Password)]
     public string UserPw2 { get; set; } = null!;
     [Required(ErrorMessage = "Please enter a username.")]
-    [RegularExpression(@"^[A-Za-z][A-Za-z0-9_]{7,29}$", ErrorMessage = "Invalid UserName Format. UserName does not contain special characters.")]
+    [RegularExpression(@"^[A-Za-z][A-Za-z0-9_]{3,29}$", ErrorMessage = "Invalid UserName Format. UserName does not contain special characters.")]
     public string UserName { get; set; } = null!;
     public string Gender {  get; set; } = null!;
     [Required(ErrorMessage = "Please enter an email address.")]

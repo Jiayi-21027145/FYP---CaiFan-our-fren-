@@ -45,6 +45,12 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav"
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="~/home">Home</a>
+                    </li>
+                </ul>
+            <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -131,25 +137,19 @@
                     </li> *@
                     @if (User.Identity!.IsAuthenticated)
                     {
-                            <li class="nav-item dropdown">
+                            <li class="nav-item dropdown m-auto">
                                 <a class="nav-link dropdown-toggle" role="button"
                                 href="#" id="navbarDropdown" data-bs-toggle="dropdown">
                               
-                                    @* @if(Model.JiakUser.Gender == "M")
-                                    { *@
-                                        <img src="/images/male.png" class="avatar">
-                                    @* } *@
-                                    
                              
-
-                                        
-                                        @* <img src="/images/female.png" class="avatar"> *@
-                                        
-                             
-                                @User.Identity!.Name
+                                 <img src="/images/defaultpp.png" class="avatar">
+                           
+                                    Welcome @User.Identity!.Name
                             </a>
-                            <ul class="dropdown-menu">
+                            <ul class="dropdown-menu" >
+                                <li><a class="dropdown-item bi bi-binoculars" href="~/Account/Update"> Update Profile</a></li>
                                 <li><a class="dropdown-item bi bi-binoculars" href="~/Account/Logoff"> Logout</a></li>
+                                
                             </ul>
                         </li>
                      
