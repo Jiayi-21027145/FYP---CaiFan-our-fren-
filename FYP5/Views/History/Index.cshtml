@@ -1,9 +1,82 @@
-﻿
-<div class="row">
-    <h2>Sales Report</h2>
-    <ul class="nav nav-tabs fw-bold">
-        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" data-bs-target="#Report1">Sales Report 1: Union</a></li>
-        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" data-bs-target="#Report2">Sales Report 2: Group and Sort</a></li>
-    </ul>
+﻿<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css" />
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#jsHistory').DataTable({
+                ordering: true,
+                paging: true,
+                searching: true,
+                info: true,
+                lengthChange: true,
+                pageLength: 10
+            });
+        });
+    </script>
+</head>
 
- </div>
+
+@model DataRowCollection
+
+@{
+    Layout = "_CaiFan";
+}
+
+<style>
+    body {
+        background: url('@(Url.Content("~/BG 1.jpg"))') no-repeat center center fixed;
+        background-size: cover;
+        font-size: small;
+    }
+</style>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-@TempData["MsgType"]">
+        @TempData["Message"]
+    </div>
+}
+
+<div class="container" style="background-color: white; border-radius: 10px;">
+    <div class="row p-3">
+        <h1 class="text-center mb-2">History</h1>
+        <div style="text-align:center">
+        </div>
+        <table id=jsHistory class="table table-bordered table-condensed table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Price</th>
+                    <th>Nutritional Value</th>
+                    <th>Desciption</th>
+                    <th>ImageData</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            @foreach (DataRow row in Model)
+            {
+                <tr>
+                    <td>@row["Id"]</td>
+                    <td>@row["price"]</td>
+                    <td>@row["NutritionalValue"]</td>
+                    <td>@row["Description"]</td>
+                    <td><img src="/Reviews/@row["ImageData"]" width="100" height="100" /></td>
+                    @if (User.IsInRole("User"))
+                    {
+                        <td>
+                            <a asp-controller="History"
+                       asp-action="Delete"
+                       asp-route-id="@row["Id"]">
+                                Delete
+                            </a> 
+                        </td>
+                    }
+
+                </tr>
+            }
+        </table>
+    </div>
+</div>

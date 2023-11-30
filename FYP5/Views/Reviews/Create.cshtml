@@ -2,7 +2,7 @@
     Layout = "_Caifan";
 }
 @model Reviews
-
+<link href="~/css/profile.css" rel="stylesheet" />
 
 <div class="container" style="background-color: lightyellow; border-radius: 12px;">
     <form asp-controller="Reviews"
@@ -10,9 +10,6 @@
           method="post" enctype="multipart/form-data">
 
         <h3 class="text-center"><b>New Review</b></h3>
-
-        @* <input asp-for="ReviewId" hidden /> *@
-
 
         <div class="row mb-2">
             <label class="col-sm-3 col-form-label fw-bold" asp-for="Rating">Rating:</label>
@@ -38,6 +35,15 @@
                 <input type="file" class="form-control mb-3" asp-for="Photo"
                        onchange="preview()">
                 <img id="frame" height="100" src="" />
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <label class="col-sm-3 col-form-label fw-bold"
+                   asp-for="PublishDate">Published Date:</label>
+            <div class="col-sm-6">
+                <input type="date" asp-for="PublishDate" class="form-control"
+                       placeholder="Date" />
             </div>
         </div>
 

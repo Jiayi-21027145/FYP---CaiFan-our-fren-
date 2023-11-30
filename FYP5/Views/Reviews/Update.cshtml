@@ -10,8 +10,14 @@
 
         <h3 class="text-center"><b>Update Review</b></h3>
 
-        @* <input asp-for="ReviewId" hidden /> *@
+        <input asp-for="ReviewId" hidden />
+        <input asp-for="ImageData" hidden />
 
+        <div class="form-group row">
+            <div class="offset-sm-3 mb-3">
+                <img id="ImgPhoto" src="~/reviews/@Model.ImageData" style="height:250px;" />
+            </div>
+        </div>
 
         <div class="row mb-2">
             <label class="col-sm-3 col-form-label fw-bold" asp-for="Rating">Rating:</label>
@@ -30,18 +36,9 @@
             </div>
         </div>
 
-        <div class="row mb-2">
-            <label class="col-sm-3 col-form-label fw-bold" asp-for="Photo">Insert your picture:</label>
-            <div class="col-sm-6">
-                <input type="file" class="form-control mb-3" asp-for="Photo"
-                       onchange="preview()">
-                <img id="frame" height="100" src="" />
-            </div>
-        </div>
-
-        <div class="off-set-5">
-            <div class="mb-3">
-                <input type="submit" value="Save" class="btn btn-primary" />
+        <div class="form-group row">
+            <div class="offset-sm-3 mb-3">
+                <button class="btn btn-primary" type="submit">Save</button>
             </div>
         </div>
 

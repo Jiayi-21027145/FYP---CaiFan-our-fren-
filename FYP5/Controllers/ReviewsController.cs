@@ -6,7 +6,7 @@ using System.Security.Claims;
 namespace FYP5.Controllers
 {
     public class ReviewsController : Controller
-    {  
+    {
         public IActionResult Index()
         {
             DataTable dt = DBUtl.GetTable("SELECT * FROM Reviews");
@@ -32,12 +32,12 @@ namespace FYP5.Controllers
             {
                 string picfilename = DoPhotoUpload(r.Photo);
 
-                string insert = @"INSERT INTO Reviews(Rating, Comment, ImageData) 
-                           VALUES({0}, '{1}', '{2}')";
+                string insert = @"INSERT INTO Reviews(Rating, Comment, ImageData, PublishDate) 
+                           VALUES({0}, '{1}', '{2}', '{3:dd MMMM yyyy}')";
 
                 string sql =
-                   string.Format(insert,r.Rating, r.Comment,
-                                     picfilename);
+                   string.Format(insert, r.Rating, r.Comment,
+                                     picfilename, r.PublishDate);
                 if (DBUtl.ExecSQL(sql) == 1)
                 {
                     TempData["Message"] = $"Review created Successfully";
@@ -67,7 +67,7 @@ namespace FYP5.Controllers
             if (list.Count == 1)
             {
                 Reviews r = list[0];
-                return View("Update", r);
+                return View(r);
             }
             else
             {
@@ -76,18 +76,16 @@ namespace FYP5.Controllers
                 return RedirectToAction("Index");
             }
         }
-
-        [Authorize]
+        
         [HttpPost]
         public IActionResult Update(Reviews r)
         {
-            //ModelState.Remove("Photo");       // No Need to Validate "Photo"
-            //ModelState.Remove("SubmittedBy"); // Ignore "SubmittedBy". See claim below.
+            ModelState.Remove("Photo");       // No Need to Validate "Photo".
 
             if (!ModelState.IsValid)
             {
                 ViewData["Message"] = "Invalid Input";
-                ViewData["MsgType"] = "warning";   
+                ViewData["MsgType"] = "Warning";   
                 return View("Update", r);
             }
             else
@@ -95,11 +93,11 @@ namespace FYP5.Controllers
                 //string userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
 
                 string update = @"UPDATE Reviews   
-                              SET Rating={2}, Comment='{3}', ImageData='{4}'
-                              WHERE ReviewID={0} AND UserId={1}";
-                //TODO: Lesson09 Task 2d - Make insecure DB UPDATE secure.
+                              SET Rating={1}, Comment='{2}' 
+                              WHERE ReviewID={0}";
+       
                 string sql = string.Format(update, r.ReviewId,
-                                          r.Rating, r.Comment, r.ImageData);
+                                          r.Rating, r.Comment);
                 if (DBUtl.ExecSQL(sql) == 1)
                 {
                     TempData["Message"] = "Review Updated";
@@ -135,7 +133,7 @@ namespace FYP5.Controllers
                 System.IO.File.Delete(fullpath);
 
                 string delete = "DELETE FROM Reviews WHERE ReviewID={0}";
-                //TODO: Lesson09 Task 2f - Make insecure DB DELETE secure.
+  
                 string sql2 = string.Format(delete, id);
                 int res = DBUtl.ExecSQL(sql2);
                 if (res == 1)
