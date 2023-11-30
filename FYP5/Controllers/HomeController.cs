@@ -26,6 +26,11 @@ namespace FYP5.Controllers
             return View();
         }
 
+        public IActionResult Summary() //x
+        {
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
