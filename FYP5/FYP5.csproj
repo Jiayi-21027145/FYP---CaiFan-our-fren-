@@ -52,7 +52,6 @@
 		<None Include="Views\History\Index.cshtml" />
 		<None Include="Views\Shared\Error.cshtml" />
 		<None Include="Views\Shared\_CaiFan.cshtml" />
-		<None Include="Views\Shared\_Dish.cshtml" />
 		<None Include="Views\Shared\_History.cshtml" />
 		<None Include="Views\Shared\_Layout.cshtml" />
 		<None Include="Views\Shared\_ValidationScriptsPartial.cshtml" />
