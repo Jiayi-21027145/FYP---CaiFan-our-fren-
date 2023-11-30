@@ -71,17 +71,18 @@ img:hover{
 body {
     margin: 0;
     padding: 0;
-    overflow: hidden;
+    font-family: Arial, sans-serif;
 }
 
-.video-container {
-    position: fixed;
-    bottom: 0;
-    left: 100px;
-    margin: 20px;
+#video-container {
+    float: right;
+    width: 700px;
+    height: 500px;
+    margin-left: 60px;
+    margin-right: 60px;
 }
 
 video {
     max-width: 100%;
-    height: auto;
+    height: 500px;
 }
