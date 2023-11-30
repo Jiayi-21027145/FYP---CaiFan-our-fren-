@@ -1,0 +1,55 @@
+﻿@{
+    Layout = "_CaiFan";
+}
+<link href="~/css/profile.css" rel="stylesheet" />
+<style>
+    body {
+        background: url('@(Url.Content("~/images/mainpage.jpg"))') no-repeat center center fixed;
+        background-size: cover;
+        font-size: small;
+    }
+</style>
+<div class="table">
+    <div class="header">
+        <h1>Summary</h1>
+        <p>summary page for admin</p>
+        .header {
+        padding: 100px;
+        text-align: center;
+        background: orange; <!--bg colour-->
+        color: white; <!--text colour-->
+        }
+        .header h1 {
+        font-size: 40px; <!--increase font size of h1-->
+        }
+    </div>
+
+    <div class="navbar">
+        <a href="#">Total Users</a>
+        <a href="#">Users per Day</a>
+        <a href="#">Track User</a>
+        .navbar {
+        overflow: hidden;
+        background-color: #333;
+        }
+        .navbar a {
+        float: left;
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 20px;
+        text-decoration: none; <!--remove underline-->
+        }
+        .navbar a:hover {
+        background-color: grey;
+        color: black; <!--text colour-->
+        }
+    </div>
+
+
+    <div class="row">
+        <div class="side">...</div>
+        <div class="main">...</div>
+    </div>
+
+</div>
