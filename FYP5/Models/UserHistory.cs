@@ -7,11 +7,22 @@ public partial class UserHistory
 {
     public int Id { get; set; }
 
-    public decimal Price { get; set; }
+    public string? UserId { get; set; }
 
-    public int? NutritionalValue { get; set; }
+    public DateOnly? Date { get; set; }
+    public TimeOnly? Time { get; set; }
 
-    public string? Description { get; set; }
+    public string? Location { get; set; }
 
-    public byte[] ImageData { get; set; } = null!;
+    public string? WhiteRice { get; set; }
+    public string? BrownRice { get; set; }
+    public string? CrispyMeatWSauce { get; set; }
+    public string? CrispyMeat { get; set; }
+    public string? NonLeafy { get; set; }
+    public string? Leafy { get; set; }
+    public string? WhiteFish { get; set; }
+    public string? BatangFish { get; set; }
+    public string? SteamedEgg { get; set; }
+    public string? BoiledEgg { get; set; }
+    public string? Omelette { get; set; }
 }

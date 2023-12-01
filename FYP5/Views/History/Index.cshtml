@@ -40,41 +40,66 @@
     </div>
 }
 
-<div class="container" style="background-color: white; border-radius: 10px;">
-    <div class="row p-3">
-        <h1 class="text-center mb-2">History</h1>
+<div class="container" style="background-color: white; border-radius: 20px;">
+    <div class="row p-4">
+        <h1 class="text-center mb-2">View History</h1>
         <div style="text-align:center">
         </div>
         <table id=jsHistory class="table table-bordered table-condensed table-hover table-striped">
             <thead>
                 <tr>
                     <th>No</th>
-                    <th>Price</th>
-                    <th>Nutritional Value</th>
-                    <th>Desciption</th>
-                    <th>ImageData</th>
-                    <th>Action</th>
+                    <th>User</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Location</th>
+                    <th>White rice</th>
+                    <th>Brown rice</th>
+                    <th>Crispy Meat With Sauce</th>
+                    <th>Crispy Meat</th>
+                    <th>Braised Meat</th>
+                    <th>Non-Leafy Vege</th>
+                    <th>Leafy Vege</th>
+                    <th>White Fish</th>
+                    <th>Batang Fish</th>
+                    <th>Steamed Egg</th>
+                    <th>Boiled Egg</th>
+                    <th>Omellete</th>
                 </tr>
             </thead>
             @foreach (DataRow row in Model)
             {
+                var image1 = @row["WhiteRice"].Equals("Yes") ? "tick.png": "cross.jpg";
+                var image2 = @row["BrownRice"].Equals("Yes") ? "tick.png": "cross.jpg";
+                var image3 = @row["CrispyMeatWSauce"].Equals("Yes") ? "tick.png": "cross.jpg";
+                var image4 = @row["CrispyMeat"].Equals("Yes") ? "tick.png" : "cross.jpg";
+                var image5 = @row["BraisedMeat"].Equals("Yes") ? "tick.png": "cross.jpg";
+                var image6 = @row["NonLeafy"].Equals("Yes") ? "tick.png": "cross.jpg";
+                var image7 = @row["Leafy"].Equals("Yes") ? "tick.png": "cross.jpg";
+                var image8 = @row["WhiteFish"].Equals("Yes") ? "tick.png" : "cross.jpg";
+                var image9 = @row["BatangFish"].Equals("Yes") ? "tick.png" : "cross.jpg";
+                var image10 = @row["SteamedEgg"].Equals("Yes") ? "tick.png": "cross.jpg";
+                var image11 = @row["BoiledEgg"].Equals("Yes") ? "tick.png" : "cross.jpg";
+                var image12 = @row["Omellete"].Equals("Yes") ? "tick.png": "cross.jpg";
+
                 <tr>
                     <td>@row["Id"]</td>
-                    <td>@row["price"]</td>
-                    <td>@row["NutritionalValue"]</td>
-                    <td>@row["Description"]</td>
-                    <td><img src="/Reviews/@row["ImageData"]" width="100" height="100" /></td>
-                    @if (User.IsInRole("User"))
-                    {
-                        <td>
-                            <a asp-controller="History"
-                       asp-action="Delete"
-                       asp-route-id="@row["Id"]">
-                                Delete
-                            </a> 
-                        </td>
-                    }
-
+                    <td>@row["UserId"]</td>
+                    <td>@string.Format("{0:yyyy/MM/dd}", row["Date"])</td>
+                    <td>@string.Format("{0:HH:mm}", row["Time"])</td>
+                    <td>@row["Location"]</td>
+                    <td><img src="/@image1" width="15" /></td>
+                    <td><img src="/@image2" width="15" /></td>
+                    <td><img src="/@image3" width="15" /></td>
+                    <td><img src="/@image4" width="15" /></td>
+                    <td><img src="/@image5" width="15" /></td>
+                    <td><img src="/@image6" width="15" /></td>
+                    <td><img src="/@image7" width="15" /></td>
+                    <td><img src="/@image8" width="15" /></td>
+                    <td><img src="/@image9" width="15" /></td>
+                    <td><img src="/@image10" width="15" /></td>
+                    <td><img src="/@image11" width="15" /></td>
+                    <td><img src="/@image12" width="15" /></td>
                 </tr>
             }
         </table>
