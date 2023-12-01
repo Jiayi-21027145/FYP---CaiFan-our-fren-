@@ -1,5 +1,6 @@
 ﻿<head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" />
+    <link href="~/css/profile.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css" />
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
@@ -40,9 +41,14 @@
     </div>
 }
 
-<div class="container" style="background-color: white; border-radius: 20px;">
-    <div class="row p-4">
-        <h1 class="text-center mb-2">View History</h1>
+<div @* class="container" *@ style="background-color: white; border-radius: 15px;">
+    <div class="row p-1">
+        @* <h2 class="text-center mb-2">View History</h2> *@
+        <h2 class="text-center">
+            <b>
+                View History
+            </b>
+        </h2>
         <div style="text-align:center">
         </div>
         <table id=jsHistory class="table table-bordered table-condensed table-hover table-striped">
