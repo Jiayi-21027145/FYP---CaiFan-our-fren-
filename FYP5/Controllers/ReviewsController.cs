@@ -112,9 +112,49 @@ namespace FYP5.Controllers
                 return RedirectToAction("Index");
             }
         }
-        
-   
-        private string DoPhotoUpload(IFormFile photo)
+
+        [Authorize]
+        public IActionResult Delete(int id)
+        {
+            //string userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+
+            string select = @"SELECT * FROM Reviews 
+                         WHERE ReviewId={0}";
+           
+            string sql = string.Format(select, id);
+            DataTable ds = DBUtl.GetTable(sql);
+            if (ds.Rows.Count != 1)
+            {
+                TempData["Message"] = "Review Record does not exist";
+                TempData["MsgType"] = "warning";
+            }
+            else
+            {
+                string photoFile = ds.Rows[0]["ImageData"]!.ToString()!;
+                string fullpath = Path.Combine(_env.WebRootPath, "reviews/" + photoFile);
+                System.IO.File.Delete(fullpath);
+
+                string delete = "DELETE FROM Reviews WHERE ReviewId={0}";
+                //TODO: Lesson09 Task 2f - Make insecure DB DELETE secure.
+                string sql2 = string.Format(delete, id);
+                int res = DBUtl.ExecSQL(sql2);
+                if (res == 1)
+                {
+                    TempData["Message"] = "Review Record Deleted";
+                    TempData["MsgType"] = "success";
+                }
+                else
+                {
+                    TempData["Message"] = DBUtl.DB_Message;
+                    TempData["ExecSQL"] = DBUtl.DB_SQL;
+                    TempData["MsgType"] = "danger";
+                }
+            }
+            return RedirectToAction("Index");
+        }
+
+
+            private string DoPhotoUpload(IFormFile photo)
         {
             string fext = Path.GetExtension(photo.FileName);
             string uname = Guid.NewGuid().ToString();
