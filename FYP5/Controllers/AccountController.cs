@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using FYP5.Models;
+using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
 
 namespace FYP5.Controllers;
 
@@ -104,9 +105,9 @@ public class AccountController : Controller
         {
             string insert = @"INSERT INTO JiakUser(UserId, UserPw, UserName, Gender, Email, UserRole) VALUES
                  ('{0}', HASHBYTES('SHA1', '{1}'), '{2}', '{3}', '{4}', 'User')";
-            if (DBUtl.ExecSQL(insert, usr.UserId, usr.UserPw, usr.UserName,usr.Gender[..1], usr.Email) == 1)
+            if (DBUtl.ExecSQL(insert, usr.UserId, usr.UserPw, usr.UserName, usr.Gender[..1], usr.Email) == 1)
             {
-                
+
                 string title = "Registration Successful - Welcome";
                 string message = String.Format(usr.UserName, usr.UserId, usr.UserPw);
 
@@ -145,7 +146,7 @@ public class AccountController : Controller
                                          out ClaimsPrincipal principal)
     {
         principal = null!;
-        
+
         // TODO: Lesson09 Task 1 - Make login secure, use the new way of calling DBUtl
         //string select = string.Format(sql, uid, pw);
         DataTable ds = DBUtl.GetTable(LOGIN_SQL, uid, pw);
@@ -170,7 +171,53 @@ public class AccountController : Controller
         return View();
     }
 
-    public IActionResult Update()
+    public IActionResult ResetPW()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public IActionResult ResetPW(Password pw)
+    {
+        string userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+
+        string select = @"SELECT UserPw FROM JiakUser 
+                         WHERE Id={0} AND UserId='{1}'";
+        string sql = string.Format(select, userid);
+        List<JiakUser> user = DBUtl.GetList<JiakUser>(sql);
+        if (user.Count == 1)
+        {
+            string update = @"UPDATE TravelHighlight  
+                              SET UserPw='{1}' WHERE UserId={0}";
+
+            string sql2 = string.Format(update, userid, pw.NewPassword);
+
+            if (DBUtl.ExecSQL(sql2) == 1)
+            {
+                TempData["Message"] = "Password Updated";
+                TempData["MsgType"] = "success";
+            }
+            else
+            {
+                TempData["Message"] = DBUtl.DB_Message;
+                ViewData["ExecSQL"] = DBUtl.DB_SQL;
+                TempData["MsgType"] = "danger";
+                return RedirectToAction("ResetPW");
+            }
+        }
+        else
+        {
+            TempData["Message"] = "User Record does not exist";
+            TempData["MsgType"] = "warning";
+            return RedirectToAction("ResetPW");
+        }
+        return View();
+    }
+
+    
+
+
+public IActionResult Update()
     {
         return View();
     }
