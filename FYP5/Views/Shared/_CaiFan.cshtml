@@ -132,6 +132,15 @@
              
                         }
 
+                        
+                        @if (User.IsInRole("User"))
+                        {
+                            <li class="nav-item">
+                            <a class="nav-link" href="~/Summary/Summary">Summary</a>
+                            </li>
+             
+                        }
+
                         @* <li class="nav-item">
                         <a class="nav-link" href="~/Account/Login">Login/Sign Up</a>
                     </li> *@
