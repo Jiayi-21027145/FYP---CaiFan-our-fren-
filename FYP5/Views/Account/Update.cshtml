@@ -4,6 +4,7 @@
 	Layout = "_CaiFan";
 	var userid = ViewData["userid"];
 }
+
 <link href="~/css/profile.css" rel="stylesheet" />
 <!DOCTYPE html>
 <html lang="en">
@@ -15,6 +16,12 @@
 	<title>Vertical Tabs</title>
 </head>
 <body>
+	<style>
+		body {
+			background: url('@(Url.Content("~/bkgppp.jpg"))') no-repeat center center fixed;
+			background-size: cover;
+		}
+	</style>
 	<form asp-controller="Account"
       asp-action="Update"
       method="post">
