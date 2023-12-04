@@ -1,6 +1,8 @@
 ﻿@model JiakUser
+
 @{
 	Layout = "_CaiFan";
+	var userid = ViewData["userid"];
 }
 <link href="~/css/profile.css" rel="stylesheet" />
 <!DOCTYPE html>
@@ -13,24 +15,114 @@
 	<title>Vertical Tabs</title>
 </head>
 <body>
-
+	<form asp-controller="Account"
+      asp-action="Update"
+      method="post">
 	<div class="container">
 		<div class="wrapper">
 			<ul class="indicator">
 				<li class="active" data-target="#profile"><i class="ph-user-circle"></i> Profile</li>
-				<li data-target="#contact"><i class="ph-phone"></i> Contact</li>
-				<li data-target="#settings"><i class="ph-gear-six"></i> Settings</li>
+				<li data-target="#email"><i class="ph-envelope"></i> Verify-Email</li>
+				<li data-target="#password"><i class="ph-password"></i> Change Password</li>
 			</ul>
 			<ul class="content">
 				<li class="active" id="profile">
-					<h1>Profile</h1>
+					<h1>Edit Profile</h1>
+					@* <label class="col-form-label col-sm-2 fw-bold" for="UserId">User Id : </label>
+					<input text="text" value=@userid asp-for="UserId" class="form-control"
+							   readonly="readonly" />  *@
+					<div class="row mb-4">
+						<label class="col-form-label col-sm-3 fw-bold" for="UserId">User Id:</label>
+						<div class="col-sm-8">
+							<input text="text" value=@userid asp-for="UserId" class="form-control"
+								   readonly="readonly" />
+						</div>
+					</div>
+					<div class="row mb-4">
+						<label class="col-form-label col-sm-4 fw-bold" for="UserName">Username:</label>
+						<div class="col-sm-8">
+							<input text="text" asp-for="UserName" class="form-control"/>
+							<span asp-validation-for="UserName" class="text-danger"></span>
+						</div>
+					</div>
+						<div class="row mb-4">
+							<label class="col-form-label col-sm-3 fw-bold" for="Gender">Gender:</label>
+							<div class="col-sm-8">
+								<div class="form-check form-check-inline">
+									<input type="radio" class="form-check-input"
+										   id="male" name="Gender" value="Male" />
+									<label class="form-check-label" for="male">Male</label>
+								</div>
+								<div class="form-check form-check-inline">
+									<input type="radio" class="form-check-input"
+										   id="female" name="Gender" value="Female" />
+									<label class="form-check-label" for="female">Female</label>
+								</div>
+							</div>
+						</div>
+						<div class="row mb-4">
+							<label class="col-form-label col-sm-3 fw-bold" for="Email">Email:</label>
+							<div class="col-sm-8">
+								<input text="text" asp-for="Email" class="form-control" />
+								<span asp-validation-for="Email" class="text-danger"></span>
+							</div>
+						</div>
+						<div class="row mb-4">
+							<div class="offset-sm-0 col-sm-4">
+								<input type="submit" value="Update"
+									   class="btn btn-sm btn-primary" />
+							</div>
+						</div>
+
 				</li>
-				<li id="contact">
-					<h1>Contact</h1>
+				<li id="email">
+					<h1>Verify-Email</h1>
+						<p>Please check your email for verification code send to <b>john.doe@example.com</b></p>
+						<div class="row mb-4">
+						<label class="col-form-label col-sm-3 fw-bold" for="Code">Verification Code:</label>
+						<div class="col-sm-8">
+							<input text="text" />
+					    </div>
+						</div>
+						<div class="row mb-4">
+							<div class="offset-sm-0 col-sm-4">
+								<input type="submit" value="Verify"
+									   class="btn btn-sm btn-primary" />
+							</div>
+						</div>
 				</li>
-				<li id="settings">
-					<h1>Settings</h1>
+				
+				<li id="password">
+					<h1>Change Password</h1>
+						<div class="row mb-4">
+							<label class="col-form-label col-sm-3 fw-bold" for="CurrentPw">Current Password:</label>
+							<div class="col-sm-8">
+								<input text="text" asp-for="UserName" class="form-control" />
+								<span asp-validation-for="UserName" class="text-danger"></span>
+							</div>
+						</div>
+						<div class="row mb-4">
+							<label class="col-form-label col-sm-3 fw-bold" for="NewPw">New Password:</label>
+							<div class="col-sm-8">
+								<input text="text" asp-for="UserName" class="form-control" />
+								<span asp-validation-for="UserName" class="text-danger"></span>
+							</div>
+						</div>
+						<div class="row mb-4">
+							<label class="col-form-label col-sm-3 fw-bold" for="ConfirmPw">Confirm Password:</label>
+							<div class="col-sm-8">
+								<input text="text" asp-for="UserName" class="form-control" />
+								<span asp-validation-for="UserName" class="text-danger"></span>
+							</div>
+						</div>
+						<div class="row mb-4">
+							<div class="offset-sm-0 col-sm-4">
+								<input type="submit" value="Update"
+									   class="btn btn-sm btn-primary" />
+							</div>
+						</div>
 				</li>
+				
 			</ul>
 		</div>
 	</div>
@@ -55,5 +147,6 @@
 			})
 		})
 	</script>
+	</form>
 </body>
 </html>
