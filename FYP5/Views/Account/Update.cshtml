@@ -1,9 +1,59 @@
 ﻿@model JiakUser
 @{
-    Layout = "_CaiFan";
+	Layout = "_CaiFan";
 }
 <link href="~/css/profile.css" rel="stylesheet" />
-<div class="container">
-    <div class="my-3">
-        <h2>Update Profile</h2>
-    </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://unpkg.com/phosphor-icons"></script>
+	<link href="~/css/Update.css" rel="stylesheet" />
+	<title>Vertical Tabs</title>
+</head>
+<body>
+
+	<div class="container">
+		<div class="wrapper">
+			<ul class="indicator">
+				<li class="active" data-target="#profile"><i class="ph-user-circle"></i> Profile</li>
+				<li data-target="#contact"><i class="ph-phone"></i> Contact</li>
+				<li data-target="#settings"><i class="ph-gear-six"></i> Settings</li>
+			</ul>
+			<ul class="content">
+				<li class="active" id="profile">
+					<h1>Profile</h1>
+				</li>
+				<li id="contact">
+					<h1>Contact</h1>
+				</li>
+				<li id="settings">
+					<h1>Settings</h1>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<script>
+		const allIndicator = document.querySelectorAll('.indicator li');
+		const allContent = document.querySelectorAll('.content li');
+
+		allIndicator.forEach(item => {
+			item.addEventListener('click', function () {
+				const content = document.querySelector(this.dataset.target);
+
+				allIndicator.forEach(i => {
+					i.classList.remove('active');
+				})
+
+				allContent.forEach(i => {
+					i.classList.remove('active');
+				})
+
+				content.classList.add('active');
+				this.classList.add('active');
+			})
+		})
+	</script>
+</body>
+</html>

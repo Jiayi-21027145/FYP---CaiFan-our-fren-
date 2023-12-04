@@ -49,7 +49,6 @@
                 <tr>
                     <th>Dish</th>
                     <th>Name</th>
-                    <th>Type</th>
                     <th>Lowest Price</th>
                     <th>Highest Price</th>
                     <th>Average Price</th>
@@ -62,7 +61,6 @@
                 <tr>
                     <td><img src="/Menu/@row["ImageData"]" width="100" height="100" /></td>
                     <td>@row["FoodName"]</td>
-                    <td>@row["FoodType"]</td>
                     <td>@string.Format("{0:c}", row["LowestPrice"])</td>
                     <td>@string.Format("{0:c}", row["HighestPrice"])</td>
                     <td>@string.Format("{0:c}", row["AveragePrice"])</td>
