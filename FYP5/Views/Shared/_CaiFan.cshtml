@@ -98,7 +98,12 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item bi bi-binoculars" href="~/Reviews/Index"> Review</a></li>
-                            <li><a class="dropdown-item bi bi-binoculars" href="~/Reviews/Create"> Create Review</a></li>
+                            @if(User.IsInRole("User"))
+                                    {
+                                    <li><a class="dropdown-item bi bi-binoculars" href="~/Reviews/Create"> Create Review</a></li>
+                                    }
+                                    
+                                    
 
                         </ul>
                     </li>
