@@ -1,0 +1,27 @@
+﻿html {
+    font-family: Arial;
+    font-size: 15px;
+    background: #0094ff;
+}
+
+.sidebar {
+    position: fixed;
+    width: 25%;
+    height: inherit;
+    background: #0026ff;
+    font-size: 13px;
+}
+
+.nav {
+    position: relative;
+    margin: 15%;
+    text-align: left;
+}
+
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    height: 100px;
+}
