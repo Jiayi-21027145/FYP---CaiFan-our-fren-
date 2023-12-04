@@ -13,6 +13,9 @@
 	  <None Remove="wwwroot\images\imageAI\**" />
 	</ItemGroup>
 	<ItemGroup>
+	  <_ContentIncludedByDefault Remove="wwwroot\css\summary.css" />
+	</ItemGroup>
+	<ItemGroup>
 		<PackageReference Include="Microsoft.Azure.CognitiveServices.Vision.CustomVision.Prediction" Version="2.0.0" />
 		<PackageReference Include="Microsoft.Azure.CognitiveServices.Vision.CustomVision.Training" Version="2.1.0-preview" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.10" />
