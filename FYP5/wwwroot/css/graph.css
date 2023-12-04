@@ -1,0 +1,20 @@
+﻿body {
+    margin: 0px;
+    padding: 0px;
+    align-items: center;
+    justify-content: center;
+}
+
+image-container {
+    /* Optional: Add styles to the container if needed */ 
+    text-align: center;
+}
+
+.image-container img {
+    /* Center the image horizontally */
+    display: block;
+    margin: 0 auto;
+    /* Optional: Add styles to the image if needed */
+    max-width: 30%;
+    height: auto;
+}
