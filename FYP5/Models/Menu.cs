@@ -19,5 +19,7 @@ public partial class Menu
 
     public string NutrientName { get; set; } = null!;
 
-    public int? NutritionalValue { get; set; }
+    public int? HighestValue { get; set; }
+    public int? LowestValue { get; set; }
+    public int? AverageValue { get; set; }
 }
