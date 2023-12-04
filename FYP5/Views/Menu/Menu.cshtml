@@ -53,7 +53,9 @@
                     <th>Highest Price</th>
                     <th>Average Price</th>
                     <th>Nutrient Name</th>
-                    <th>Nutritional Value</th>
+                    <th>HighestNV</th>
+                    <th>LowestNV</th>
+                    <th>AverageNV</th>
                 </tr>
             </thead>
             @foreach (DataRow row in Model)
@@ -65,7 +67,9 @@
                     <td>@string.Format("{0:c}", row["HighestPrice"])</td>
                     <td>@string.Format("{0:c}", row["AveragePrice"])</td>
                     <td>@row["NutrientName"]</td>
-                    <td>@row["NutritionalValue"]</td>
+                    <td>@row["HighestNV"]</td>
+                    <td>@row["LowestNV"]</td>
+                    <td>@row["AverageNV"]</td>
                 </tr>
             }
             </table>
