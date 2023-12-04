@@ -127,7 +127,16 @@
                         @if (User.IsInRole("Admin"))
                         {
                             <li class="nav-item">
-                            <a class="nav-link" href="~/Summary/Index">Summary</a>
+                            <a class="nav-link" href="~/Summary/AdminIndex">Summary</a>
+                            </li>
+             
+                        }
+
+                        
+                        @if (User.IsInRole("User"))
+                        {
+                            <li class="nav-item">
+                            <a class="nav-link" href="~/Summary/UserIndex">Summary</a>
                             </li>
              
                         }
