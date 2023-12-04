@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace FYP5.Controllers
 {
@@ -6,6 +7,9 @@ namespace FYP5.Controllers
     {
         public IActionResult Index()
         {
+            ViewData["userid"] =
+            User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+
             return View();
         }
     }
