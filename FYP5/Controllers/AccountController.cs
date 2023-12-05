@@ -219,33 +219,9 @@ public class AccountController : Controller
 
 public IActionResult Update()
     {
-        return View();
+		ViewData["userid"] =
+			User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+		return View();
     }
 
-    /*[HttpPost]
-    public IActionResult ForgotPassword(Email email)
-    {
-        string template = "Dear <b>{0}</b> \n\r," +
-                          "<p>Thank you for your joining <b>Lemonade Chamber </b> music</p> \n\r" +
-                          "<p>Your account represents your passport to musical nirvana.</p> \n\r" +
-                          "<p> <b>Warning: </b>Always keep your login information secure and never share it with anyone.</p> \n\r" +
-                          "<p>Best regards,</p> \n\r" +
-                          "<p>Johnny B Student,</p> \n\r" +
-                          "Lemonade Chamber Music";
-
-        string giftcode = Guid.NewGuid().ToString()[..12];
-        string body = String.Format(template, email.UserId, giftcode);
-
-        if (EmailUtl.SendEmail(email.UserEmail, body, out string result))
-        {
-            ViewData["Message"] = "Email Successfully Sent";
-            ViewData["MsgType"] = "success";
-        }
-        else
-        {
-            ViewData["Message"] = result;
-            ViewData["MsgType"] = "warning";
-        }
-        return View();
-    }*/
 }

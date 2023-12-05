@@ -36,7 +36,7 @@
 </head>
 <body>
    
-    <nav class="navbar navbar-expand-sm navbar-dark ps-2 fw-bold" style="background-color: purple;">
+    <nav class="navbar navbar-expand-xl navbar-dark ps-2 fw-bold" style="background-color: purple;">
         <div class="container-fluid">
             <a class="navbar-brand" href="https://jiakpng.azurewebsites.net/">Jiakpng</a>
             <button type="button" class="navbar-toggler"
@@ -98,7 +98,12 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item bi bi-binoculars" href="~/Reviews/Index"> Review</a></li>
-                            <li><a class="dropdown-item bi bi-binoculars" href="~/Reviews/Create"> Create Review</a></li>
+                            @if(User.IsInRole("User"))
+                                    {
+                                    <li><a class="dropdown-item bi bi-binoculars" href="~/Reviews/Create"> Create Review</a></li>
+                                    }
+                                    
+                                    
 
                         </ul>
                     </li>
@@ -127,7 +132,16 @@
                         @if (User.IsInRole("Admin"))
                         {
                             <li class="nav-item">
-                            <a class="nav-link" href="~/Summary/Index">Summary</a>
+                            <a class="nav-link" href="~/Summary/AdminIndex">Summary</a>
+                            </li>
+             
+                        }
+
+                        
+                        @if (User.IsInRole("User"))
+                        {
+                            <li class="nav-item">
+                            <a class="nav-link" href="~/Summary/UserIndex">Summary</a>
                             </li>
              
                         }

@@ -10,8 +10,10 @@ namespace FYP5.Controllers
         [Authorize]
         public IActionResult Index()
         {
+
             DataTable dt = DBUtl.GetTable("SELECT * FROM UserHistory");
             return View("Index", dt.Rows);
+            
 
         }
     }
