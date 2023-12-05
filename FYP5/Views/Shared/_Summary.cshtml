@@ -2,34 +2,27 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
     <script src="~/lib/bootstrap/umd/popper.js"></script>
-    <script src="~/lib/jquery/jquery.min.js"></script>
     <script src="~/lib/bootstrap/js/bootstrap.min.js"></script>
+    <link href="~/lib/bootstrap/font/bootstrap-icons.min.css" rel="stylesheet" />
+
+    <script src="~/lib/jquery/jquery.min.js"></script>
     <script src="~/lib/jquery/jquery.validate.min.js"></script>
     <script src="~/lib/jquery/jquery.validate.unobtrusive.min.js"></script>
 
-    <style>
-        body {
-            background: url('@(Url.Content("~/images/mainpage.jpg"))') no-repeat center center fixed;
-            background-size: cover;
-            font-size: small;
-        }
-    </style>
+    <script src="~/lib/chartjs/Chart.min.js"></script>
+    <script src="~/lib/chartjs/chartjs-plugin-labels.min.js"></script>
 
+    <title>Total Users</title>
+
+    @RenderSection("MoreScripts", false)
 
 </head>
 <body>
-
-    @{
-        Layout = "_CaiFan";
-    }
-
-    <div>
+    <div class="container">
         @RenderBody()
     </div>
-
 </body>
 </html>
