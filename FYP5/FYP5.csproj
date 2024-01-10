@@ -59,5 +59,10 @@
 		<None Include="Views\Shared\_Layout.cshtml" />
 		<None Include="Views\Shared\_ValidationScriptsPartial.cshtml" />
 	</ItemGroup>
+	<ItemGroup>
+	  <None Update="image.jpg">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
 	<ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
 </Project>

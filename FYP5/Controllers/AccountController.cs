@@ -217,11 +217,29 @@ public class AccountController : Controller
     
 
 
-public IActionResult Update()
+public IActionResult UpdateProfile(int id)
     {
-		ViewData["userid"] =
-			User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
-		return View();
-    }
+        string userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
 
+        string select = @"SELECT * FROM JiaUser 
+                         WHERE Id={0} AND UserId='{1}'";
+
+        // TODO: Lesson09 Task 2c - Make insecure DB SELECT secure.
+        string sql = string.Format(select, id, userid);
+        List<JiakUser> lstTrip = DBUtl.GetList<JiakUser>(select, id, userid);
+        if (lstTrip.Count == 1)
+        {
+            JiakUser trip = lstTrip[0];
+            return View(trip);
+        }
+        else
+        {
+            TempData["Message"] = "Trip Record does not exist";
+            TempData["MsgType"] = "warning";
+            return RedirectToAction("MyTrips");
+        }
+    }
 }
+
+
+
