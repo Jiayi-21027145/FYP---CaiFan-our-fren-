@@ -11,7 +11,7 @@
     </div>
 
     <form method="post"
-          asp-controller="Account" asp-action="ForgotPassword">
+          asp-controller="Account" asp-action="SendEmail">
 
         <div class="col-md-3 mb-3 form-floating">
             <input asp-for="UserId" class="form-control"
@@ -30,12 +30,6 @@
         <div class="form-group row">
             <div class="mb-3">
                 <input type="submit" value="Send" class="btn btn-primary" />
-            </div>
-        </div>
-
-        <div class="link">
-            <div>
-                <a href="/Account/ResetPW">Reset Password</a>
             </div>
         </div>
 

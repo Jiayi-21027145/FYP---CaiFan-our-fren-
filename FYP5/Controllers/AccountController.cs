@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using FYP5.Models;
 using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
+using System.Collections.Generic;
 
 namespace FYP5.Controllers;
 
@@ -171,6 +172,37 @@ public class AccountController : Controller
         return View();
     }
 
+    [HttpPost]
+    public IActionResult ForgotPassword(Email email)
+    {
+        string template = "Hi {0}, \n\r" +
+                              "Your email verification code is {1}, \n\r" +
+                              "If you did not request this code, it is possible that someone else is trying to access the email Account {2}. Do not forward or give this code to anyone. \n\r";
+        string code = Guid.NewGuid().ToString()[..6];
+        //TODO: Lesson10 Task 2d - Uncomment the following line
+        string title = "Reset Password - Verification Code";
+        string message = String.Format(template, email.UserId, code, email.UserEmail);
+
+        // TODO: Lesson10 Task 2e - Call EmailUtl.SendEmail to send email
+        string result = "Something went wrong";
+        bool outcome = EmailUtl.SendEmail(email.UserEmail, title, message, out result);
+
+        //string result = "Something went wrong.";
+        if (outcome)
+        {
+            ViewData["Message"] = "Email send successfully";
+            ViewData["MsgType"] = "success";
+            return View("ResetPW");
+        }
+        else
+        {
+            ViewData["Message"] = result;
+            ViewData["MsgType"] = "warning";
+        }
+        return View("ForgotPassword");
+}
+        
+
     public IActionResult ResetPW()
     {
         return View();
@@ -213,9 +245,6 @@ public class AccountController : Controller
         }
         return View();
     }
-
-    
-
 
 public IActionResult Update()
     {

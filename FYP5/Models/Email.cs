@@ -8,6 +8,9 @@ public class Email
     [Required(ErrorMessage = "UserId is required.")]
     public string UserId { get; set; } = null!;
 
+    [Required(ErrorMessage = "UserId is required.")]
+    public string UserPw { get; set; } = null!;
+
     [Required(ErrorMessage = "User email address is required.")]
     [EmailAddress(ErrorMessage = "Email address is not valid.")]
     public string UserEmail { get; set; } = null!;

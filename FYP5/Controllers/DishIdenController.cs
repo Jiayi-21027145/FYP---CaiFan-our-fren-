@@ -7,10 +7,12 @@ namespace FYP5.Controllers
     {
         public IActionResult Index()
         {
-            ViewData["userid"] =
+ 
+            ViewData["UserId"] =
             User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
 
             return View();
         }
+
     }
 }
