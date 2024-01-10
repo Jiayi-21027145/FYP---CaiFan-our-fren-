@@ -246,6 +246,9 @@ public class AccountController : Controller
         return View();
     }
 
+    
+
+
 public IActionResult Update()
     {
 		ViewData["userid"] =
@@ -253,4 +256,5 @@ public IActionResult Update()
 		return View();
     }
 
-}
+
+
