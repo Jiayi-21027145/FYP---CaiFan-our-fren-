@@ -200,8 +200,8 @@ public class AccountController : Controller
             ViewData["MsgType"] = "warning";
         }
         return View("ForgotPassword");
-}
-        
+    }
+
 
     public IActionResult ResetPW()
     {
@@ -246,15 +246,16 @@ public class AccountController : Controller
         return View();
     }
 
-    
 
 
-public IActionResult Update()
+
+    public IActionResult Update()
     {
-		ViewData["userid"] =
-			User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
-		return View();
+        ViewData["userid"] =
+            User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+        return View();
     }
+}
 
 
 
