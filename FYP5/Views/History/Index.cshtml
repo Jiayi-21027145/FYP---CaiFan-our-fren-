@@ -60,7 +60,6 @@
                     <th>Time</th>
                     <th>Location</th>
                     <th>White rice</th>
-                    <th>Brown rice</th>
                     <th>Crispy Meat With Sauce</th>
                     <th>Crispy Meat</th>
                     <th>Braised Meat</th>
@@ -70,7 +69,7 @@
                     <th>Batang Fish</th>
                     <th>Steamed Egg</th>
                     <th>Boiled Egg</th>
-                    <th>Omellete</th>
+                    <th>Omelette</th>
                 </tr>
             </thead>
             @foreach (DataRow row in Model)
@@ -86,7 +85,7 @@
                 var image9 = @row["BatangFish"].Equals("Yes") ? "tick.png" : "cross.jpg";
                 var image10 = @row["SteamedEgg"].Equals("Yes") ? "tick.png": "cross.jpg";
                 var image11 = @row["BoiledEgg"].Equals("Yes") ? "tick.png" : "cross.jpg";
-                var image12 = @row["Omellete"].Equals("Yes") ? "tick.png": "cross.jpg";
+                var image12 = @row["Omelette"].Equals("Yes") ? "tick.png": "cross.jpg";
 
                 <tr>
                     <td>@row["Id"]</td>

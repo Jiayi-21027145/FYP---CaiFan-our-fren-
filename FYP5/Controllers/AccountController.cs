@@ -172,7 +172,7 @@ public class AccountController : Controller
         return View();
     }
 
-    [HttpPost]
+    /*[HttpPost]
     public IActionResult ForgotPassword(Email email)
     {
         string template = "Hi {0}, \n\r" +
@@ -200,7 +200,7 @@ public class AccountController : Controller
             ViewData["MsgType"] = "warning";
         }
         return View("ForgotPassword");
-    }
+    }*/
 
 
     public IActionResult ResetPW()
