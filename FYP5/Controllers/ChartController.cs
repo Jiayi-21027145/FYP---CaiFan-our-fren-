@@ -14,14 +14,14 @@ namespace FYP5.Controllers
             return View("Chart");
         }
 
-       // public IActionResult Bar()
-       // {
-       //     PrepareData(1);
-       //     ViewData["Chart"] = "bar";
-       //     ViewData["Title"] = "Minimum Calories Intake Summary";
-       //     ViewData["ShowLegend"] = "false";
-       //      return View("Chart");
-       // }
+        public IActionResult Bar()
+        {
+            PrepareData(1);
+            ViewData["Chart"] = "bar";
+            ViewData["Title"] = "Minimum Calories Intake Summary";
+            ViewData["ShowLegend"] = "false";
+            return View("Chart");
+        }
 
         private void PrepareData(int x)
         {
@@ -29,20 +29,18 @@ namespace FYP5.Controllers
 
             string userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
             // Example query using parameterized SQL
-            List<DailyCalories> calorieData = DBUtl.GetList<DailyCalories>("SELECT Gender, AVG(DailyCalories) AS AverageCalories FROM DailyCalories WHERE UserId = '{0}' GROUP BY Gender", userid);
+            List<Calories> list = DBUtl.GetList<Calories>("SELECT Id, MinimumCalories FROM Calories WHERE UserId = '{0}'", userid);
 
-
-            // Set ViewData for bar chart
-            ViewData["Legend"] = "Calories Intake Range";
-                    ViewData["Colors"] = new[] { "Blue", "Pink" }; // Colors for the diff genders
-                    ViewData["Labels"] = "Gender";
-                    ViewData["Data"] = "Average";
-                    ViewData["ShowLegend"] = "true";
+           
+                    // Set ViewData for bar chart
+                    ViewData["Legend"] = "Calories Intake Range";
+                    ViewData["Colors"] = new[] { "Yellow" }; // Example colors
+                    ViewData["Labels"] = new[] { "Range 1", "Range 2", "Range 3", "Range 4", "Range 5" };
                     //ViewData["Data"] = totalIntake;
 
                 }
             }
-}
+        }
 
 
 
