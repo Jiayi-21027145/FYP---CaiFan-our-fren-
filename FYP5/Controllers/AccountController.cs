@@ -272,16 +272,9 @@ public class AccountController : Controller
             ModelState.AddModelError(string.Empty, "Failed to update password.");
             return View("ChangePwd", pwd);
         }
-    }
-
-
-
-
-
-
-
-
-        /*
+        return View("ForgotPassword");
+}
+        
 
          if(userid != null)
          {
@@ -335,19 +328,21 @@ public class AccountController : Controller
         {
             TempData["Message"] = "User Record does not exist";
             TempData["MsgType"] = "warning";
-
+            return RedirectToAction("ResetPW");
         }
-        return RedirectToAction("ResetPW");*/
-        //return View();
+        return View();
+    }
+
+    
 
 
-
-        public IActionResult Update()
+public IActionResult Update()
     {
         ViewData["userid"] =
             User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
         return View();
     }
+}
 
    
 
