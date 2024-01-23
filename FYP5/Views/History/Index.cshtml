@@ -57,7 +57,6 @@
                     @*<th>User</th>*@
                     <th>No</th>
                     <th>White rice</th>
-                    <th>Brown rice</th>
                     <th>Crispy Meat With Sauce</th>
                     <th>Crispy Meat</th>
                     <th>Braised Meat</th>
@@ -77,7 +76,6 @@
                 @foreach (UserHistory user in Model)
                 {
                     var image1 = user.WhiteRice != null && user.WhiteRice.Equals("Yes") ? "tick.png" : "cross.jpg";
-                    var image2 = user.BrownRice != null && user.BrownRice.Equals("Yes") ? "tick.png" : "cross.jpg";
                     var image3 = user.CrispyMeatWSauce != null && user.CrispyMeatWSauce.Equals("Yes") ? "tick.png" : "cross.jpg";
                     var image4 = user.CrispyMeat != null && user.CrispyMeat.Equals("Yes") ? "tick.png" : "cross.jpg";
                     var image5 = user.BraisedMeat != null && user.BraisedMeat.Equals("Yes") ? "tick.png" : "cross.jpg";
@@ -95,7 +93,6 @@
                         @*<td>@user.UserId</td>*@
                         <td>@user.Id</td>
                         <td><img src="/@image1" width="15" /></td>
-                        <td><img src="/@image2" width="15" /></td>
                         <td><img src="/@image3" width="15" /></td>
                         <td><img src="/@image4" width="15" /></td>
                         <td><img src="/@image5" width="15" /></td>

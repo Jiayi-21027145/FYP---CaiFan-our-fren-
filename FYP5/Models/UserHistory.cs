@@ -15,7 +15,6 @@ public partial class UserHistory
     public string? Location { get; set; }
 
     public string? WhiteRice { get; set; }
-    public string? BrownRice { get; set; }
     public string? CrispyMeatWSauce { get; set; }
     public string? CrispyMeat { get; set; }
     public string? BraisedMeat { get; set; }

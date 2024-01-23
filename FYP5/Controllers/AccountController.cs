@@ -231,132 +231,128 @@ public class AccountController : Controller
     [HttpPost]
     public IActionResult ChangePwd(ChangePw pwd)
     {
-        if (!ModelState.IsValid)
-        {
-            return View("ChangePwd", pwd);
-        }
-
-        // Retrieve the current user's ID
         var userid = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (userid == null)
         {
-            // Handle the case where the user ID is not found
-            ModelState.AddModelError(string.Empty, "User not found.");
-            return View("ChangePwd", pwd);
+            ViewData["Msg"] = "User not found.";
+            return View();
         }
 
-        // Verify if the current password is correct
-        // This typically involves checking the current password against the one stored in the database
-        // Assuming DBUtl has a method to verify the password
-        bool isCurrentPasswordCorrect = DBUtl.VerifyPassword(userid, pwd.CurrentPwd);
-        if (!isCurrentPasswordCorrect)
-        {
-            ModelState.AddModelError("CurrentPwd", "Current Password Incorrect");
-            return View("ChangePwd", pwd);
-        }
+        string updateSql = @"
+        UPDATE AppUser
+        SET UserPass = HASHBYTES('SHA1', CONVERT(VARCHAR, @p1))
+        WHERE Id = @p0
+        AND UserPass = HASHBYTES('SHA1', CONVERT(VARCHAR, @p2))";
 
-        // Update the user's password in the database
-        string updateSql = @"UPDATE AppUser
-                         SET UserPass = HASHBYTES('SHA1', CONVERT(VARCHAR, {pwd.NewPwd}))
-                         WHERE Id = {userid}";
-        int result = DBUtl.ExecSQL(updateSql, userid, pwd.NewPwd);
+        int result = DBUtl.ExecSQL(updateSql, userid, pwd.NewPwd, pwd.CurrentPwd);
+
         if (result == 1)
-        {
-            // Password updated successfully
-            ViewData["Message"] = "Your password has been updated successfully.";
-            return RedirectToAction("Profile"); // Redirect to the profile page or another appropriate page
-        }
+            ViewData["Msg"] = "Password Updated";
         else
-        {
-            // Error occurred during the update
-            ModelState.AddModelError(string.Empty, "Failed to update password.");
-            return View("ChangePwd", pwd);
-        }
-        return View("ForgotPassword");
-}
-        
+            ViewData["Msg"] = "Failed to Update Password";
 
-         if(userid != null)
-         {
-             ViewData["Message"] = "Invalid Input";
-             ViewData["MsgType"] = "Warning";
-         }
-
-         string update = @"UPDATE JiakUser SET UserPw ='{1}' WHERE UserId='{0}'";
-
-         int res = DBUtl.ExecSQL(update, pw.NewPassword);
-         if (res == 1)
-         {
-             TempData["Message"] = "Password updated";
-             TempData["MsgType"] = "success";
-         }
-         else
-         {
-             TempData["Message"] = DBUtl.DB_Message;
-             ViewData["ExecSQL"] = DBUtl.DB_SQL;
-             TempData["MsgType"] = "danger";
-         }*/
-
-        //return RedirectToAction("Login");
-        /*string userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
-
-        string select = @"SELECT UserPw FROM JiakUser 
-                         WHERE UserId='{0}'";
-        string sql = string.Format(select, userid);
-        List<JiakUser> user = DBUtl.GetList<JiakUser>(sql);
-        if (user.Count == 1)
-        {
-            string update = @"UPDATE JiakUser  
-                              SET UserPw=HASHBYTES('SHA1', '{pw.NewPassword}') WHERE UserId={0} AND UserPw={1}";
-
-            string sql2 = string.Format(update, pw.NewPassword);
-
-            if (DBUtl.ExecSQL(sql2) == 1)
-            {
-                TempData["Message"] = "Password Updated";
-                TempData["MsgType"] = "success";
-                return View("Login");
-            }
-            else
-            {
-                TempData["Message"] = DBUtl.DB_Message;
-                ViewData["ExecSQL"] = DBUtl.DB_SQL;
-                TempData["MsgType"] = "danger";  
-            }
-        }
-        else
-        {
-            TempData["Message"] = "User Record does not exist";
-            TempData["MsgType"] = "warning";
-            return RedirectToAction("ResetPW");
-        }
         return View();
     }
 
-    
+    [Authorize]
+    public JsonResult VerifyCurrentPassword(string CurrentPwd)
+    {
+        string userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+
+        string sql = @"
+        SELECT * FROM AppUser
+        WHERE Id = @0 AND UserPass = HASHBYTES('SHA1', CONVERT(VARCHAR, @1))";
+
+        var users = DBUtl.GetList<JiakUser>(sql, userid, CurrentPwd);
+
+        if (users.Any())
+            return Json(true);
+        else
+            return Json(false);
+    }
+
+    [Authorize]
+    public JsonResult VerifyNewPassword(string CurrentPwd)
+    {
+        string userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+
+        string sql = @"
+        SELECT * FROM AppUser
+        WHERE Id = @0 AND UserPass = HASHBYTES('SHA1', CONVERT(VARCHAR, @1))";
+
+        var users = DBUtl.GetList<JiakUser>(sql, userid, CurrentPwd);
+
+        if (users.Any())
+            return Json(true);
+        else
+            return Json(false);
+    }
+
+
+
+
+
+
+    //return RedirectToAction("Login");
+    /*string userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+
+    string select = @"SELECT UserPw FROM JiakUser 
+                     WHERE UserId='{0}'";
+    string sql = string.Format(select, userid);
+    List<JiakUser> user = DBUtl.GetList<JiakUser>(sql);
+    if (user.Count == 1)
+    {
+        string update = @"UPDATE JiakUser  
+                          SET UserPw=HASHBYTES('SHA1', '{pw.NewPassword}') WHERE UserId={0} AND UserPw={1}";
+
+        string sql2 = string.Format(update, pw.NewPassword);
+
+        if (DBUtl.ExecSQL(sql2) == 1)
+        {
+            TempData["Message"] = "Password Updated";
+            TempData["MsgType"] = "success";
+            return View("Login");
+        }
+        else
+        {
+            TempData["Message"] = DBUtl.DB_Message;
+            ViewData["ExecSQL"] = DBUtl.DB_SQL;
+            TempData["MsgType"] = "danger";  
+        }
+    }
+    else
+    {
+        TempData["Message"] = "User Record does not exist";
+        TempData["MsgType"] = "warning";
+        return RedirectToAction("ResetPW");
+    }
+    return View();
+}
+
+
 
 
 public IActionResult Update()
-    {
-        ViewData["userid"] =
-            User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
-        return View();
-    }
+{
+    ViewData["userid"] =
+        User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+    return View();
+}
 }
 
-   
 
-        /*[AllowAnonymous]
-        public IActionResult VerifyUserID(string userId)
+
+    /*[AllowAnonymous]
+    public IActionResult VerifyUserID(string userId)
+    {
+        string select = $"SELECT * FROM JiakUser WHERE UserId='{userId}'";
+        if (DBUtl.GetTable(select).Rows.Count > 0)
         {
-            string select = $"SELECT * FROM JiakUser WHERE UserId='{userId}'";
-            if (DBUtl.GetTable(select).Rows.Count > 0)
-            {
-                return Json($"'{userId}' already in use");
-            }
-            return Json(true);
-        }*/
-        private static bool AuthenticateUser(string uid, string pw,
+            return Json($"'{userId}' already in use");
+        }
+        return Json(true);
+    }*/
+    private static bool AuthenticateUser(string uid, string pw,
                                          out ClaimsPrincipal principal)
     {
         principal = null!;
