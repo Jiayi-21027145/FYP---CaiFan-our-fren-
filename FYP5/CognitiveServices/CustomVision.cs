@@ -1,4 +1,4 @@
-﻿using Microsoft.Azure.CognitiveServices.Vision.CustomVision.Prediction;
+﻿/*using Microsoft.Azure.CognitiveServices.Vision.CustomVision.Prediction;
 using Microsoft.Azure.CognitiveServices.Vision.CustomVision.Prediction.Models;
 using Microsoft.Azure.CognitiveServices.Vision.CustomVision.Training;
 using Microsoft.Azure.CognitiveServices.Vision.CustomVision.Training.Models;
@@ -49,4 +49,4 @@ public class CustomVision
 			return result.Predictions.Where(x => x.Probability > minProbability).ToList();
 		}
 	}
-}
+}*/

@@ -1,68 +1,136 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
+using static System.Net.WebRequestMethods;
+using System;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
+using System.IO;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Microsoft.VisualBasic;
+
 
 namespace FYP5.Controllers
 {
     public class DishIdenController : Controller
     {
-       /* public IActionResult Index()
+
+
+        /*private readonly string PREDICTKEY = "e832a2efc271455a8841f61716b060bc";
+         private readonly string ENDPOINT = "https://jiakpeng.cognitiveservices.azure.com/customvision/v3.0/Prediction/c664e071-4ac3-4e9a-9b96-34f3aab38e82/detect/iterations/Iteration1/image";*/
+
+
+        /* public IActionResult Index()
+         {
+             ViewData["userid"] =
+             User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+
+             return View();
+         }*/
+
+        [HttpGet]
+        //[AllowAnonymous]
+        public IActionResult Add(string id)
         {
-            ViewData["userid"] =
+            ViewData["UserId"] =
             User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
-
-            return View();
-        }*/
-
-        public IActionResult UploadImage()
-        {
             return View();
         }
 
+        [Authorize]
         [HttpPost]
-        public async Task<IActionResult> UploadImage(IFormFile file)
+        public IActionResult Add(ImageUploads im)
         {
-            if (file != null && file.Length > 0)
+            ModelState.Remove("ImageData");       // No Need to Validate "Photo" - cannot be changed.
+                                                  //ModelState.Remove("SubmittedBy"); // Ignore "SubmittedBy". See claim below.
+            if (!ModelState.IsValid)
             {
-                var fileName = Path.GetFileName(file.FileName);
-                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", fileName);
+                ViewData["Message"] = "Invalid Input";
+                ViewData["MsgType"] = "warning";
+                return View("Add");
+            }
+            else
+            {
+                string userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+                string picfilename = DoPhotoUpload(im.photo);
+                string sql = @"INSERT INTO ImageUploads (UserId, ImageLc, ImageDt,
+                                   ImageData )
+                            VALUES ({0}, '{1}', '{2:yyyy-MM-dd HH:mm}', '{3}')";
 
-                using (var stream = new FileStream(filePath, FileMode.Create))
+                string insert = string.Format(sql, userid, im.ImageLc, im.ImageDt,
+                                              picfilename);
+
+                if (DBUtl.ExecSQL(insert) == 1)
                 {
-                    await file.CopyToAsync(stream);
+                    TempData["Message"] = "Dish Identification Successfully Added.";
+                    TempData["MsgType"] = "success";
+                    return RedirectToAction("Index");
                 }
-
-                // Construct the URL to the uploaded image
-                var imageUrl = Url.Content($"~/wwwroot/{fileName}");
-
-                // Make an HTTP call to the API
-                using (var client = new HttpClient())
+                else
                 {
-                    // If your application is running on localhost, you can use this as the base address
-                    // If it's hosted, you'll need the base address of your application
-                    client.BaseAddress = new Uri("http://localhost:5000"); // Replace with your application's URL
-
-                    // Construct the relative URL to your API endpoint
-                    var apiEndpoint = $"/api/FoodApi/predict-url?imageUrl={Uri.EscapeDataString(imageUrl)}";
-
-                    HttpResponseMessage response = await client.PostAsync(apiEndpoint, null);
-
-                    if (response.IsSuccessStatusCode)
-                    // To get the 200 
-                    {
-                        var responseContent = await response.Content.ReadAsStringAsync();
-                        // Now, return this content to your view or process it as needed
-                        return View("Result", responseContent);
-                    }
-                    else
-                    {
-                        // Handle errors
-                        return View("Error");
-                    }
+                    ViewData["Message"] = DBUtl.DB_Message;
+                    ViewData["ExecSQL"] = DBUtl.DB_SQL;
+                    ViewData["MsgType"] = "danger";
+                    return View("Add");
                 }
             }
+        }
 
-            return View("Error"); // Or however you want to handle errors
+        /*string predictionEndpoint = 
+            $"{ENDPOINT}?Prediction-Key={PREDICTKEY}&Content-Type=application/octet-stream";
+
+        // Create the HTTP client and request headers
+        HttpClient client = new HttpClient();
+
+        // Read the image file into a byte array
+        byte[] imageData;
+        using (var stream = photo.OpenReadStream())
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                stream.CopyTo(memoryStream);
+                imageData = memoryStream.ToArray();
+            }
+        }
+
+        // Set the content type and body of the request
+        HttpContent content = new ByteArrayContent(imageData);
+
+        // Make the prediction request
+        HttpResponseMessage response = client.PostAsync(predictionEndpoint, content).Result;
+
+        // Read the response and parse the prediction results
+        string responseString = response.Content.ReadAsStringAsync().Result;
+        dynamic result = JObject.Parse(responseString);
+        string resultString = JsonConvert.SerializeObject(result);
+        //JArray predictions = (JArray)result.GetValue("predictions");
+
+        return View("Result", resultString);*/
+
+
+        private string DoPhotoUpload(IFormFile photo)
+        {
+            string fext = Path.GetExtension(photo.FileName);
+            string uname = Guid.NewGuid().ToString();
+            string fname = uname + fext;
+            string fullpath = Path.Combine(_env.WebRootPath, "ImageUploads/" + fname);
+            using (FileStream fs = new(fullpath, FileMode.Create))
+            {
+                photo.CopyTo(fs);
+            }
+            return fname;
+        }
+        private readonly IWebHostEnvironment _env;
+
+        public DishIdenController(IWebHostEnvironment environment)
+        {
+            _env = environment;
         }
 
     }
 }
+
+
+

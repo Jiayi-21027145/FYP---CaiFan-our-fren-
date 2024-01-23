@@ -6,7 +6,7 @@ using System;
 using System.Data.SqlClient;
 using System.Net.NetworkInformation;
 
-using CognitiveServices;
+/*using CognitiveServices;
 
 var customVision = new CustomVision();
 var imagePath = "image.jpg";
@@ -21,7 +21,7 @@ foreach (var obj in objects)
 		obj.Probability,
 		obj.BoundingBox.Left,
 		obj.BoundingBox.Top);
-}
+}*/
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 // authentication

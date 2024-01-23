@@ -7,15 +7,27 @@ namespace FYP5.Controllers
 {
     public class HistoryController : Controller
     {
-        [Authorize]
+       // [Authorize(Roles ="User, Admin")]
         public IActionResult Index()
         {
 
-            DataTable dt = DBUtl.GetTable("SELECT * FROM UserHistory");
-            return View("Index", dt.Rows);
-            
-
+            string userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+            string select = @"SELECT * FROM UserHistory 
+                          WHERE UserId = '{0}'";
+            List<UserHistory> list = DBUtl.GetList<UserHistory>(select, userid);
+            return View("Index", list);
+        }
+        public IActionResult Chart()
+        {
+            string userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+            return View();
         }
     }
+        
+    
+
+    
     
 }
+
+            
