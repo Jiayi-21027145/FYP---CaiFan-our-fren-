@@ -67,15 +67,13 @@
                     <th>Steamed Egg</th>
                     <th>Boiled Egg</th>
                     <th>Omellete</th>
-                    <th>Minimum Calories</th>
-                    <th>Maximum Calories</th>
-                    <th>Image</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (UserHistory user in Model)
                 {
                     var image1 = user.WhiteRice != null && user.WhiteRice.Equals("Yes") ? "tick.png" : "cross.jpg";
+                    var image2 = user.BrownRice != null && user.BrownRice.Equals("Yes") ? "tick.png" : "cross.jpg";
                     var image3 = user.CrispyMeatWSauce != null && user.CrispyMeatWSauce.Equals("Yes") ? "tick.png" : "cross.jpg";
                     var image4 = user.CrispyMeat != null && user.CrispyMeat.Equals("Yes") ? "tick.png" : "cross.jpg";
                     var image5 = user.BraisedMeat != null && user.BraisedMeat.Equals("Yes") ? "tick.png" : "cross.jpg";

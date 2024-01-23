@@ -5,11 +5,11 @@ namespace FYP5.Controllers
 {
     public class ChartController : Controller
     {
-        public IActionResult Line()
+        public IActionResult Bar()
         {
             PrepareData(0);
-            ViewData["Chart"] = "line";
-            ViewData["Title"] = "Total Users Per Month";
+            ViewData["Chart"] = "bar";
+            ViewData["Title"] = "Average Calorie Count by Gender";
             ViewData["ShowLegend"] = "false";
             return View("Chart");
         }
