@@ -122,7 +122,7 @@
                         <h3>@prediction.TagName</h3>
                         
                         <p>Price: @(prediction.LowestPrice.HasValue && prediction.HighestPrice.HasValue ? "$" + $"{prediction.LowestPrice.Value} - ${prediction.HighestPrice.Value}" : "N/A")</p>
-                        <p>Calories: @(prediction.HighestNv.HasValue && prediction.LowestNv.HasValue ? $"{prediction.HighestNv.Value} - {prediction.LowestNv.Value}" : "N/A")</p>
+                        <p>Calories: @(prediction.LowestNv.HasValue && prediction.HighestNv.HasValue ? $"{prediction.LowestNv.Value} - {prediction.HighestNv.Value}" : "N/A")</p>
                     </div>
                 }
             </div>
@@ -131,7 +131,7 @@
                 <h3>Summary</h3>
                 <p>Dishes Counted: @dishCount</p>
                 <p>Total Price Range: $@totalPriceLow.ToString("0.00") - $@totalPriceHigh.ToString("0.00")</p>
-                <p>Total Calories: @totalCalHigh.ToString() - @totalCalLow.ToString()</p>
+                <p>Total Calories: @totalCalLow.ToString() - @totalCalHigh.ToString()</p>
             </div>
         }
         else

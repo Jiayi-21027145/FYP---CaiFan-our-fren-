@@ -12,6 +12,7 @@ public partial class AppDbContext : DbContext
     {
     }
 
+    public virtual DbSet<Calories> Calories { get; set; }
 
     public virtual DbSet<Dataset> Dataset { get; set; }
 
@@ -19,7 +20,7 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<Food> Food { get; set; }
 
-    public virtual DbSet<ImageUploads> ImageUploads { get; set; }
+    public virtual DbSet<History> History { get; set; }
 
     public virtual DbSet<JiakUser> JiakUser { get; set; }
 
@@ -31,15 +32,16 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<Summary> Summary { get; set; }
 
-    public virtual DbSet<UserHistory> UserHistory { get; set; }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        
+        modelBuilder.Entity<Calories>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Calories__3214EC07E5B71D8E");
+        });
 
         modelBuilder.Entity<Dataset>(entity =>
         {
-            entity.HasKey(e => e.ImageId).HasName("PK__Dataset__7516F70C82494E8A");
+            entity.HasKey(e => e.ImageId).HasName("PK__Dataset__7516F70CA181AF10");
 
             entity.Property(e => e.DateTime).HasColumnType("datetime");
             entity.Property(e => e.DishName)
@@ -58,7 +60,7 @@ public partial class AppDbContext : DbContext
 
         modelBuilder.Entity<Dish>(entity =>
         {
-            entity.HasKey(e => e.FoodId).HasName("PK__Dish__856DB3EB7A34B0B7");
+            entity.HasKey(e => e.FoodId).HasName("PK__Dish__856DB3EB959FC6C7");
 
             entity.Property(e => e.HighestNv).HasColumnName("HighestNV");
             entity.Property(e => e.LowestNv).HasColumnName("LowestNV");
@@ -95,29 +97,48 @@ public partial class AppDbContext : DbContext
                 .IsUnicode(false);
         });
 
-        modelBuilder.Entity<ImageUploads>(entity =>
+        modelBuilder.Entity<History>(entity =>
         {
-            entity.HasKey(e => e.UploadId).HasName("PK__ImageUpl__6D16C86D927ADC7A");
+            entity.HasKey(e => e.Id).HasName("PK__History__3214EC0751E7FE92");
 
-            entity.Property(e => e.UploadId).HasColumnName("UploadID");
-            entity.Property(e => e.ImageData).IsUnicode(false);
-            entity.Property(e => e.ImageDt).HasColumnType("datetime");
-            entity.Property(e => e.ImageLc)
-                .HasMaxLength(100)
+            entity.Property(e => e.AveragePrice)
+                .HasMaxLength(50)
                 .IsUnicode(false);
+            entity.Property(e => e.CaloriesRange)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.DishFive)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.DishFour)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.DishOne)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.DishSix)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.DishThree)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.DishTwo)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.Image).IsUnicode(false);
             entity.Property(e => e.UserId)
                 .HasMaxLength(10)
-                .IsUnicode(false)
-                .HasColumnName("UserID");
+                .IsUnicode(false);
 
-            entity.HasOne(d => d.User).WithMany(p => p.ImageUploads)
+            entity.HasOne(d => d.User).WithMany(p => p.History)
                 .HasForeignKey(d => d.UserId)
-                .HasConstraintName("FK_ImageUploads_JiakUser");
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_History_JiakUser");
         });
 
         modelBuilder.Entity<JiakUser>(entity =>
         {
-            entity.HasKey(e => e.UserId).HasName("PK__JiakUser__1788CC4C858C8263");
+            entity.HasKey(e => e.UserId).HasName("PK__JiakUser__1788CC4C3451BC3E");
 
             entity.Property(e => e.UserId)
                 .HasMaxLength(10)
@@ -140,7 +161,7 @@ public partial class AppDbContext : DbContext
 
         modelBuilder.Entity<Menu>(entity =>
         {
-            entity.HasKey(e => e.FoodName).HasName("PK__Menu__81B4FC24A06B1F16");
+            entity.HasKey(e => e.FoodName).HasName("PK__Menu__81B4FC24589794DE");
 
             entity.Property(e => e.FoodName)
                 .HasMaxLength(255)
@@ -156,18 +177,7 @@ public partial class AppDbContext : DbContext
 
         modelBuilder.Entity<Prediction>(entity =>
         {
-         
-            entity.HasKey(e => e.PredictionId).HasName("PK__Predicti__BAE4C1A09C7D1749");
-            entity.Property(p => p.AverageNv).HasColumnName("AverageNv");
-            entity.Property(p => p.LowestNv).HasColumnName("LowestNv");
-            entity.Property(p => p.HighestNv).HasColumnName("HighestNv");
-            entity.OwnsOne(e => e.Box, b =>
-            {
-                b.Property(bb => bb.Left).HasColumnName("Box_Left");
-                b.Property(bb => bb.Top).HasColumnName("Box_Top");
-                b.Property(bb => bb.Width).HasColumnName("Box_Width");
-                b.Property(bb => bb.Height).HasColumnName("Box_Height");
-            });
+            entity.HasKey(e => e.PredictionId).HasName("PK__Predicti__BAE4C1A0061E5E3F");
 
             entity.Property(e => e.HighestPrice).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.LowestPrice).HasColumnType("decimal(18, 2)");
@@ -180,16 +190,16 @@ public partial class AppDbContext : DbContext
 
             entity.HasOne(d => d.Dataset).WithMany(p => p.Prediction)
                 .HasForeignKey(d => d.DatasetId)
-                .HasConstraintName("FK__Predictio__Datas__592635D8");
+                .HasConstraintName("FK__Predictio__Datas__02E7657A");
 
             entity.HasOne(d => d.Menu).WithMany(p => p.Prediction)
                 .HasForeignKey(d => d.MenuId)
-                .HasConstraintName("FK__Predictio__MenuI__5832119F");
+                .HasConstraintName("FK__Predictio__MenuI__01F34141");
         });
 
         modelBuilder.Entity<Reviews>(entity =>
         {
-            entity.HasKey(e => e.ReviewId).HasName("PK__Reviews__74BC79AE339AE35B");
+            entity.HasKey(e => e.ReviewId).HasName("PK__Reviews__74BC79AE48980494");
 
             entity.Property(e => e.ReviewId).HasColumnName("ReviewID");
             entity.Property(e => e.Comment).IsUnicode(false);
@@ -205,58 +215,6 @@ public partial class AppDbContext : DbContext
                 .HasMaxLength(10)
                 .IsUnicode(false)
                 .HasColumnName("UserID");
-        });
-
-        modelBuilder.Entity<UserHistory>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK__UserHist__3214EC07EF45DF15");
-
-            entity.Property(e => e.BatangFish)
-                .HasMaxLength(50)
-                .IsUnicode(false);
-            entity.Property(e => e.BoiledEgg)
-                .HasMaxLength(50)
-                .IsUnicode(false);
-            entity.Property(e => e.BraisedMeat)
-                .HasMaxLength(50)
-                .IsUnicode(false);
-            entity.Property(e => e.BrownRice)
-                .HasMaxLength(50)
-                .IsUnicode(false);
-            entity.Property(e => e.CrispyMeat)
-                .HasMaxLength(50)
-                .IsUnicode(false);
-            entity.Property(e => e.CrispyMeatWsauce)
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("CrispyMeatWSauce");
-            entity.Property(e => e.Image).IsUnicode(false);
-            entity.Property(e => e.Leafy)
-                .HasMaxLength(50)
-                .IsUnicode(false);
-            entity.Property(e => e.NonLeafy)
-                .HasMaxLength(50)
-                .IsUnicode(false);
-            entity.Property(e => e.Omellete)
-                .HasMaxLength(50)
-                .IsUnicode(false);
-            entity.Property(e => e.SteamedEgg)
-                .HasMaxLength(50)
-                .IsUnicode(false);
-            entity.Property(e => e.UserId)
-                .HasMaxLength(10)
-                .IsUnicode(false);
-            entity.Property(e => e.WhiteFish)
-                .HasMaxLength(50)
-                .IsUnicode(false);
-            entity.Property(e => e.WhiteRice)
-                .HasMaxLength(50)
-                .IsUnicode(false);
-
-            entity.HasOne(d => d.User).WithMany(p => p.UserHistory)
-                .HasForeignKey(d => d.UserId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_UserHistory_JiakUser");
         });
 
         OnModelCreatingPartial(modelBuilder);

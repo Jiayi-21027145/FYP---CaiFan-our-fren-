@@ -14,7 +14,7 @@ namespace FYP5.Controllers
             return View("Chart");
         }
 
-        public IActionResult Bar()
+        public IActionResult pie()
         {
             PrepareData(1);
             ViewData["Chart"] = "bar";

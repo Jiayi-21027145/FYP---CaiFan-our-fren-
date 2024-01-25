@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Lesson05.Models;
+namespace FYP5.Models;
 
 public partial class Dataset
 {

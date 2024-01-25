@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Lesson05.Models;
+namespace FYP5.Models;
 
 public partial class JiakUser
 {
@@ -19,7 +19,5 @@ public partial class JiakUser
 
     public DateTime? LastLogin { get; set; }
 
-    public virtual ICollection<ImageUploads> ImageUploads { get; set; } = new List<ImageUploads>();
-
-    public virtual ICollection<UserHistory> UserHistory { get; set; } = new List<UserHistory>();
+    public virtual ICollection<History> History { get; set; } = new List<History>();
 }

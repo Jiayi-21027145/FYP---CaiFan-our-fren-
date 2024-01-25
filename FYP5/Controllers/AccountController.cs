@@ -11,13 +11,13 @@ namespace FYP5.Controllers;
 public class AccountController : Controller
 {
     private readonly AppDbContext _dbCtx;
-    public AccountController( AppDbContext dbCtx)
+    public AccountController(AppDbContext dbCtx)
     {
-        
+
         _dbCtx = dbCtx;
     }
 
-    
+
     private const string LOGIN_SQL =
        @"SELECT * FROM JiakUser 
             WHERE UserId = '{0}' 
@@ -74,6 +74,31 @@ public class AccountController : Controller
 
             return RedirectToAction(REDIRECT_ACTN, REDIRECT_CNTR);
         }
+    }
+
+    private static bool AuthenticateUser(string uid, string pw,
+                                          out ClaimsPrincipal principal)
+    {
+        principal = null!;
+        string sql = @"SELECT * FROM JiakUser
+                       WHERE UserId = '{0}' AND UserPw = HASHBYTES('SHA1', '{1}')";
+        // TODO: Lesson09 Task 1 - Make login secure, use the new way of calling DBUtl
+        //string select = string.Format(sql, uid, pw);
+        DataTable ds = DBUtl.GetTable(sql, uid, pw);
+        if (ds.Rows.Count == 1)
+        {
+            principal =
+               new ClaimsPrincipal(
+                  new ClaimsIdentity(
+                     new Claim[] {
+                        new Claim(ClaimTypes.NameIdentifier, uid),
+                        new Claim(ClaimTypes.Name, ds.Rows[0]["UserName"]!.ToString()!),
+                        new Claim(ClaimTypes.Role, ds.Rows[0]["UserRole"]!.ToString()!)
+                     },
+                     CookieAuthenticationDefaults.AuthenticationScheme));
+            return true;
+        }
+        return false;
     }
 
     [Authorize]
@@ -223,7 +248,7 @@ public class AccountController : Controller
     }
 
     [Authorize]
-    public IActionResult ChangePwd() 
+    public IActionResult ChangePwd()
     {
         return View();
     }
@@ -289,13 +314,13 @@ public class AccountController : Controller
             return Json(false);
     }
 
+}
 
 
 
 
-
-    //return RedirectToAction("Login");
-    /*string userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+    /*return RedirectToAction("Login");
+    string userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
 
     string select = @"SELECT UserPw FROM JiakUser 
                      WHERE UserId='{0}'";
@@ -369,6 +394,6 @@ public IActionResult UpdateProfile(int id)
     }
 
 }
-
+*/
 
 
