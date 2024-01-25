@@ -5,11 +5,20 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using FYP5.Models;
 using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
+using Microsoft.EntityFrameworkCore;
 
 namespace FYP5.Controllers;
 
 public class AccountController : Controller
 {
+    private readonly AppDbContext _dbCtx;
+    public AccountController( AppDbContext dbCtx)
+    {
+        
+        _dbCtx = dbCtx;
+    }
+
+    
     private const string LOGIN_SQL =
        @"SELECT * FROM JiakUser 
             WHERE UserId = '{0}' 
@@ -214,31 +223,107 @@ public class AccountController : Controller
         return View();
     }
 
-    
+    //... other using directives
 
-
-public IActionResult UpdateProfile(int id)
+    [Authorize]
+    public IActionResult Update()
     {
-        string userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
-
-        string select = @"SELECT * FROM JiaUser 
-                         WHERE Id={0} AND UserId='{1}'";
-
-        // TODO: Lesson09 Task 2c - Make insecure DB SELECT secure.
-        string sql = string.Format(select, id, userid);
-        List<JiakUser> lstTrip = DBUtl.GetList<JiakUser>(select, id, userid);
-        if (lstTrip.Count == 1)
+        // Retrieve the user ID from the current user's claims
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+        if (userIdClaim == null)
         {
-            JiakUser trip = lstTrip[0];
-            return View(trip);
+            TempData["Message"] = "User ID not found in claims.";
+            TempData["MsgType"] = "danger";
+            return RedirectToAction("Update");
         }
-        else
+
+        // Use the string ID to retrieve only specific columns for the user from the database
+        var userProjection = _dbCtx.JiakUser
+            .Where(u => u.UserId == userIdClaim.Value)
+            .Select(u => new JiakUser
+            {
+                UserId = u.UserId,
+                UserName = u.UserName,
+                Email = u.Email,
+                Gender = u.Gender
+                // Do not include other properties like Password, UserRole, etc.
+            })
+            .FirstOrDefault();
+
+        if (userProjection == null)
         {
-            TempData["Message"] = "Trip Record does not exist";
+            TempData["Message"] = "User not found.";
             TempData["MsgType"] = "warning";
-            return RedirectToAction("MyTrips");
+            return RedirectToAction("Update");
         }
+
+        // If user is found, pass the user projection to the view for editing
+        return View(userProjection);
     }
+
+
+    [Authorize]
+    [HttpPost]
+    public IActionResult Update(JiakUser updatedUser)
+    {
+        ModelState.Remove("UserPw");
+        ModelState.Remove("UserPw2");
+        ModelState.Remove("UserRole");
+
+        if (!ModelState.IsValid)
+        {
+            return View(updatedUser);
+        }
+
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+        if (userIdClaim == null)
+        {
+            TempData["Message"] = "User ID not found in claims.";
+            TempData["MsgType"] = "danger";
+            return RedirectToAction("Update");
+        }
+
+        Guid userId;
+        try
+        {
+            userId = Guid.Parse(userIdClaim.Value);
+        }
+        catch (FormatException)
+        {
+            TempData["Message"] = "Invalid User ID format.";
+            TempData["MsgType"] = "danger";
+            return RedirectToAction("Update");
+        }
+
+        var userInDb = _dbCtx.JiakUser.Find(userId);
+        if (userInDb == null)
+        {
+            TempData["Message"] = "User not found.";
+            TempData["MsgType"] = "warning";
+            return RedirectToAction("Update");
+        }
+
+        userInDb.UserName = updatedUser.UserName;
+        userInDb.Email = updatedUser.Email;
+        userInDb.Gender = updatedUser.Gender;
+
+        try
+        {
+            _dbCtx.SaveChanges();
+            TempData["Message"] = "Your profile has been updated successfully.";
+            TempData["MsgType"] = "success";
+        }
+        catch (Exception ex)
+        {
+            // Log the error
+            // _logger.LogError(ex, "Error updating user profile.");
+            TempData["Message"] = $"An error occurred while updating the profile: {ex.Message}";
+            TempData["MsgType"] = "danger";
+        }
+
+        return RedirectToAction("Update");
+    }
+
 }
 
 

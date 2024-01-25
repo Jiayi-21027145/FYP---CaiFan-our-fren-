@@ -1,8 +1,8 @@
-﻿using FYP5.Models;
+﻿using FYP4.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
-namespace FYP5.Controllers
+namespace FYP4.Controllers
 {
     public class HomeController : Controller
     {

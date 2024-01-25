@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace FYP4.Models;
+namespace Lesson05.Models;
 
 public partial class ImageUploads
 {
@@ -9,13 +9,11 @@ public partial class ImageUploads
 
     public string? UserId { get; set; }
 
-    public string ImageName { get; set; } = null!;
+    public string ImageLc { get; set; } = null!;
 
-    public byte[] ImageData { get; set; } = null!;
+    public DateTime ImageDt { get; set; }
 
-    public string ImageUrl { get; set; } = null!;
-
-    public DateTime? UploadDate { get; set; }
+    public string ImageData { get; set; } = null!;
 
     public virtual JiakUser? User { get; set; }
 }

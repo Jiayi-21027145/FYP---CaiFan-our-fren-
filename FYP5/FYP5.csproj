@@ -7,62 +7,14 @@
 		<RootNamespace>FYP5</RootNamespace>
 	</PropertyGroup>
 	<ItemGroup>
-	  <Compile Remove="wwwroot\images\imageAI\**" />
-	  <Content Remove="wwwroot\images\imageAI\**" />
-	  <EmbeddedResource Remove="wwwroot\images\imageAI\**" />
-	  <None Remove="wwwroot\images\imageAI\**" />
-	</ItemGroup>
-	<ItemGroup>
-	  <_ContentIncludedByDefault Remove="wwwroot\css\summary.css" />
-	</ItemGroup>
-	<ItemGroup>
 		<PackageReference Include="Microsoft.Azure.CognitiveServices.Vision.CustomVision.Prediction" Version="2.0.0" />
 		<PackageReference Include="Microsoft.Azure.CognitiveServices.Vision.CustomVision.Training" Version="2.1.0-preview" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.10" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.10" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.10" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.4">
-		  <PrivateAssets>all</PrivateAssets>
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.4"/>
 		<PackageReference Include="Microsoft.Rest.ClientRuntime" Version="2.3.24" />
 		<PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 	</ItemGroup>
-	<ItemGroup>
-		<Content Update="Views\Home\Index.cshtml">
-			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-		<Content Update="Views\Home\Privacy.cshtml">
-			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-		<Content Update="Views\Shared\Error.cshtml">
-			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-		<Content Update="Views\Shared\_Layout.cshtml">
-			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-		<Content Update="Views\Shared\_ValidationScriptsPartial.cshtml">
-			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-	</ItemGroup>
-	<ItemGroup>
-		<None Include="Views\Account\Forbidden.cshtml" />
-		<None Include="Views\History\Index.cshtml" />
-		<None Include="Views\Shared\Error.cshtml" />
-		<None Include="Views\Shared\_CaiFan.cshtml" />
-		<None Include="Views\Shared\_History.cshtml" />
-		<None Include="Views\Shared\_Layout.cshtml" />
-		<None Include="Views\Shared\_ValidationScriptsPartial.cshtml" />
-	</ItemGroup>
-	<ItemGroup>
-	  <None Update="image.jpg">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </None>
-	</ItemGroup>
-	<ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
 </Project>

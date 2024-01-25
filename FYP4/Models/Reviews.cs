@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace FYP4.Models;
+namespace Lesson05.Models;
 
 public partial class Reviews
 {
@@ -11,5 +11,7 @@ public partial class Reviews
 
     public string? Comment { get; set; }
 
-    public byte[] ImageData { get; set; } = null!;
+    public string ImageData { get; set; } = null!;
+
+    public DateTime PublishDate { get; set; }
 }

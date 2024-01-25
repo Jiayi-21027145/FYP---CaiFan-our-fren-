@@ -1,30 +1,20 @@
 global using FYP5.Models;
+global using FYP5.Services;
 global using RP.SOI.DotNet.Utils;
 global using System.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Data.SqlClient;
 using System.Net.NetworkInformation;
 
-using CognitiveServices;
 
-var customVision = new CustomVision();
-var imagePath = "image.jpg";
-
-var objects = customVision.DetectObjects(imagePath);
-
-Console.WriteLine("Object - Probability - Position(X,Y)");
-foreach (var obj in objects)
-{
-	Console.WriteLine("{0}: {1} - ({2},{3})",
-		obj.TagName,
-		obj.Probability,
-		obj.BoundingBox.Left,
-		obj.BoundingBox.Top);
-}
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 // authentication
+builder.Services.AddDbContext<AppDbContext>(
+   options => options.UseSqlServer(
+       builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services
 .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
 .AddCookie(options =>

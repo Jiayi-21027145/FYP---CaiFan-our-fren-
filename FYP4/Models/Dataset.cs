@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace FYP4.Models;
+namespace Lesson05.Models;
 
 public partial class Dataset
 {
@@ -11,5 +11,13 @@ public partial class Dataset
 
     public string ImageUrl { get; set; } = null!;
 
-    public string Label { get; set; } = null!;
+    public string DishName { get; set; } = null!;
+
+    public double Probability { get; set; }
+
+    public string Location { get; set; } = null!;
+
+    public DateTime DateTime { get; set; }
+
+    public virtual ICollection<Prediction> Prediction { get; set; } = new List<Prediction>();
 }

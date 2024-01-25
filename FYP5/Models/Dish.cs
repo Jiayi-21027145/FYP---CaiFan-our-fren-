@@ -1,10 +1,15 @@
-﻿namespace FYP5.Models
+﻿using System;
+using System.Collections.Generic;
+
+namespace FYP5.Models;
+
+public partial class Dish
 {
-    public class Dish
-    {
-        public int FoodId { get; set; }
-        public string? Name { get; set; }
-        public int HighestNV { get; set; }
-        public int LowestNV { get; set; }
-    }
+    public int FoodId { get; set; }
+
+    public string Name { get; set; } = null!;
+
+    public int HighestNv { get; set; }
+
+    public int LowestNv { get; set; }
 }
