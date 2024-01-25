@@ -8,9 +8,15 @@ public class Email
     [Required(ErrorMessage = "UserId is required.")]
     public string UserId { get; set; } = null!;
 
-    [Required(ErrorMessage = "User email address is required.")]
-    [EmailAddress(ErrorMessage = "Email address is not valid.")]
+    [Required(ErrorMessage = "UserPw is required.")]
+    public string UserPw { get; set; } = null!;
+
+    //[Required(ErrorMessage = "User email address is required.")]
+    //[EmailAddress(ErrorMessage = "Email address is not valid.")]
+    //[RegularExpression(@"^[^@\s]+@[^@\s]+\.(com|net|org|gov)$", ErrorMessage = "Invalid Email Format.")]
     public string UserEmail { get; set; } = null!;
+
+    public string UserEmailTo { get; set; } = null! ;
 
 
     //[Remote("VerifyEmail", "Users")]  The Users class is not included.

@@ -10,13 +10,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/video.css">
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+    <style>
+        .text-left p{
+            text-align:left;
+            display: block
+        }
+        .text-left img{
+            max-width: 15%;
+            height:auto;
+        }
+        .instagram-text {
+        font-size:20px;
+        }
+    </style>
 </head>
 
 
 <body>
     <div class="text-left">
         <h1>About Us</h1>
-        <p>To Be Continue...</p>
+        <p>To Be Continued...</p>
     </div>
     <div class="slider">
         <div class="slide-track">
@@ -68,10 +82,15 @@
 
     <div class="text-left">
         <h1>Contact Us</h1>
+        <p class="instagram-text">Jiakpng's Instagram</p>
+        <div id="qrcode"></div>
+        <script>
+            var qrcode = new QRCode(document.getElementById("qrcode"), {
+                text: "https://www.instagram.com/_jiakpng_",
+                width: 128,
+                height: 128
+            });
+        </script>
     </div>
 </body>
 </html>
-
-
-
-
