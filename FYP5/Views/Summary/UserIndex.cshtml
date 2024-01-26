@@ -12,34 +12,125 @@
 
     <link href="css/userSummary.css" rel="stylesheet" />
     <link href="~/css/profile.css" rel="stylesheet" />
+    <script src="path/to/jquery.min.js"></script>
+    <script src="path/to/bootstrap.bundle.min.js"></script>
+   
 
-    <div class="row">
-        <h2>User Summary</h2>
-        <ul class="nav nav-tabs fw-bold">
-            <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" data-bs-target="#Summary1">Calorie Count for the past Month</a></li>
-            <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" data-bs-target="#Summary2">Amount Spent vs Average Amount</a></li>
-        </ul>
-
-        <div class="tab-content" style="margin-top:10px">
-            <div id="Summary1" class="tab-pane fade show active">
-                <div>
-                    @{
-                        <img src="/images/user01_cc.jpg" />
-                    }
-                </div>
-            </div>
-
-
-            <div id="Summary2" class="tab-pane fade">
-                @{
-                    <img src="/images/avg_price.jpg" />
-
-                }
-            </div>
-
-        </div>
-
-
-    </div>
 </head>
-</html>
+<body>
+    <div class="sidebar">
+        <!-- Sidebar content goes here -->
+    </div>
+
+    <div class="container">
+        <nav class="nav">
+            <!-- Navigation content goes here -->
+        </nav>
+
+<h1 style="font-size: 20px;">Choose your preferred dishes</h1>
+<div class="col-md-8 mb-3 form-floating">
+    <select class="form-select" id="ImageLc" name="ImageLc">
+        <option value="White Rice" selected="selected">White Rice</option>
+        <option value="Crispy Meat with Sauce">Crispy Meat with Sauce</option>
+        <option value="Crispy Meat">Crispy Meat</option>
+        <option value="Braised Meat">Braised Meat</option>
+        <option value="Non-Leafy Vegetable">Non-Leafy Vegetable</option>
+        <option value="Leafy Vegetable">Leafy Vegetable</option>
+        <option value="White Fish">White Fish</option>
+        <option value="Batang Fish">Batang Fish</option>
+        <option value="Steamed Egg">Steamed Egg</option>
+        <option value="Hard Boiled Egg">Hard Boiled Egg</option>
+        <option value="Omelette">Omelette</option>
+    </select>
+    <label for="email">Dish 1</label>
+</div>
+<div class="col-md-8 mb-3 form-floating">
+    <select class="form-select" id="ImageLc" name="ImageLc">
+        <option value="White Rice" selected="selected">White Rice</option>
+        <option value="Crispy Meat with Sauce">Crispy Meat with Sauce</option>
+        <option value="Crispy Meat">Crispy Meat</option>
+        <option value="Braised Meat">Braised Meat</option>
+        <option value="Non-Leafy Vegetable">Non-Leafy Vegetable</option>
+        <option value="Leafy Vegetable">Leafy Vegetable</option>
+        <option value="White Fish">White Fish</option>
+        <option value="Batang Fish">Batang Fish</option>
+        <option value="Steamed Egg">Steamed Egg</option>
+        <option value="Hard Boiled Egg">Hard Boiled Egg</option>
+        <option value="Omelette">Omelette</option>
+        <option value="NIL">NIL</option>
+    </select>
+    <label for="email">Dish 2</label>
+</div>
+<div class="col-md-8 mb-3 form-floating">
+    <select class="form-select" id="ImageLc" name="ImageLc">
+        <option value="White Rice" selected="selected">White Rice</option>
+        <option value="Crispy Meat with Sauce">Crispy Meat with Sauce</option>
+        <option value="Crispy Meat">Crispy Meat</option>
+        <option value="Braised Meat">Braised Meat</option>
+        <option value="Non-Leafy Vegetable">Non-Leafy Vegetable</option>
+        <option value="Leafy Vegetable">Leafy Vegetable</option>
+        <option value="White Fish">White Fish</option>
+        <option value="Batang Fish">Batang Fish</option>
+        <option value="Steamed Egg">Steamed Egg</option>
+        <option value="Hard Boiled Egg">Hard Boiled Egg</option>
+        <option value="Omelette">Omelette</option>
+        <option value="NIL">NIL</option>
+    </select>
+    <label for="email">Dish 3</label>
+</div>
+<div class="col-md-8 mb-3 form-floating">
+    <select class="form-select" id="ImageLc" name="ImageLc">
+        <option value="White Rice" selected="selected">White Rice</option>
+        <option value="Crispy Meat with Sauce">Crispy Meat with Sauce</option>
+        <option value="Crispy Meat">Crispy Meat</option>
+        <option value="Braised Meat">Braised Meat</option>
+        <option value="Non-Leafy Vegetable">Non-Leafy Vegetable</option>
+        <option value="Leafy Vegetable">Leafy Vegetable</option>
+        <option value="White Fish">White Fish</option>
+        <option value="Batang Fish">Batang Fish</option>
+        <option value="Steamed Egg">Steamed Egg</option>
+        <option value="Hard Boiled Egg">Hard Boiled Egg</option>
+        <option value="Omelette">Omelette</option>
+        <option value="NIL">NIL</option>
+    </select>
+    <label for="email">Dish 4</label>
+</div>
+<div class="col-md-8 mb-3 form-floating">
+    <select class="form-select" id="ImageLc" name="ImageLc">
+        <option value="White Rice" selected="selected">White Rice</option>
+        <option value="Crispy Meat with Sauce">Crispy Meat with Sauce</option>
+        <option value="Crispy Meat">Crispy Meat</option>
+        <option value="Braised Meat">Braised Meat</option>
+        <option value="Non-Leafy Vegetable">Non-Leafy Vegetable</option>
+        <option value="Leafy Vegetable">Leafy Vegetable</option>
+        <option value="White Fish">White Fish</option>
+        <option value="Batang Fish">Batang Fish</option>
+        <option value="Steamed Egg">Steamed Egg</option>
+        <option value="Hard Boiled Egg">Hard Boiled Egg</option>
+        <option value="Omelette">Omelette</option>
+        <option value="NIL">NIL</option>
+    </select>
+    <label for="email">Dish 5</label>
+</div>
+<div class="col-md-8 mb-3 form-floating">
+    <select class="form-select" id="ImageLc" name="ImageLc">
+        <option value="White Rice" selected="selected">White Rice</option>
+        <option value="Crispy Meat with Sauce">Crispy Meat with Sauce</option>
+        <option value="Crispy Meat">Crispy Meat</option>
+        <option value="Braised Meat">Braised Meat</option>
+        <option value="Non-Leafy Vegetable">Non-Leafy Vegetable</option>
+        <option value="Leafy Vegetable">Leafy Vegetable</option>
+        <option value="White Fish">White Fish</option>
+        <option value="Batang Fish">Batang Fish</option>
+        <option value="Steamed Egg">Steamed Egg</option>
+        <option value="Hard Boiled Egg">Hard Boiled Egg</option>
+        <option value="Omelette">Omelette</option>
+        <option value="NIL">NIL</option>
+    </select>
+    <label for="email">Dish 6</label>
+</div>
+<div class="row my-4 mx-4">
+        <input type="submit" class="btn btn-primary btn-extra-small" value="Submit" />
+    </div>
+    </body>
+    </html>

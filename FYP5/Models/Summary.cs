@@ -6,5 +6,7 @@
         public int TotalCalories { get; set; }
         public int TotalCount { get; set; }
         public int TotalPic{ get; set; }
+        public int Price { get; set; }
+        public int PriceTotal { get; set;}
     }
 }

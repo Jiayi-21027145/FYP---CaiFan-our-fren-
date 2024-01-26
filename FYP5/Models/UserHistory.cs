@@ -25,10 +25,16 @@ public partial class UserHistory
     public string? BatangFish { get; set; }
     public string? SteamedEgg { get; set; }
     public string? BoiledEgg { get; set; }
-    public string? Omelette { get; set; }
+    public string Omelette { get; set; } = null!;
+
     public int MinimumCalories { get; set; }
+
     public int MaximumCalories { get; set; }
-    public IFormFile Photo { get; set; } = null!;
+    public double LowestPrice { get; set; }
+
+    public double HighestPrice { get; set; }
 
     public string Image { get; set; } = null!;
+
+    public virtual JiakUser User { get; set; } = null!;
 }

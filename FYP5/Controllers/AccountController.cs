@@ -179,7 +179,7 @@ public class AccountController : Controller
         return View();
     }
 
-    [HttpPost]
+   /* [HttpPost]
     [AllowAnonymous]
     public IActionResult ResetPassword(Password model, string id)
     {
@@ -248,7 +248,7 @@ public class AccountController : Controller
         // Verify if the current password is correct
         // This typically involves checking the current password against the one stored in the database
         // Assuming DBUtl has a method to verify the password
-        bool isCurrentPasswordCorrect = DBUtl.VerifyPassword(userid, pwd.CurrentPwd);
+       // bool isCurrentPasswordCorrect = DBUtl.VerifyPassword(userid, pwd.CurrentPwd);
         if (!isCurrentPasswordCorrect)
         {
             ModelState.AddModelError("CurrentPwd", "Current Password Incorrect");
@@ -270,32 +270,14 @@ public class AccountController : Controller
         {
             // Error occurred during the update
             ModelState.AddModelError(string.Empty, "Failed to update password.");
-            return View("ChangePwd", pwd);
+            return View("ChangePwd", pwd); 
         }
-        return View("ForgotPassword");
-}
+    }*/
+    
+
         
 
-         if(userid != null)
-         {
-             ViewData["Message"] = "Invalid Input";
-             ViewData["MsgType"] = "Warning";
-         }
-
-         string update = @"UPDATE JiakUser SET UserPw ='{1}' WHERE UserId='{0}'";
-
-         int res = DBUtl.ExecSQL(update, pw.NewPassword);
-         if (res == 1)
-         {
-             TempData["Message"] = "Password updated";
-             TempData["MsgType"] = "success";
-         }
-         else
-         {
-             TempData["Message"] = DBUtl.DB_Message;
-             ViewData["ExecSQL"] = DBUtl.DB_SQL;
-             TempData["MsgType"] = "danger";
-         }*/
+         
 
         //return RedirectToAction("Login");
         /*string userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;

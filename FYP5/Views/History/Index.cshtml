@@ -67,28 +67,31 @@
                     <th>Steamed Egg</th>
                     <th>Boiled Egg</th>
                     <th>Omellete</th>
+                    <th>Minimum Calories</th>
+                    <th>Maximum Calories</th>
+                    <th>Image</th>
                 </tr>
             </thead>
-            @foreach (DataRow row in Model)
-            {
-                var image1 = @row["WhiteRice"].Equals("Yes") ? "tick.png": "cross.jpg";
-                var image2 = @row["BrownRice"].Equals("Yes") ? "tick.png": "cross.jpg";
-                var image3 = @row["CrispyMeatWSauce"].Equals("Yes") ? "tick.png": "cross.jpg";
-                var image4 = @row["CrispyMeat"].Equals("Yes") ? "tick.png" : "cross.jpg";
-                var image5 = @row["BraisedMeat"].Equals("Yes") ? "tick.png": "cross.jpg";
-                var image6 = @row["NonLeafy"].Equals("Yes") ? "tick.png": "cross.jpg";
-                var image7 = @row["Leafy"].Equals("Yes") ? "tick.png": "cross.jpg";
-                var image8 = @row["WhiteFish"].Equals("Yes") ? "tick.png" : "cross.jpg";
-                var image9 = @row["BatangFish"].Equals("Yes") ? "tick.png" : "cross.jpg";
-                var image10 = @row["SteamedEgg"].Equals("Yes") ? "tick.png": "cross.jpg";
-                var image11 = @row["BoiledEgg"].Equals("Yes") ? "tick.png" : "cross.jpg";
-                var image12 = @row["Omellete"].Equals("Yes") ? "tick.png": "cross.jpg";
-
+            <tbody>
+                @foreach (UserHistory user in Model)
+                {
+                    var image1 = user.WhiteRice != null && user.WhiteRice.Equals("Yes") ? "tick.png" : "cross.jpg";
+                    var image3 = user.CrispyMeatWSauce != null && user.CrispyMeatWSauce.Equals("Yes") ? "tick.png" : "cross.jpg";
+                    var image4 = user.CrispyMeat != null && user.CrispyMeat.Equals("Yes") ? "tick.png" : "cross.jpg";
+                    var image5 = user.BraisedMeat != null && user.BraisedMeat.Equals("Yes") ? "tick.png" : "cross.jpg";
+                    var image6 = user.NonLeafy != null &&
+                user.NonLeafy.Equals("Yes")
+ ? "tick.png" : "cross.jpg";
+                    var image7 = user.Leafy != null && user.Leafy.Equals("Yes") ? "tick.png" : "cross.jpg";
+                    var image8 = user.WhiteFish != null && user.WhiteFish.Equals("Yes") ? "tick.png" : "cross.jpg";
+                    var image9 = user.BatangFish != null && user.BatangFish.Equals("Yes") ? "tick.png" : "cross.jpg";
+                    var image10 = user.SteamedEgg != null && user.SteamedEgg.Equals("Yes") ? "tick.png" : "cross.jpg";
+                    var image11 = user.BoiledEgg != null && user.BoiledEgg.Equals("Yes") ? "tick.png" : "cross.jpg";
+                    var image12 = user.Omelette != null && user.Omelette.Equals("Yes") ? "tick.png" : "cross.jpg";
                     <tr>
                         @*<td>@user.UserId</td>*@
                         <td>@user.Id</td>
                         <td><img src="/@image1" width="15" /></td>
-                        <td><img src="/@image2" width="15" /></td>
                         <td><img src="/@image3" width="15" /></td>
                         <td><img src="/@image4" width="15" /></td>
                         <td><img src="/@image5" width="15" /></td>
@@ -107,5 +110,3 @@
         </table>
     </div>
 </div>
-
-      
