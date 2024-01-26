@@ -21,7 +21,10 @@
     font-size: small;
     filter: brightness(1)       
     }
-    </style> *@
+    </style> *@                                                               
+    
+    @RenderSection("Scripts", false)
+   
 
     @RenderSection("Scripts", required: false)
    
@@ -82,7 +85,7 @@
                                 Dish Identification
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item bi bi-binoculars" href="~/DishIden/Add">Dish Identification</a></li>
+                                <li><a class="dropdown-item bi bi-binoculars" href="~/DishIden/Index">Dish Identification</a></li>
                                 <li><a class="dropdown-item bi bi-binoculars" href="~/History/Index"> View History</a></li>
                                 <li><a class="dropdown-item bi bi-binoculars" href="~/Chart/Bar"> Summary</a></li>
                             </ul>
@@ -166,8 +169,9 @@
                                     Welcome @User.Identity!.Name
                             </a>
                             <ul class="dropdown-menu" >
-                                <li><a class="dropdown-item bi bi-binoculars" href="~/Account/UpdateProfile"> Update Profile</a></li>
+                                <li><a class="dropdown-item bi bi-binoculars" href="~/Account/Update"> Update Profile</a></li>
                                 <li><a class="dropdown-item bi bi-binoculars" href="~/Account/Logoff"> Logout</a></li>
+                                <li><a class="dropdown-item bi bi-binoculars" href="~/Account/ChangePwd"> Logout</a></li>
                                 
                             </ul>
                             </li>

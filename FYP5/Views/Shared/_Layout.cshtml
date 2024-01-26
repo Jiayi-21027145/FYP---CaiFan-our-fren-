@@ -22,7 +22,21 @@
 </head>
 <body>
     <div class="container">
-        @RenderBody()
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
     </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2023 - FYP2 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+
+    @RenderSection("BootstrapTableScripts", false)
 </body>
 </html>

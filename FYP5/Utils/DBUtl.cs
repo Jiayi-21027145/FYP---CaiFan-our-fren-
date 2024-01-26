@@ -141,8 +141,5 @@ public static class DBUtl
         return line?.Replace("'", "''")!;
     }
 
-    internal static bool VerifyPassword(string userid, string currentPwd)
-    {
-        throw new NotImplementedException();
-    }
+
 }

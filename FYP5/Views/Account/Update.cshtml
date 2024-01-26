@@ -1,0 +1,180 @@
+﻿@* @model JiakUser
+
+@{
+    Layout = "_CaiFan";
+}
+
+<link href="~/css/profile.css" rel="stylesheet" />
+<link href="~/css/udpp.css" rel="stylesheet" />
+
+<div class="profContainer">
+    <h3 id="profHeader">Edit Profile</h3>
+    
+
+    <form method="post" asp-controller="Account" asp-action="Update">
+
+    <div class="row mb-2">
+        <label class="col-form-label col-sm-2 fw-bold" for="UserId">User Id:</label>
+        <div class="col-sm-5">
+            <input text="text" value=@Model.UserId asp-for="UserId" class="form-control"
+             readonly ="readonly"        />
+                
+        </div>
+        </div>
+
+        <div class="row mb-2">
+            <label class="col-form-label col-sm-2 fw-bold" for="UserName">Username:</label>
+            <div class="col-sm-5">
+                <input text="text" asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+        </div>
+
+
+        <div class="row mb-2">
+            <label class="col-form-label col-sm-2 fw-bold" for="Gender">Gender:</label>
+            <div class="col-sm-4">
+                <div class="form-check form-check-inline">
+                    <input type="radio" class="form-check-input"
+                           id="M" name="Gender" value="M" @(Model.Gender == "M" ? "checked" : "") />
+                    <label class="form-check-label" for="M">Male</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input type="radio" class="form-check-input"
+                           id="F" name="Gender" value="F" @(Model.Gender == "F" ? "checked" : "") />
+                    <label class="form-check-label" for="F">Female</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <label class="col-form-label col-sm-2 fw-bold" for="Email">Email:</label>
+            <div class="col-sm-5">
+                <input text="text" asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="mb-3">
+           
+                <input type="submit" value="Update"
+                       class="btn btn-sm btn-primary" />
+            
+        </div>
+
+        @if (ViewData["Message"] != null)
+        {
+            <div class="form-group row">
+                <div class="col-6">
+                    <div class="alert alert-@ViewData["MsgType"]">
+                        <b>Message: </b>@ViewData["Message"]<br />
+                        @if (!String.IsNullOrEmpty(ViewData["ExecSQL"]?.ToString()))
+                        {
+                            <b>SQL: </b>
+
+                            @ViewData["ExecSQL"]?.ToString()
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </form> 
+    </div>*@
+
+@model JiakUser
+
+@{
+    Layout = "_CaiFan";
+}
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            // Only set focus if there are no validation errors
+            if (!document.querySelector('.field-validation-error')) {
+                document.getElementById('UserName').focus();
+            }
+        });
+    </script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+<link href="~/css/profile.css" rel="stylesheet" />
+<link href="~/css/udpp.css" rel="stylesheet" />
+
+<div class="profContainer">
+    <h3 id="profHeader">Edit Profile</h3>
+
+    @* Display model validation summary *@
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-danger">
+            <ul>
+                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    <li>@error.ErrorMessage</li>
+                }
+            </ul>
+        </div>
+    }
+
+    <form asp-controller="Account" asp-action="Update" method="post">
+        <!-- Readonly UserId field -->
+        <div class="row mb-2">
+            <label class="col-form-label col-sm-2 fw-bold" for="UserId">UserId:</label>
+            <div class="col-sm-5">
+                <input asp-for="UserId" class="form-control" readonly />
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <label class="col-form-label col-sm-2 fw-bold" for="UserName">Username:</label>
+            <div class="col-sm-5">
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <label class="col-form-label col-sm-2 fw-bold" for="Email">Email:</label>
+            <div class="col-sm-5">
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <label class="col-form-label col-sm-2 fw-bold">Gender:</label>
+            <div class="col-sm-4">
+                <input asp-for="Gender" type="radio" value="M" class="form-check-input" />
+                <label class="form-check-label" for="Gender_M">Male</label>
+
+                <input asp-for="Gender" type="radio" value="F" class="form-check-input" />
+                <label class="form-check-label" for="Gender_F">Female</label>
+                <span asp-validation-for="Gender" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <input type="submit" value="Update" class="btn btn-sm btn-primary" />
+        </div>
+
+        @* Display success or error messages *@
+        @if (ViewData["Message"] != null)
+        {
+            <div class="form-group row">
+                <div class="col-6">
+                    <div class="alert alert-@ViewData["MsgType"]">
+                        <b>Message:</b> @ViewData["Message"]<br />
+                        @if (!String.IsNullOrEmpty(ViewData["ExecSQL"]?.ToString()))
+                        {
+                            <b>SQL:</b> @ViewData["ExecSQL"]?.ToString()
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </form>
+</div>
+
+

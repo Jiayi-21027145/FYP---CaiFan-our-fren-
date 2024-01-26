@@ -5,17 +5,11 @@ namespace FYP5.Models;
 
 public partial class UserHistory
 {
+    public string UserId { get; set; } = null!;
+
     public int Id { get; set; }
 
-    public string? UserId { get; set; }
-
-    public DateOnly? Date { get; set; }
-    public TimeOnly? Time { get; set; }
-
-    public string? Location { get; set; }
-
     public string? WhiteRice { get; set; }
-    public string? BrownRice { get; set; }
     public string? CrispyMeatWSauce { get; set; }
     public string? CrispyMeat { get; set; }
     public string? BraisedMeat { get; set; }
