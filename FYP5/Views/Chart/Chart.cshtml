@@ -1,0 +1,216 @@
+﻿@* @{
+    ViewData["Title"] = "Bar Chart";
+}
+
+<h2>Bar Chart</h2>
+
+<canvas id="caloriesChart"></canvas>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var ctx = document.getElementById('caloriesChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.Labels)),
+                datasets: [{
+                    label: 'Average Calories',
+                    data: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.Data)),
+                    backgroundColor: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.BackgroundColors)),
+                    borderColor: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.BorderColors)),
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    </script>
+} *@
+ <div class="my-3">
+    <h2>Comparing with other users</h2>
+</div>
+
+@section MoreScripts {
+    <script language="javascript">
+
+        $(document).ready(function () {
+            new Chart(document.getElementById("chart"), {
+                type: '@ViewData["Chart"]',
+                data: {
+                    labels: @Json.Serialize(ViewData["Labels"]),
+                    datasets: [{
+                        label: '@ViewData["Legend"]',
+                        data: @Json.Serialize(ViewData["Data"]),
+                        backgroundColor: @Json.Serialize(ViewData["Colors"]),
+                        fill: false
+                    }]
+                },
+                options: {
+                    responsive: false,
+                    legend: {
+                        display: @ViewData["ShowLegend"]
+                               },
+                    title: {
+                        display: true,
+                        text: '@ViewData["Title"]'
+                    },
+                    plugins: {
+                        labels: {
+                            render: 'value'
+                        }
+                    }
+                }
+            });
+        });
+
+    </script>
+}
+<canvas id="chart" width="600" height="400"></canvas>  
+
+
+
+
+@*@{
+    var chartType = ViewData["ChartType"] as string;
+    var title = ViewData["Title"] as string;
+    var showLegend = ViewData["ShowLegend"] as bool?;
+    var legend = ViewData["Legend"] as string;
+    var colors = ViewData["Colors"] as string[];
+    var labels = ViewData["Labels"] as string[];
+    var data = ViewData["Data"] as int[];
+}
+
+<h2>@title</h2>
+
+<canvas id="caloriesChart"></canvas>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Log the data to the console before attempting to create the chart
+        console.log("Labels:", @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(labels)));
+        console.log("Data:", @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(data)));
+
+        // Now, create the chart using Chart.js
+        var ctx = document.getElementById('caloriesChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: '@chartType',
+            data: {
+                labels: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(labels)),
+                datasets: [{
+                    label: '@legend',
+                    data: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(data)),
+                    backgroundColor: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(colors)),
+                    borderColor: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(colors)),
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                legend: {
+                    display: @showLegend
+                        }
+            }
+        });
+    </script>
+}*@
+
+@*@{
+    var chartType = ViewData["ChartType"] as string;
+    var title = ViewData["Title"] as string;
+    var showLegend = ViewData["ShowLegend"] as bool?;
+    var legend = ViewData["Legend"] as string;
+    var colors = ViewData["Colors"] as string[];
+    var labels = ViewData["Labels"] as string[];
+    var data = ViewData["Data"] as int[];
+}
+
+<h2>@title</h2>
+
+<canvas id="caloriesChart"></canvas>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var ctx = document.getElementById('caloriesChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: '@chartType',
+            data: {
+                labels: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(labels)),
+                datasets: [{
+                    label: '@legend',
+                    data: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(data)),
+                    backgroundColor: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(colors)),
+                    borderColor: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(colors)),
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                legend: {
+                    display: @showLegend
+                        }
+            }
+        });
+    </script>
+}*@
+
+
+@*<div class="my-3">*@
+    @*<h2>Cadet Performance</h2>*@
+@*</div>
+@{
+    Layout = "_Caifan";
+}
+
+<script language="javascript">
+
+    $(document).ready(function () {
+        new Chart(document.getElementById("chart"), {
+            type: '@ViewData["Chart"]',
+            data: {
+                labels: @Json.Serialize(ViewData["Labels"]),
+                datasets: [{
+                    label: '@ViewData["Legend"]',
+                    data: @Json.Serialize(ViewData["Data"]),
+                    backgroundColor: @Json.Serialize(ViewData["Colors"]),
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: false,
+                legend: {
+                    display: @ViewData["ShowLegend"]
+                           },
+                title: {
+                    display: true,
+                    text: '@ViewData["Title"]'
+                },
+                plugins: {
+                    labels: {
+                        render: 'value'
+                    }
+                }
+            }
+        });
+    });
+
+</script>
+
+<canvas id="chart" width="600" height="400"></canvas>*@

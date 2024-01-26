@@ -10,6 +10,14 @@ namespace FYP5.Controllers;
 
 public class AccountController : Controller
 {
+    private readonly AppDbContext _dbCtx;
+    public AccountController(AppDbContext dbCtx)
+    {
+
+        _dbCtx = dbCtx;
+    }
+
+
     private const string LOGIN_SQL =
        @"SELECT * FROM JiakUser 
             WHERE UserId = '{0}' 
@@ -66,6 +74,31 @@ public class AccountController : Controller
 
             return RedirectToAction(REDIRECT_ACTN, REDIRECT_CNTR);
         }
+    }
+
+    private static bool AuthenticateUser(string uid, string pw,
+                                          out ClaimsPrincipal principal)
+    {
+        principal = null!;
+        string sql = @"SELECT * FROM JiakUser
+                       WHERE UserId = '{0}' AND UserPw = HASHBYTES('SHA1', '{1}')";
+        // TODO: Lesson09 Task 1 - Make login secure, use the new way of calling DBUtl
+        //string select = string.Format(sql, uid, pw);
+        DataTable ds = DBUtl.GetTable(sql, uid, pw);
+        if (ds.Rows.Count == 1)
+        {
+            principal =
+               new ClaimsPrincipal(
+                  new ClaimsIdentity(
+                     new Claim[] {
+                        new Claim(ClaimTypes.NameIdentifier, uid),
+                        new Claim(ClaimTypes.Name, ds.Rows[0]["UserName"]!.ToString()!),
+                        new Claim(ClaimTypes.Role, ds.Rows[0]["UserRole"]!.ToString()!)
+                     },
+                     CookieAuthenticationDefaults.AuthenticationScheme));
+            return true;
+        }
+        return false;
     }
 
     [Authorize]
@@ -132,90 +165,210 @@ public class AccountController : Controller
             return View("Login");
         }
     }
-    [AllowAnonymous]
-    public IActionResult VerifyUserID(string userId)
-    {
-        string select = $"SELECT * FROM JiakUser WHERE UserId='{userId}'";
-        if (DBUtl.GetTable(select).Rows.Count > 0)
-        {
-            return Json($"'{userId}' already in use");
-        }
-        return Json(true);
-    }
-    private static bool AuthenticateUser(string uid, string pw,
-                                         out ClaimsPrincipal principal)
-    {
-        principal = null!;
 
-        // TODO: Lesson09 Task 1 - Make login secure, use the new way of calling DBUtl
-        //string select = string.Format(sql, uid, pw);
-        DataTable ds = DBUtl.GetTable(LOGIN_SQL, uid, pw);
-        if (ds.Rows.Count == 1)
-        {
-            principal =
-               new ClaimsPrincipal(
-                  new ClaimsIdentity(
-                     new Claim[] {
-                        new Claim(ClaimTypes.NameIdentifier, uid),
-                        new Claim(ClaimTypes.Name, ds.Rows[0][NAME_COL]!.ToString()!),
-                        new Claim(ClaimTypes.Role, ds.Rows[0][ROLE_COL]!.ToString()!),
-                     }, "Basic"
-                     )
-                  );
-            return true;
-        }
-        return false;
-    }
+    [AllowAnonymous]
     public IActionResult ForgotPassword()
     {
+        // Just return the view which contains the form for user to submit the userID
         return View();
     }
 
-    public IActionResult ResetPW()
-    {
-        return View();
-    }
-
+    [AllowAnonymous]
     [HttpPost]
-    public IActionResult ResetPW(Password pw)
+    public IActionResult ForgotPassword(string userId)
     {
-        string userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+        // Verify if the userID is in the database
+        string select = $"SELECT * FROM JiakUser WHERE UserId = '{userId}'";
+        DataTable dt = DBUtl.GetTable(select);
 
-        string select = @"SELECT UserPw FROM JiakUser 
-                         WHERE Id={0} AND UserId='{1}'";
-        string sql = string.Format(select, userid);
-        List<JiakUser> user = DBUtl.GetList<JiakUser>(sql);
-        if (user.Count == 1)
+        // Check if the UserID exists
+        if (dt.Rows.Count > 0)
         {
-            string update = @"UPDATE TravelHighlight  
-                              SET UserPw='{1}' WHERE UserId={0}";
-
-            string sql2 = string.Format(update, userid, pw.NewPassword);
-
-            if (DBUtl.ExecSQL(sql2) == 1)
-            {
-                TempData["Message"] = "Password Updated";
-                TempData["MsgType"] = "success";
-            }
-            else
-            {
-                TempData["Message"] = DBUtl.DB_Message;
-                ViewData["ExecSQL"] = DBUtl.DB_SQL;
-                TempData["MsgType"] = "danger";
-                return RedirectToAction("ResetPW");
-            }
+            // UserID exists, redirect them to the Reset Password page
+            // Pass the UserID along if needeaswword, but ensure it's done securely
+            return RedirectToAction("ResetPassword", new { id = userId });
         }
         else
         {
-            TempData["Message"] = "User Record does not exist";
-            TempData["MsgType"] = "warning";
-            return RedirectToAction("ResetPW");
+            // UserID does not exist, show an error message
+            ViewData["Message"] = "User ID does not exist.";
+            ViewData["MsgType"] = "danger";
+            return View();
         }
+    }
+
+    [HttpGet]
+    [AllowAnonymous]
+    public IActionResult ResetPassword(string id)
+    {
+        ViewData["UserId"] = id;
         return View();
     }
 
+   /* [HttpPost]
+    [AllowAnonymous]
+    public IActionResult ResetPassword(Password model, string id)
+    {
+        try
+        {
+            // Check if the model state is valid
+            if (!ModelState.IsValid)
+            {
+                ViewData["UserId"] = model.UserId;
+                return View(model);
+            }
+
+            // Update the password in the database
+            id = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+
+            string updateSql = "UPDATE JiakUser SET UserPw = HASHBYTES('SHA1', @p1) WHERE UserId = @p0";
+            int result = DBUtl.ExecSQL(updateSql, id, model.NewPassword);
+
+            if (result == 1)
+            {
+                TempData["Message"] = "Your password has been updated successfully.";
+                TempData["MsgType"] = "success";
+                return RedirectToAction("Login", "Account");
+            }
+            else
+            {
+                TempData["Message"] = "Error updating password: " + DBUtl.DB_Message;
+                TempData["MsgType"] = "danger";
+                ViewData["UserId"] = model.UserId;
+                return View(model);
+            }
+        }
+        catch (Exception ex)
+        {
+            TempData["Message"] = "An error occurred: " + ex.Message;
+            TempData["MsgType"] = "danger";
+            ViewData["UserId"] = model.UserId;
+            return View(model);
+        }
+    }
+
+    [Authorize]
+    public IActionResult ChangePwd()
+    {
+        return View();
+    }
+
+    [Authorize]
+    [HttpPost]
+    public IActionResult ChangePwd(ChangePw pwd)
+    {
+        var userid = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (userid == null)
+        {
+            ViewData["Msg"] = "User not found.";
+            return View();
+        }
+
+        string updateSql = @"
+        UPDATE AppUser
+        SET UserPass = HASHBYTES('SHA1', CONVERT(VARCHAR, @p1))
+        WHERE Id = @p0
+        AND UserPass = HASHBYTES('SHA1', CONVERT(VARCHAR, @p2))";
+
+        int result = DBUtl.ExecSQL(updateSql, userid, pwd.NewPwd, pwd.CurrentPwd);
+
+        if (result == 1)
+            ViewData["Msg"] = "Password Updated";
+        else
+            ViewData["Msg"] = "Failed to Update Password";
+
+        return View();
+    }
+
+    [Authorize]
+    public JsonResult VerifyCurrentPassword(string CurrentPwd)
+    {
+        string userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+
+        string sql = @"
+        SELECT * FROM AppUser
+        WHERE Id = @0 AND UserPass = HASHBYTES('SHA1', CONVERT(VARCHAR, @1))";
+
+        var users = DBUtl.GetList<JiakUser>(sql, userid, CurrentPwd);
+
+        if (users.Any())
+            return Json(true);
+        else
+            return Json(false);
+    }
+
+    [Authorize]
+    public JsonResult VerifyNewPassword(string CurrentPwd)
+    {
+        string userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+
+        string sql = @"
+        SELECT * FROM AppUser
+        WHERE Id = @0 AND UserPass = HASHBYTES('SHA1', CONVERT(VARCHAR, @1))";
+
+        var users = DBUtl.GetList<JiakUser>(sql, userid, CurrentPwd);
+
+        if (users.Any())
+            return Json(true);
+        else
+            return Json(false);
+    }
+
+}
+
+
+
+
+    /*return RedirectToAction("Login");
+    string userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+
+    string select = @"SELECT UserPw FROM JiakUser 
+                     WHERE UserId='{0}'";
+    string sql = string.Format(select, userid);
+    List<JiakUser> user = DBUtl.GetList<JiakUser>(sql);
+    if (user.Count == 1)
+    {
+        string update = @"UPDATE JiakUser  
+                          SET UserPw=HASHBYTES('SHA1', '{pw.NewPassword}') WHERE UserId={0} AND UserPw={1}";
+
+        string sql2 = string.Format(update, pw.NewPassword);
+
+        if (DBUtl.ExecSQL(sql2) == 1)
+        {
+            TempData["Message"] = "Password Updated";
+            TempData["MsgType"] = "success";
+            return View("Login");
+        }
+        else
+        {
+            TempData["Message"] = DBUtl.DB_Message;
+            ViewData["ExecSQL"] = DBUtl.DB_SQL;
+            TempData["MsgType"] = "danger";  
+        }
+    }
+    else
+    {
+        TempData["Message"] = "User Record does not exist";
+        TempData["MsgType"] = "warning";
+        return RedirectToAction("ResetPW");
+    }
+    return View();
+}
+
     
 
+        // Use the string ID to retrieve only specific columns for the user from the database
+        var userProjection = _dbCtx.JiakUser
+            .Where(u => u.UserId == userIdClaim.Value)
+            .Select(u => new JiakUser
+            {
+                UserId = u.UserId,
+                UserName = u.UserName,
+                Email = u.Email,
+                Gender = u.Gender
+                // Do not include other properties like Password, UserRole, etc.
+            })
+            .FirstOrDefault();
 
 public IActionResult UpdateProfile(int id)
     {
@@ -239,7 +392,8 @@ public IActionResult UpdateProfile(int id)
             return RedirectToAction("MyTrips");
         }
     }
-}
 
+}
+*/
 
 
