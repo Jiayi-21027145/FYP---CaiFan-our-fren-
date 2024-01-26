@@ -56,11 +56,7 @@
                 <tr>
                     <th>No</th>
                     <th>User</th>
-                    <th>Date</th>
-                    <th>Time</th>
-                    <th>Location</th>
                     <th>White rice</th>
-                    <th>Brown rice</th>
                     <th>Crispy Meat With Sauce</th>
                     <th>Crispy Meat</th>
                     <th>Braised Meat</th>
@@ -76,24 +72,20 @@
             @foreach (DataRow row in Model)
             {
                 var image1 = @row["WhiteRice"].Equals("Yes") ? "tick.png": "cross.jpg";
-                var image2 = @row["BrownRice"].Equals("Yes") ? "tick.png": "cross.jpg";
-                var image3 = @row["CrispyMeatWSauce"].Equals("Yes") ? "tick.png": "cross.jpg";
-                var image4 = @row["CrispyMeat"].Equals("Yes") ? "tick.png" : "cross.jpg";
-                var image5 = @row["BraisedMeat"].Equals("Yes") ? "tick.png": "cross.jpg";
-                var image6 = @row["NonLeafy"].Equals("Yes") ? "tick.png": "cross.jpg";
-                var image7 = @row["Leafy"].Equals("Yes") ? "tick.png": "cross.jpg";
-                var image8 = @row["WhiteFish"].Equals("Yes") ? "tick.png" : "cross.jpg";
-                var image9 = @row["BatangFish"].Equals("Yes") ? "tick.png" : "cross.jpg";
-                var image10 = @row["SteamedEgg"].Equals("Yes") ? "tick.png": "cross.jpg";
-                var image11 = @row["BoiledEgg"].Equals("Yes") ? "tick.png" : "cross.jpg";
-                var image12 = @row["Omellete"].Equals("Yes") ? "tick.png": "cross.jpg";
+                var image2 = @row["CrispyMeatWSauce"].Equals("Yes") ? "tick.png": "cross.jpg";
+                var image3 = @row["CrispyMeat"].Equals("Yes") ? "tick.png" : "cross.jpg";
+                var image4 = @row["BraisedMeat"].Equals("Yes") ? "tick.png": "cross.jpg";
+                var image5 = @row["NonLeafy"].Equals("Yes") ? "tick.png": "cross.jpg";
+                var image6 = @row["Leafy"].Equals("Yes") ? "tick.png": "cross.jpg";
+                var image7 = @row["WhiteFish"].Equals("Yes") ? "tick.png" : "cross.jpg";
+                var image8 = @row["BatangFish"].Equals("Yes") ? "tick.png" : "cross.jpg";
+                var image9 = @row["SteamedEgg"].Equals("Yes") ? "tick.png": "cross.jpg";
+                var image10 = @row["BoiledEgg"].Equals("Yes") ? "tick.png" : "cross.jpg";
+                var image11 = @row["Omellete"].Equals("Yes") ? "tick.png": "cross.jpg";
 
                 <tr>
                     <td>@row["Id"]</td>
                     <td>@row["UserId"]</td>
-                    <td>@string.Format("{0:yyyy/MM/dd}", row["Date"])</td>
-                    <td>@string.Format("{0:HH:mm}", row["Time"])</td>
-                    <td>@row["Location"]</td>
                     <td><img src="/@image1" width="15" /></td>
                     <td><img src="/@image2" width="15" /></td>
                     <td><img src="/@image3" width="15" /></td>
@@ -105,7 +97,6 @@
                     <td><img src="/@image9" width="15" /></td>
                     <td><img src="/@image10" width="15" /></td>
                     <td><img src="/@image11" width="15" /></td>
-                    <td><img src="/@image12" width="15" /></td>
                 </tr>
             }
         </table>

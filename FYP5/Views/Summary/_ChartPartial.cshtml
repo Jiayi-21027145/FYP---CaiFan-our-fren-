@@ -1,0 +1,38 @@
+﻿@model int
+
+<p>Total Users: @Model</p>
+
+<canvas id="totalUsersChart" width="400" height="200"></canvas>
+
+<script>
+    // Function to handle file upload and update Chart.js data
+    function updateChart() {
+        // Fetch the total number of users from the model
+        const totalUsers = @Model;
+
+        // Your logic to update the chart with the total number of users
+        // Example: Create a bar chart with totalUsers as the only data point
+        const ctx = document.getElementById('totalUsersChart').getContext('2d');
+        const totalUsersChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Total Users'],
+                datasets: [{
+                    label: 'Total Users',
+                    data: [totalUsers],
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1,
+                }],
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: totalUsers + 10, // Adjust the max value as needed
+                    },
+                },
+            },
+        });
+    }
+</script>
