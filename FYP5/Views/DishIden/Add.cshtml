@@ -1,9 +1,9 @@
-﻿@* @model Dataset *@
-
+﻿
 @*
 @{
     Layout = "_CaiFan";
     var userid = ViewData["userid"];
+    ViewData["Title"] = "Dish Identification";
 }
 *@
 
@@ -15,8 +15,12 @@
     body {
         background: url('@(Url.Content("~/CaiFan DG.jpg"))') no-repeat center center fixed;
         background-size: cover;
+        
     }
 </style>
+
+<link href="~/css/dish.css" rel="stylesheet" />
+<link href="~/css/profile.css" rel="stylesheet" />
 
 <div class="container text-center">
     <div class="box">
@@ -26,18 +30,12 @@
                     Snap your daily meal!
                 </b>
             </h3>
-            <form asp-controller="DishIden" asp-action="Add" method="post" enctype="multipart/form-data">
-
-                <div class="col-md-6 mb-3 form-floating">
-                    <input text="text" value=@userid asp-for="User" class="form-control"
-                           readonly="readonly" />
-                    <label asp-for="User">User Id</label>
-                    @* <span asp-validation-for="UserId" class="text-danger"></span> *@
-               @* </div>
-
+            <form asp-action="Index" asp-controller="DishIden" method="post" enctype="multipart/form-data">
+               @*  @if (User?.Identity?.IsAuthenticated == true)
+                {
+                    <input type="hidden" asp-for="UserId" value="@User.FindFirst(ClaimTypes.NameIdentifier)?.Value" />
+                } *@
                 <div class="col-md-8 mb-3 form-floating">
-                    <select class="form-select" id="imagelc" name="ImageLc">
-                        <option value="Admiralty" selected="selected">Admiralty</option>
                         <option value="Aljunied">Aljunied</option>
                         <option value="Ang Mo Kio">Ang Mo Kio</option>
                         <option value="Bartley">Bartley</option>
@@ -172,14 +170,9 @@
                         <option value="Yio Chu Kang">Yio Chu Kang</option>
                         <option value="Yishun">Yishun</option>
                     </select>
-                    <label for="imagelc">Location</label>
                 </div>
 
                 <div class="col-md-8 mb-3 form-floating">
-                    <input asp-for="ImageDt" class="form-control"
-                           placeholder="ImageDt" />
-                    <label asp-for="ImageDt">Image date/time</label>
-                    <span asp-validation-for="ImageDt" class="text-danger"></span>
                 </div>
 
                 <!--Image-->
@@ -199,17 +192,6 @@
                 </div>
 
                 <div class="row my-4 mx-4">
-                    <p>
-                        To see a history of the images you have processed, <br />
-                        Please login before submitting!<br />
-                        Don't have an account? <br />
-                        <a href="/Account/SignUp">
-                            Sign Up
-                        </a>
-                        OR <a href="/Account/Login">
-                            Login!
-                        </a>
-                    </p>
                 </div>
 
                 @if (ViewData["Message"] != null)
@@ -227,6 +209,19 @@
                         </div>
                     </div>
                 }
+            <div class="row my-4 mx-4">
+                <p>
+                    To see a history of the images you have processed, <br />
+                    Please login before submitting!<br />
+                    Don't have an account? <br />
+                    <a href="/Account/SignUp">
+                        Sign Up
+                    </a>
+                    OR <a href="/Account/Login">
+                        Login!
+                    </a>
+                </p>
+            </div>
             </form>
         </div>
     </div>
@@ -242,6 +237,3 @@
         frame.src = "";
     }
 </script>
- *@
-    
-

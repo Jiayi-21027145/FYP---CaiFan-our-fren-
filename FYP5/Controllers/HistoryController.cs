@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Reflection.Metadata.Ecma335;
 using System.Security.Claims;
@@ -284,8 +283,61 @@ namespace FYP5.Controllers
         
     
 
-    
-    
-}
+        public HistoryController(IHttpClientFactory clientFactory)
+        {
+            _clientFactory = clientFactory;
+        }
 
-            
+        public async Task<IActionResult> Index()
+        {
+            string userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+            var client = _clientFactory.CreateClient();
+            var response = await client.GetAsync($"https://localhost:44328/userhistory/index");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var list = JsonConvert.DeserializeObject<List<UserHistory>>(content);
+                return View("Index", list);
+            }
+            else
+            {
+                // Handle error, e.g., return an error view
+                return View("Error");
+            }
+        }
+
+        public async Task<IActionResult> UserCaloriesChart()
+        {
+            string userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+            var client = _clientFactory.CreateClient();
+            var response = await client.GetAsync($"https://api.example.com/caloriesdata/{userid}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var caloriesData = JsonConvert.DeserializeObject<List<DailyCalories>>(content);
+
+                var groupedData = caloriesData.GroupBy(c => c.Gender)
+                                              .Select(g => new {
+                                                  Gender = g.Key,
+                                                  AverageCalories = g.Average(c => c.AverageCalories)
+                                              }).ToList();
+
+                var labels = groupedData.Select(g => g.Gender).ToArray();
+                var data = groupedData.Select(g => g.AverageCalories).ToArray();
+
+                ViewBag.Labels = labels;
+                ViewBag.Data = data;
+
+                return View("UserCaloriesChart");
+            }
+            else
+            {
+                // Handle error
+                return View("Error");
+            }
+        }
+    }
+}*/
+

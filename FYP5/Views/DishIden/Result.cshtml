@@ -1,8 +1,144 @@
-﻿@model string
-
+﻿@model FYP5.Models.Dataset
+@using Newtonsoft.Json
 @{
-    Layout = "_Layout";
+    Layout = "_CaiFan";
+    var dishCount = Model.Prediction.Count;
+    var totalPriceLow = Model.Prediction.Sum(p => p.LowestPrice) ?? 0;
+    var totalPriceHigh = Model.Prediction.Sum(p => p.HighestPrice) ?? 0;
+    var totalCalLow = Model.Prediction.Sum(p => p.LowestNv) ?? 0;
+    var totalCalHigh = Model.Prediction.Sum(p => p.HighestNv) ?? 0;
 }
+<link href="~/css/dish.css" rel="stylesheet" />
+<link href="~/css/profile.css" rel="stylesheet" />
+<style>
+    .results-container {
+        display: flex;
+        flex-wrap: wrap; /* Allows items to wrap as needed */
+        gap: 20px; /* Space between containers */
+    }
 
-<h2>Prediction Results</h2>
-<pre>@Model</pre>
+    .image-container {
+        flex: 1; /* Allows it to grow */
+        position: relative;
+        max-width: 500px; /* Maximum width for the image */
+    }
+
+    .predictions-container {
+        flex: 1; /* Allows it to grow */
+        order: 1; /* Order changed to appear first */
+    }
+
+    .summary-container {
+        flex: 1; /* Allows it to grow */
+        order: 2; /* Order changed to appear last */
+        padding: 10px;
+        border: 1px solid #ccc; /* Border for the summary container */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional shadow */
+        background-color: #f9f9f9; /* Optional background color */
+        height: auto; /* Adjust height based on content */
+        max-height: 200px; /* Adjust max height as needed */
+        overflow: auto; /* Add scroll if content exceeds height */
+    }
+
+    .prediction-details {
+        border: 1px solid #ccc;
+        margin-bottom: 10px;
+        padding: 10px;
+        text-align: left; /* Align text to the left */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional shadow */
+    }
+
+
+</style>
+<script>
+    function adjustBoundingBoxes() {
+        var image = document.getElementById('uploadedImage');
+        var container = document.getElementById('image-container');
+        var imageWidth = image.offsetWidth;
+        var imageHeight = image.offsetHeight;
+
+        var predictions = @Html.Raw(JsonConvert.SerializeObject(Model.Prediction));
+
+        predictions.forEach(function (prediction) {
+            if (prediction.Box && prediction.Box.Left != null && prediction.Box.Top != null && prediction.Box.Width != null && prediction.Box.Height != null) {
+                var boxLeft = prediction.Box.Left * imageWidth;
+                var boxTop = prediction.Box.Top * imageHeight;
+                var boxWidth = prediction.Box.Width * imageWidth;
+                var boxHeight = prediction.Box.Height * imageHeight;
+
+                // Create the bounding box div
+                var box = document.createElement('div');
+                box.classList.add('bounding-box');
+                box.style.position = 'absolute';
+                box.style.left = boxLeft + 'px';
+                box.style.top = boxTop + 'px';
+                box.style.width = boxWidth + 'px';
+                box.style.height = boxHeight + 'px';
+                box.style.border = '2px solid red';
+
+                // Create a label for the bounding box
+                var label = document.createElement('div');
+                label.classList.add('box-label');
+                label.style.position = 'absolute';
+                label.style.left = '0';
+                label.style.bottom = '-20px'; // Adjust as needed
+                label.style.background = 'red';
+                label.style.color = 'white';
+                label.style.padding = '2px 5px';
+                label.textContent = prediction.TagName + ' - ' + (prediction.Probability * 100).toFixed(1) + '%';
+
+                // Append the label to the box
+                box.appendChild(label);
+
+                // Append the box to the container
+                container.appendChild(box);
+            }
+        });
+    }
+
+    window.onload = adjustBoundingBoxes;
+</script>
+
+@* <form enctype="multipart/form-data" method="post" 
+            asp-action="Result" asp-controller="DishIden"> *@
+<div class="container mt-4">
+    <h2 class="mb-3">Image Result</h2>
+
+    <div class="results-container">
+        @if (Model != null)
+        {
+            <div class="image-container" id="image-container">
+                <img src="@Url.Content("~/photos/" + Model.ImageName)"
+                     alt="Uploaded Image"
+                     onload="adjustBoundingBoxes()"
+                     style="width: 500px; height: auto;" /* Fixed width for the image * /
+                     id="uploadedImage" />
+            </div>
+
+            <div class="predictions-container">
+                @foreach (var prediction in Model.Prediction)
+                {
+                    <div class="prediction-details">
+                        <h3>@prediction.TagName</h3>
+                        
+                        <p>Price: @(prediction.LowestPrice.HasValue && prediction.HighestPrice.HasValue ? "$" + $"{prediction.LowestPrice.Value} - ${prediction.HighestPrice.Value}" : "N/A")</p>
+                        <p>Calories: @(prediction.LowestNv.HasValue && prediction.HighestNv.HasValue ? $"{prediction.LowestNv.Value} - {prediction.HighestNv.Value}" : "N/A")</p>
+                    </div>
+                }
+            </div>
+
+            <div class="summary-container">
+                <h3>Summary</h3>
+                <p>Dishes Counted: @dishCount</p>
+                <p>Total Price Range: $@totalPriceLow.ToString("0.00") - $@totalPriceHigh.ToString("0.00")</p>
+                <p>Total Calories: @totalCalLow.ToString() - @totalCalHigh.ToString()</p>
+            </div>
+        }
+        else
+        {
+            <p>No image data available.</p>
+        }
+    </div>
+</div>
+@* </form> *@
+

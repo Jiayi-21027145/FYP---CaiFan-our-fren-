@@ -21,6 +21,7 @@ public partial class JiakUser
     [NotMapped]
     [Compare("UserPw", ErrorMessage = "Passwords do not match.")]
     [DataType(DataType.Password)]
+    [NotMapped]
     public string UserPw2 { get; set; } = null!;
 
     [Required(ErrorMessage = "Please enter a username.")]
@@ -34,7 +35,7 @@ public partial class JiakUser
     [RegularExpression(@"^[^@\s]+@[^@\s]+\.(com|net|org|gov)$", ErrorMessage = "Invalid Email Format.")]
 
     public string Email { get; set; } = null!;
-
+    
     public string UserRole { get; set; } = null!;
 
     public DateTime? LastLogin { get; set; }

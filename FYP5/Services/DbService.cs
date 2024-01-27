@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace RP.SOI.DotNet.Services;
 
-public interface IDBService
+public interface IDbService
 {
     List<ModelClass> GetList<ModelClass>(string sql, params object?[] list);
     List<dynamic> GetList(string sql, params object?[] list);
@@ -20,7 +20,7 @@ public class DBServiceException : Exception
     }
 }
 
-public class DBService : IDBService
+public class DbService : IDbService
 {
     private static readonly string? env =
        Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");

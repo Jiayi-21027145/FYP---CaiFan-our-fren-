@@ -11,28 +11,11 @@ global using System.Security.Claims;
 global using System.Dynamic;
 
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Data.SqlClient;
 using System.Net.NetworkInformation;
 
-
-
-/*using CognitiveServices;
-
-var customVision = new CustomVision();
-var imagePath = "image.jpg";
-
-var objects = customVision.DetectObjects(imagePath);
-
-Console.WriteLine("Object - Probability - Position(X,Y)");
-foreach (var obj in objects)
-{
-	Console.WriteLine("{0}: {1} - ({2},{3})",
-		obj.TagName,
-		obj.Probability,
-		obj.BoundingBox.Left,
-		obj.BoundingBox.Top);
-}*/
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
@@ -41,6 +24,9 @@ builder.Services.AddDbContext<AppDbContext>(
        builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // authentication
+builder.Services.AddDbContext<AppDbContext>(
+   options => options.UseSqlServer(
+       builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services
 .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
 .AddCookie(options =>
@@ -66,6 +52,6 @@ app.MapControllerRoute(
 name: "default",
 pattern: "{controller=Home}/{action=Index}/{id?}");
 
-app.Run();
+app.Run();*/
 
 

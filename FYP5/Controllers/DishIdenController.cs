@@ -1,6 +1,5 @@
 ﻿/*using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Authorization;
 using static System.Net.WebRequestMethods;
 using System;
 using System.Net.Http;
@@ -10,54 +9,54 @@ using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Microsoft.VisualBasic;
+using Microsoft.AspNetCore.Authorization;
+using RP.SOI.DotNet.Utils;
+using Microsoft.EntityFrameworkCore;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using Mono.TextTemplating;
 
+namespace FYP5.Controllers;
 
-namespace FYP5.Controllers
+public class DishIdenController : Controller
 {
-    public class DishIdenController : Controller
-    {
+    private readonly IWebHostEnvironment _env;
+    private readonly AppDbContext _dbCtx;
 
 
-        private readonly string PREDICTKEY = "e832a2efc271455a8841f61716b060bc";
-         private readonly string ENDPOINT = "https://jiakpeng.cognitiveservices.azure.com/customvision/v3.0/Prediction/c664e071-4ac3-4e9a-9b96-34f3aab38e82/detect/iterations/Iteration1/image";
 
 
-         public IActionResult Index()
+        /* public IActionResult Index()
          {
              ViewData["userid"] =
              User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
 
              return View();
-         }
+         }*/
 
-        [HttpGet]
-        //[AllowAnonymous]
-        public IActionResult Add(string id)
+    private readonly string PREDICTKEY = "0ffd60af00334e318c044feb4c735afa";
+    private readonly string ENDPOINT = "https://fyppp.cognitiveservices.azure.com/customvision/v3.0/Prediction/6202816f-770e-4475-bf0f-4439480ee8e6/detect/iterations/Iteration4/image";
+
+    [HttpGet]
+    [AllowAnonymous]
+    public IActionResult Index()
+    {
+        /*ViewData["userid"] =
+        User.FindFirst(ClaimTypes.NameIdentifier)!.Value;*/
+        return View();
+    }
+
+    private string DoPhotoUpload(IFormFile photo)
+    {
+        string fext = Path.GetExtension(photo.FileName);
+        string uname = Guid.NewGuid().ToString();
+        string fname = uname + fext;
+        string fullpath = Path.Combine(_env.WebRootPath, "photos/" + fname);
+        using (FileStream fs = new(fullpath, FileMode.Create))
         {
-            ViewData["UserId"] =
-            User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
-            return View();
+            photo.CopyTo(fs);
         }
-
-        [Authorize]
-        [HttpPost]
-        public IActionResult Add(ImageUploads im)
-        {
-            ModelState.Remove("ImageData");       // No Need to Validate "Photo" - cannot be changed.
-                                                  //ModelState.Remove("SubmittedBy"); // Ignore "SubmittedBy". See claim below.
-            if (!ModelState.IsValid)
-            {
-                ViewData["Message"] = "Invalid Input";
-                ViewData["MsgType"] = "warning";
-                return View("Add");
-            }
-            else
-            {
-                string userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
-                string picfilename = DoPhotoUpload(im.photo);
-                string sql = @"INSERT INTO ImageUploads (UserId, ImageLc, ImageDt,
-                                   ImageData )
-                            VALUES ({0}, '{1}', '{2:yyyy-MM-dd HH:mm}', '{3}')";
+        return fname;
+    }
 
                 string insert = string.Format(sql, userid, im.ImageLc, im.ImageDt,
                                               picfilename);
@@ -78,12 +77,12 @@ namespace FYP5.Controllers
             }
         }
 
-        string predictionEndpoint = 
+        /*string predictionEndpoint = 
             $"{ENDPOINT}?Prediction-Key={PREDICTKEY}&Content-Type=application/octet-stream";
 
+        string picfilename = DoPhotoUpload(set.Photo);
         // Create the HTTP client and request headers
         HttpClient client = new HttpClient();
-
         // Read the image file into a byte array
         byte[] imageData;
         using (var stream = photo.OpenReadStream())
@@ -107,30 +106,53 @@ namespace FYP5.Controllers
         string resultString = JsonConvert.SerializeObject(result);
         //JArray predictions = (JArray)result.GetValue("predictions");
 
-        return View("Result", resultString);
+        return View("Result", resultString);*/
 
 
-        private string DoPhotoUpload(IFormFile photo)
-        {
-            string fext = Path.GetExtension(photo.FileName);
-            string uname = Guid.NewGuid().ToString();
-            string fname = uname + fext;
-            string fullpath = Path.Combine(_env.WebRootPath, "ImageUploads/" + fname);
-            using (FileStream fs = new(fullpath, FileMode.Create))
-            {
-                photo.CopyTo(fs);
+                    if (menuItem != null)
+                    {
+                        // Perform null checks on boundingBox values
+                        var boundingBoxToken = p["boundingBox"];
+                        if (boundingBoxToken != null)
+                        {
+                            // Create a BoundingBox object if all required properties are present
+                            BoundingBox boundingBox = new BoundingBox
+                            {
+                                Left = boundingBoxToken["left"]?.Value<double>() ?? 0,
+                                Top = boundingBoxToken["top"]?.Value<double>() ?? 0,
+                                Width = boundingBoxToken["width"]?.Value<double>() ?? 0,
+                                Height = boundingBoxToken["height"]?.Value<double>() ?? 0
+                            };
+
+                            // Now create the Prediction object
+                            var predictionObj = new Prediction
+                            {
+                                TagName = tagName,
+                                Probability = probability,
+                                Box = boundingBox,
+                                LowestPrice = menuItem.LowestPrice,
+                                HighestPrice = menuItem.HighestPrice,
+                                HighestNv = menuItem.HighestNv,
+                                LowestNv = menuItem.LowestNv,
+                                AverageNv = menuItem.AverageNv// Assuming you want to use AverageNv as the calorie count
+                            };
+                            set.Prediction.Add(predictionObj);
+                        }
+                    }
+                }
             }
-            return fname;
         }
-        private readonly IWebHostEnvironment _env;
 
-        public DishIdenController(IWebHostEnvironment environment)
-        {
-            _env = environment;
-        }
+        set.ImageName = picfilename;
+
+       
+        return View("Result", set);
+
 
     }
-}*/
+
+    }
+}
 
 
 

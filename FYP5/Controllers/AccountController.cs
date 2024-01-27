@@ -6,14 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using FYP5.Models;
 using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
-using System.Collections.Generic;
-using System.Net.Mail;
-using System.Net;
-using Microsoft.IdentityModel.Tokens;
-using System.Reflection.Metadata.Ecma335;
-using System.Collections.Immutable;
-using Microsoft.EntityFrameworkCore;
-using System.Text;
 
 namespace FYP5.Controllers;
 
@@ -22,11 +14,12 @@ namespace FYP5.Controllers;
 public class AccountController : Controller
 {
     private readonly AppDbContext _dbCtx;
-
-    public AccountController(AppDbContext dbContext)
+    public AccountController(AppDbContext dbCtx)
     {
-        _dbCtx = dbContext;
+
+        _dbCtx = dbCtx;
     }
+
 
     private const string LOGIN_SQL =
        @"SELECT * FROM JiakUser 
@@ -84,6 +77,31 @@ public class AccountController : Controller
 
             return RedirectToAction(REDIRECT_ACTN, REDIRECT_CNTR);
         }
+    }
+
+    private static bool AuthenticateUser(string uid, string pw,
+                                          out ClaimsPrincipal principal)
+    {
+        principal = null!;
+        string sql = @"SELECT * FROM JiakUser
+                       WHERE UserId = '{0}' AND UserPw = HASHBYTES('SHA1', '{1}')";
+        // TODO: Lesson09 Task 1 - Make login secure, use the new way of calling DBUtl
+        //string select = string.Format(sql, uid, pw);
+        DataTable ds = DBUtl.GetTable(sql, uid, pw);
+        if (ds.Rows.Count == 1)
+        {
+            principal =
+               new ClaimsPrincipal(
+                  new ClaimsIdentity(
+                     new Claim[] {
+                        new Claim(ClaimTypes.NameIdentifier, uid),
+                        new Claim(ClaimTypes.Name, ds.Rows[0]["UserName"]!.ToString()!),
+                        new Claim(ClaimTypes.Role, ds.Rows[0]["UserRole"]!.ToString()!)
+                     },
+                     CookieAuthenticationDefaults.AuthenticationScheme));
+            return true;
+        }
+        return false;
     }
 
     [Authorize]
@@ -190,8 +208,7 @@ public class AccountController : Controller
         return View();
     }
 
-
-    [HttpPost]
+   /* [HttpPost]
     [AllowAnonymous]
     public IActionResult ResetPassword(JiakUser user, string id )
     {
@@ -290,17 +307,20 @@ public class AccountController : Controller
         else
             return Json(false);
     }
-    public IActionResult ChangeUsername()
-    {
-        //iewData["userName"] =
-            //User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
 
-        return View();
-    }
+}
 
-    [Authorize]
-    [HttpPost]
-    public IActionResult ChangeUsername(ChangeUsername un)
+
+
+
+    /*return RedirectToAction("Login");
+    string userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+
+    string select = @"SELECT UserPw FROM JiakUser 
+                     WHERE UserId='{0}'";
+    string sql = string.Format(select, userid);
+    List<JiakUser> user = DBUtl.GetList<JiakUser>(sql);
+    if (user.Count == 1)
     {
         var userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
         if (_dbCtx.Database.ExecuteSqlInterpolated(
@@ -328,52 +348,45 @@ public class AccountController : Controller
             return Json(true);
     }
 
-    public IActionResult Update()
+    
+
+        // Use the string ID to retrieve only specific columns for the user from the database
+        var userProjection = _dbCtx.JiakUser
+            .Where(u => u.UserId == userIdClaim.Value)
+            .Select(u => new JiakUser
+            {
+                UserId = u.UserId,
+                UserName = u.UserName,
+                Email = u.Email,
+                Gender = u.Gender
+                // Do not include other properties like Password, UserRole, etc.
+            })
+            .FirstOrDefault();
+
+public IActionResult UpdateProfile(int id)
     {
-        ViewData["userid"] =
-            User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
-        return View();
-    }
+        string userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
 
+        string select = @"SELECT * FROM JiaUser 
+                         WHERE Id={0} AND UserId='{1}'";
 
-
-
-/*[AllowAnonymous]
-public IActionResult VerifyUserID(string userId)
-{
-    string select = $"SELECT * FROM JiakUser WHERE UserId='{userId}'";
-    if (DBUtl.GetTable(select).Rows.Count > 0)
-    {
-        return Json($"'{userId}' already in use");
-    }
-    return Json(true);
-}*/
-
-private static bool AuthenticateUser(string uid, string pw,
-                                         out ClaimsPrincipal principal)
-    {
-        principal = null!;
-
-        // TODO: Lesson09 Task 1 - Make login secure, use the new way of calling DBUtl
-        //string select = string.Format(sql, uid, pw);
-        DataTable ds = DBUtl.GetTable(LOGIN_SQL, uid, pw);
-        if (ds.Rows.Count == 1)
+        // TODO: Lesson09 Task 2c - Make insecure DB SELECT secure.
+        string sql = string.Format(select, id, userid);
+        List<JiakUser> lstTrip = DBUtl.GetList<JiakUser>(select, id, userid);
+        if (lstTrip.Count == 1)
         {
-            principal =
-               new ClaimsPrincipal(
-                  new ClaimsIdentity(
-                     new Claim[] {
-                        new Claim(ClaimTypes.NameIdentifier, uid),
-                        new Claim(ClaimTypes.Name, ds.Rows[0][NAME_COL]!.ToString()!),
-                        new Claim(ClaimTypes.Role, ds.Rows[0][ROLE_COL]!.ToString()!),
-                     }, "Basic"
-                     )
-                  );
-            return true;
+            JiakUser trip = lstTrip[0];
+            return View(trip);
         }
-        return false;
+        else
+        {
+            TempData["Message"] = "Trip Record does not exist";
+            TempData["MsgType"] = "warning";
+            return RedirectToAction("MyTrips");
+        }
     }
-}
 
+}
+*/
 
 
