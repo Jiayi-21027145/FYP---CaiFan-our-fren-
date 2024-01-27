@@ -1,10 +1,21 @@
 global using FYP5.Models;
+global using FYP5.Services;
 global using RP.SOI.DotNet.Utils;
 global using System.Data;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.AspNetCore.Authorization;
+global using RP.SOI.DotNet.Services;
+global using Microsoft.AspNetCore.Mvc.Rendering;
+global using System.ComponentModel.DataAnnotations;
+global using System.Security.Claims;
+global using System.Dynamic;
+
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System;
 using System.Data.SqlClient;
 using System.Net.NetworkInformation;
+
+
 
 /*using CognitiveServices;
 
@@ -23,7 +34,12 @@ foreach (var obj in objects)
 		obj.BoundingBox.Top);
 }*/
 var builder = WebApplication.CreateBuilder(args);
+
 builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<AppDbContext>(
+   options => options.UseSqlServer(
+       builder.Configuration.GetConnectionString("DefaultConnection")));
+
 // authentication
 builder.Services
 .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -32,6 +48,8 @@ builder.Services
     options.LoginPath = "/Account/Login";
     options.AccessDeniedPath = "/Account/Forbidden";
 });
+builder.Services.AddScoped<IDBService, DBService>();
+
 var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

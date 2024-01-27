@@ -11,9 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FYP3", "FYP3\FYP3.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FYP5", "FYP5\FYP5.csproj", "{F9456013-6C96-4252-9906-37B27327D3B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomV", "CustomV\CustomV.csproj", "{0BE85E47-34AF-4A63-B9C9-9148BB7109F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomV", "CustomV\CustomV.csproj", "{0BE85E47-34AF-4A63-B9C9-9148BB7109F6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cus2", "Cus2\Cus2.csproj", "{CBD56C94-DCCD-460C-978B-0CDB235DC7D5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cus2", "Cus2\Cus2.csproj", "{CBD56C94-DCCD-460C-978B-0CDB235DC7D5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FYP6", "FYP6\FYP6.csproj", "{FA550FB2-9FAD-4205-B09B-E99390D83201}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{CBD56C94-DCCD-460C-978B-0CDB235DC7D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CBD56C94-DCCD-460C-978B-0CDB235DC7D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CBD56C94-DCCD-460C-978B-0CDB235DC7D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA550FB2-9FAD-4205-B09B-E99390D83201}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA550FB2-9FAD-4205-B09B-E99390D83201}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA550FB2-9FAD-4205-B09B-E99390D83201}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA550FB2-9FAD-4205-B09B-E99390D83201}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

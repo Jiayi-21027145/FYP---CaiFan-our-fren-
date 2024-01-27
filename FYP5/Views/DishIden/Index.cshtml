@@ -1,5 +1,6 @@
-﻿@model ImageUploads
+﻿ @*@model Dataset*@
 
+ @*
 @{
     Layout = "_CaiFan";
     var userid = ViewData["userid"];
@@ -29,7 +30,7 @@
                    readonly="readonly" />
             <label asp-for="User">User Id</label>
             @* <span asp-validation-for="UserId" class="text-danger"></span> *@
-            </div>
+           @* </div>
 
             <div class="col-md-8 mb-3 form-floating">
                 <select class="form-select" id="ImageLc" name="ImageLc">
@@ -204,3 +205,4 @@
         </div>
     </div>
 </div>
+*@

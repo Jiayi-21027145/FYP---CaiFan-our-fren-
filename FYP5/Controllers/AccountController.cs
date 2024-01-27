@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -12,11 +13,21 @@ using Microsoft.IdentityModel.Tokens;
 using System.Reflection.Metadata.Ecma335;
 using System.Collections.Immutable;
 using Microsoft.EntityFrameworkCore;
+using System.Text;
 
 namespace FYP5.Controllers;
 
+
+
 public class AccountController : Controller
 {
+    private readonly AppDbContext _dbCtx;
+
+    public AccountController(AppDbContext dbContext)
+    {
+        _dbCtx = dbContext;
+    }
+
     private const string LOGIN_SQL =
        @"SELECT * FROM JiakUser 
             WHERE UserId = '{0}' 
@@ -179,180 +190,166 @@ public class AccountController : Controller
         return View();
     }
 
+
     [HttpPost]
     [AllowAnonymous]
-    public IActionResult ResetPassword(Password model, string id)
+    public IActionResult ResetPassword(JiakUser user, string id )
     {
-        try
+        /*if (!ModelState.IsValid)
         {
-            // Check if the model state is valid
-            if (!ModelState.IsValid)
-            {
-                ViewData["UserId"] = model.UserId;
-                return View(model);
-            }
+            ViewData["UserId"] = user.UserId;
 
-            // Update the password in the database
-            id = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+            return View(user);
+        }*/
 
-            string updateSql = "UPDATE JiakUser SET UserPw = HASHBYTES('SHA1', @p1) WHERE UserId = @p0";
-            int result = DBUtl.ExecSQL(updateSql, id, model.NewPassword);
+        // Update password in database
+        string updateSql = @"UPDATE JiakUser SET UserPw = HASHBYTES('SHA1', @p1) WHERE UserId = @p0";
+        int result = DBUtl.ExecSQL(updateSql, id, user.UserPw);
 
-            if (result == 1)
-            {
-                TempData["Message"] = "Your password has been updated successfully.";
-                TempData["MsgType"] = "success";
-                return RedirectToAction("Login", "Account");
-            }
-            else
-            {
-                TempData["Message"] = "Error updating password: " + DBUtl.DB_Message;
-                TempData["MsgType"] = "danger";
-                ViewData["UserId"] = model.UserId;
-                return View(model);
-            }
+        if (result == 1)
+        {
+            TempData["Message"] = "Your password has been updated successfully.";
+            TempData["MsgType"] = "success";
+            return RedirectToAction("Login");
         }
-        catch (Exception ex)
+        else
         {
-            TempData["Message"] = "An error occurred: " + ex.Message;
+            TempData["Message"] = "Error updating password: " + DBUtl.DB_Message;
             TempData["MsgType"] = "danger";
-            ViewData["UserId"] = model.UserId;
-            return View(model);
+            ViewData["UserId"] = user.UserId;
+            return View(user);
         }
     }
 
     [Authorize]
-    public IActionResult ChangePwd() 
+    public IActionResult ChangePwd()
     {
         return View();
     }
 
+    // Implement HttpPost ChangePassword Action  
     [Authorize]
     [HttpPost]
     public IActionResult ChangePwd(ChangePw pwd)
     {
-        var userid = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        if (userid == null)
-        {
-            ViewData["Msg"] = "User not found.";
-            return View();
-        }
+        var userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+        if (_dbCtx.Database.ExecuteSqlInterpolated(
+            $@"UPDATE JiakUser
+                  SET UserPw = 
+                       HASHBYTES('SHA1', CONVERT(VARCHAR, {pwd.NewPwd}))
+            WHERE UserId = {userid}
+             AND UserPw =
+                  HASHBYTES('SHA1', CONVERT(VARCHAR, {pwd.CurrentPwd}))"
+             ) == 1)
 
-        string updateSql = @"
-        UPDATE AppUser
-        SET UserPass = HASHBYTES('SHA1', CONVERT(VARCHAR, @p1))
-        WHERE Id = @p0
-        AND UserPass = HASHBYTES('SHA1', CONVERT(VARCHAR, @p2))";
+            ViewData["Msg"] = "Password Updated. Please go to the login page";
 
-        int result = DBUtl.ExecSQL(updateSql, userid, pwd.NewPwd, pwd.CurrentPwd);
-
-        if (result == 1)
-            ViewData["Msg"] = "Password Updated";
         else
-            ViewData["Msg"] = "Failed to Update Password";
+            ViewData["Msg "] = "Failed to Update Password";
+        return View();
+    }
+
+    // Use FromSqlInterpolated to retrieve AppUser with userid and password
+    [Authorize]
+    public JsonResult VerifyCurrentPassword(string CurrentPwd)
+    {
+        var userid =
+            User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+        JiakUser? user = _dbCtx.JiakUser
+            .FromSqlInterpolated(
+            $@"SELECT * FROM JiakUser
+               WHERE UserId = {userid}
+                AND UserPw = HASHBYTES('SHA1',
+                    CONVERT(VARCHAR, {CurrentPwd}))")
+            .FirstOrDefault();
+
+        if (user != null)
+            return Json(true);
+
+
+        else
+            return Json(false);
+    }
+
+    // Similar to VerifyCurrentPassword but return true and false in reverse condition
+    [Authorize]
+    public JsonResult VerifyNewPassword(string NewPwd)
+    {
+        var userid =
+            User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+        JiakUser? user = _dbCtx.JiakUser
+            .FromSqlInterpolated(
+            $@"SELECT * FROM JiakUser
+               WHERE UserId = {userid}
+                AND UserPw = HASHBYTES('SHA1',
+                    CONVERT(VARCHAR, {NewPwd}))")
+            .FirstOrDefault();
+
+        if (user == null)
+            return Json(true);
+        else
+            return Json(false);
+    }
+    public IActionResult ChangeUsername()
+    {
+        //iewData["userName"] =
+            //User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
 
         return View();
     }
 
     [Authorize]
-    public JsonResult VerifyCurrentPassword(string CurrentPwd)
+    [HttpPost]
+    public IActionResult ChangeUsername(ChangeUsername un)
     {
-        string userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+        var userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+        if (_dbCtx.Database.ExecuteSqlInterpolated(
+            $@"UPDATE JiakUser SET UserName = {un.NewUname} WHERE UserId ={userid} AND UserName = {un.CurrentUsername}") == 1)
 
-        string sql = @"
-        SELECT * FROM AppUser
-        WHERE Id = @0 AND UserPass = HASHBYTES('SHA1', CONVERT(VARCHAR, @1))";
-
-        var users = DBUtl.GetList<JiakUser>(sql, userid, CurrentPwd);
-
-        if (users.Any())
-            return Json(true);
+            ViewData["MSG"] = "Username Updated. Please go to the login page";
         else
-            return Json(false);
+            ViewData["MSG"] = "Failed to Update Username";
+
+        return View();
+
     }
 
     [Authorize]
-    public JsonResult VerifyNewPassword(string CurrentPwd)
+    public JsonResult VerifyNewUsername(string NewUname)
     {
-        string userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
-
-        string sql = @"
-        SELECT * FROM AppUser
-        WHERE Id = @0 AND UserPass = HASHBYTES('SHA1', CONVERT(VARCHAR, @1))";
-
-        var users = DBUtl.GetList<JiakUser>(sql, userid, CurrentPwd);
-
-        if (users.Any())
-            return Json(true);
-        else
+        var userid =
+            User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+        JiakUser? user = _dbCtx.JiakUser.FromSqlInterpolated(
+             $@"SELECT * FROM JiakUser WHERE UserId = {userid} AND UserName = CONVERT(VARCHAR, {NewUname})")
+            .FirstOrDefault();
+        if (user != null)
             return Json(false);
-    }
-
-
-
-
-
-
-    //return RedirectToAction("Login");
-    /*string userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
-
-    string select = @"SELECT UserPw FROM JiakUser 
-                     WHERE UserId='{0}'";
-    string sql = string.Format(select, userid);
-    List<JiakUser> user = DBUtl.GetList<JiakUser>(sql);
-    if (user.Count == 1)
-    {
-        string update = @"UPDATE JiakUser  
-                          SET UserPw=HASHBYTES('SHA1', '{pw.NewPassword}') WHERE UserId={0} AND UserPw={1}";
-
-        string sql2 = string.Format(update, pw.NewPassword);
-
-        if (DBUtl.ExecSQL(sql2) == 1)
-        {
-            TempData["Message"] = "Password Updated";
-            TempData["MsgType"] = "success";
-            return View("Login");
-        }
         else
-        {
-            TempData["Message"] = DBUtl.DB_Message;
-            ViewData["ExecSQL"] = DBUtl.DB_SQL;
-            TempData["MsgType"] = "danger";  
-        }
+            return Json(true);
     }
-    else
+
+    public IActionResult Update()
     {
-        TempData["Message"] = "User Record does not exist";
-        TempData["MsgType"] = "warning";
-        return RedirectToAction("ResetPW");
+        ViewData["userid"] =
+            User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+        return View();
     }
-    return View();
-}
 
 
 
 
-public IActionResult Update()
+/*[AllowAnonymous]
+public IActionResult VerifyUserID(string userId)
 {
-    ViewData["userid"] =
-        User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
-    return View();
-}
-}
-
-
-
-    /*[AllowAnonymous]
-    public IActionResult VerifyUserID(string userId)
+    string select = $"SELECT * FROM JiakUser WHERE UserId='{userId}'";
+    if (DBUtl.GetTable(select).Rows.Count > 0)
     {
-        string select = $"SELECT * FROM JiakUser WHERE UserId='{userId}'";
-        if (DBUtl.GetTable(select).Rows.Count > 0)
-        {
-            return Json($"'{userId}' already in use");
-        }
-        return Json(true);
-    }*/
-    private static bool AuthenticateUser(string uid, string pw,
+        return Json($"'{userId}' already in use");
+    }
+    return Json(true);
+}*/
+
+private static bool AuthenticateUser(string uid, string pw,
                                          out ClaimsPrincipal principal)
     {
         principal = null!;

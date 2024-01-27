@@ -13,14 +13,15 @@
                 searching: true,
                 info: true,
                 lengthChange: true,
-                pageLength: 10
+                pageLength: 10,
+               
             });
         });
     </script>
 </head>
 
 
-@model List<UserHistory>
+@model List<History>
 
 @{
     Layout = "_CaiFan";
@@ -56,27 +57,26 @@
                 <tr>
                     @*<th>User</th>*@
                     <th>No</th>
-                    <th>White rice</th>
-                    <th>Crispy Meat With Sauce</th>
-                    <th>Crispy Meat</th>
-                    <th>Braised Meat</th>
-                    <th>Non-Leafy Vege</th>
-                    <th>Leafy Vege</th>
-                    <th>White Fish</th>
-                    <th>Batang Fish</th>
-                    <th>Steamed Egg</th>
-                    <th>Boiled Egg</th>
-                    <th>Omellete</th>
-                    <th>Minimum Calories</th>
-                    <th>Maximum Calories</th>
+                    <th>Date</th>
+                    <th>Location</th>
+                    <th>Dish One</th>
+                    <th>Dish Two</th>
+                    <th>Dish Three</th>
+                    <th>Dish Four</th>
+                    <th>Dish Five</th>
+                    <th>Dish Six</th>
+                    <th>Calories Range</th>
+                    <th>Average Calories</th>
+                    <th>Price Range</th>
+                    <th>Average Price</th>
                     <th>Image</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (UserHistory user in Model)
+                @foreach (History user in Model)
                 {
-                    var image1 = user.WhiteRice != null && user.WhiteRice.Equals("Yes") ? "tick.png" : "cross.jpg";
-                    var image3 = user.CrispyMeatWSauce != null && user.CrispyMeatWSauce.Equals("Yes") ? "tick.png" : "cross.jpg";
+                    @*var image1 = user.WhiteRice != null && user.WhiteRice.Equals("Yes") ? "tick.png" : "cross.jpg";
+                    var image3 = user.CrispyMeatWsauce != null && user.CrispyMeatWsauce.Equals("Yes") ? "tick.png" : "cross.jpg";
                     var image4 = user.CrispyMeat != null && user.CrispyMeat.Equals("Yes") ? "tick.png" : "cross.jpg";
                     var image5 = user.BraisedMeat != null && user.BraisedMeat.Equals("Yes") ? "tick.png" : "cross.jpg";
                     var image6 = user.NonLeafy != null &&
@@ -87,12 +87,25 @@
                     var image9 = user.BatangFish != null && user.BatangFish.Equals("Yes") ? "tick.png" : "cross.jpg";
                     var image10 = user.SteamedEgg != null && user.SteamedEgg.Equals("Yes") ? "tick.png" : "cross.jpg";
                     var image11 = user.BoiledEgg != null && user.BoiledEgg.Equals("Yes") ? "tick.png" : "cross.jpg";
-                    var image12 = user.Omelette != null && user.Omelette.Equals("Yes") ? "tick.png" : "cross.jpg";
+                    var image12 = user.Omelette
+                    != null && user.Omelette.Equals("Yes") ? "tick.png" : "cross.jpg";*@
 
                     <tr>
                         @*<td>@user.UserId</td>*@
                         <td>@user.Id</td>
-                        <td><img src="/@image1" width="15" /></td>
+                        <td>@user.UploadDate.ToString("dd-MM-yyyy")</td>
+                        <td>@user.Location</td>
+                        <td>@user.DishOne</td>
+                        <td>@user.DishTwo</td>
+                        <td>@user.DishThree</td>
+                        <td>@user.DishFour</td>
+                        <td>@user.DishFive</td>
+                        <td>@user.DishSix</td>
+                        <td>@user.CaloriesRange</td>
+                        <td>@user.AverageCalories</td>
+                        <td>@($"${user.PriceRange}")</td>
+                        <td>@string.Format("{0:c}", user.AveragePrice)</td>
+                        @*<td><img src="/@image1" width="15" /></td>
                         <td><img src="/@image3" width="15" /></td>
                         <td><img src="/@image4" width="15" /></td>
                         <td><img src="/@image5" width="15" /></td>
@@ -102,10 +115,8 @@
                         <td><img src="/@image9" width="15" /></td>
                         <td><img src="/@image10" width="15" /></td>
                         <td><img src="/@image11" width="15" /></td>
-                        <td><img src="/@image12" width="15" /></td>
-                        <td>@user.MinimumCalories</td>
-                        <td>@user.MaximumCalories</td>
-                        <td><img src="/UserHistory/@user.Image" width="70" height="70" /></td>
+                        <td><img src="/@image12" width="15" /></td>*@
+                        <td><img src="/UserHistory/@user.Image" width="100" height="100" /></td>
                     </tr>
                 }
         </table>

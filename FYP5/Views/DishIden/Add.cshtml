@@ -1,10 +1,13 @@
-﻿@model ImageUploads
+﻿@* @model Dataset *@
 
+@*
 @{
     Layout = "_CaiFan";
     var userid = ViewData["userid"];
 }
+*@
 
+@*
 <link href="~/css/dish.css" rel="stylesheet" />
 <link href="~/css/profile.css" rel="stylesheet" />
 
@@ -30,7 +33,7 @@
                            readonly="readonly" />
                     <label asp-for="User">User Id</label>
                     @* <span asp-validation-for="UserId" class="text-danger"></span> *@
-                </div>
+               @* </div>
 
                 <div class="col-md-8 mb-3 form-floating">
                     <select class="form-select" id="imagelc" name="ImageLc">
@@ -190,6 +193,7 @@
                 <img id="ImageUpload" src="" style="width: 400px; height: auto; margin: 0 auto;" alt="No picture uploaded" />
                 </div> *@
 
+                @*
                 <div class="row my-4 mx-4">
                     <input type="submit" class="btn btn-small btn-light border-primary" value="Submit" />
                 </div>
@@ -226,7 +230,7 @@
             </form>
         </div>
     </div>
-</div>
+</div> 
 
 <script>
     function preview() {
@@ -238,5 +242,6 @@
         frame.src = "";
     }
 </script>
+ *@
     
 

@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿/*using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace FYP5.Controllers
@@ -48,7 +48,5 @@ namespace FYP5.Controllers
 
                 //List<JiakUser> list = DBUtl.GetList<JiakUser>/("SELECT * FROM JiakUser");
 
-                //foreach (JiakUser user in list)
-
-
+                //foreach (JiakUser user in list)*/
 

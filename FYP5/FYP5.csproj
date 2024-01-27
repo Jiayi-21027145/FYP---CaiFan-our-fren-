@@ -13,12 +13,11 @@
 		<None Remove="wwwroot\images\imageAI\**" />
 	</ItemGroup>
 	<ItemGroup>
-		<_ContentIncludedByDefault Remove="wwwroot\css\summary.css" />
+	  <Content Remove="Views\Contact.cshtml" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
-		<PackageReference Include="System.Drawing.Common" Version="6.0.0" />
-		<PackageReference Include="ZXing.Net" Version="0.16.7" />
+		<_ContentIncludedByDefault Remove="Views\Contact.cshtml" />
+		<_ContentIncludedByDefault Remove="wwwroot\css\summary.css" />
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
@@ -61,6 +60,7 @@
 	</ItemGroup>
 	<ItemGroup>
 		<None Include="Views\Account\Forbidden.cshtml" />
+		<None Include="Views\Home\Contact.cshtml" />
 		<None Include="Views\History\Index.cshtml" />
 		<None Include="Views\Shared\Error.cshtml" />
 		<None Include="Views\Shared\_CaiFan.cshtml" />
@@ -123,4 +123,7 @@
 			<UserProperties />
 		</VisualStudio>
 	</ProjectExtensions>
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Views\Contact.cshtml" />
+	</ItemGroup>
 </Project>

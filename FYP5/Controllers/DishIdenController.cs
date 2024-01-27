@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿/*using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using static System.Net.WebRequestMethods;
@@ -18,17 +18,17 @@ namespace FYP5.Controllers
     {
 
 
-        /*private readonly string PREDICTKEY = "e832a2efc271455a8841f61716b060bc";
-         private readonly string ENDPOINT = "https://jiakpeng.cognitiveservices.azure.com/customvision/v3.0/Prediction/c664e071-4ac3-4e9a-9b96-34f3aab38e82/detect/iterations/Iteration1/image";*/
+        private readonly string PREDICTKEY = "e832a2efc271455a8841f61716b060bc";
+         private readonly string ENDPOINT = "https://jiakpeng.cognitiveservices.azure.com/customvision/v3.0/Prediction/c664e071-4ac3-4e9a-9b96-34f3aab38e82/detect/iterations/Iteration1/image";
 
 
-        /* public IActionResult Index()
+         public IActionResult Index()
          {
              ViewData["userid"] =
              User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
 
              return View();
-         }*/
+         }
 
         [HttpGet]
         //[AllowAnonymous]
@@ -78,7 +78,7 @@ namespace FYP5.Controllers
             }
         }
 
-        /*string predictionEndpoint = 
+        string predictionEndpoint = 
             $"{ENDPOINT}?Prediction-Key={PREDICTKEY}&Content-Type=application/octet-stream";
 
         // Create the HTTP client and request headers
@@ -107,7 +107,7 @@ namespace FYP5.Controllers
         string resultString = JsonConvert.SerializeObject(result);
         //JArray predictions = (JArray)result.GetValue("predictions");
 
-        return View("Result", resultString);*/
+        return View("Result", resultString);
 
 
         private string DoPhotoUpload(IFormFile photo)
@@ -130,7 +130,7 @@ namespace FYP5.Controllers
         }
 
     }
-}
+}*/
 
 
 
