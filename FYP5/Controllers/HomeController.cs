@@ -1,4 +1,4 @@
-﻿using FYP5.Models;
+﻿using FYP5.Models; 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.CognitiveServices.Vision.CustomVision.Prediction;
 using Microsoft.Azure.CognitiveServices.Vision.CustomVision.Training;
@@ -30,6 +30,7 @@ namespace FYP5.Controllers
         {
             return View();
         }
+        
 
         public IActionResult QRCode()
         {

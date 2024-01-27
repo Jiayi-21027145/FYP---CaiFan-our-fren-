@@ -14,7 +14,6 @@ public partial class Reviews
 
     public string? Comment { get; set; }
     [NotMapped]
-    [ValidateNever]
     [Required(ErrorMessage = "Please select Photo")]
     public IFormFile Photo { get; set; } = null!;
 

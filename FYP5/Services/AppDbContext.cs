@@ -159,6 +159,8 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.UserRole)
                 .HasMaxLength(10)
                 .IsUnicode(false);
+          
+
         });
 
         modelBuilder.Entity<LocationPrice>(entity =>
@@ -239,6 +241,35 @@ public partial class AppDbContext : DbContext
         {
             entity.HasNoKey();
 
+            entity.Property(e => e.BatangFish)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.BoiledEgg)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.BraisedMeat)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.CrispyMeat)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.CrispyMeatWsauce)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("CrispyMeatWSauce");
+            entity.Property(e => e.Image).IsUnicode(false);
+            entity.Property(e => e.Leafy)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.NonLeafy)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.Omelette)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.SteamedEgg)
+                .HasMaxLength(50)
+                .IsUnicode(false);
             entity.Property(e => e.UserId)
                 .HasMaxLength(10)
                 .IsUnicode(false)

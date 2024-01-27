@@ -1,10 +1,13 @@
 ﻿
+@*
 @{
     Layout = "_CaiFan";
     var userid = ViewData["userid"];
     ViewData["Title"] = "Dish Identification";
 }
+*@
 
+@*
 <link href="~/css/dish.css" rel="stylesheet" />
 <link href="~/css/profile.css" rel="stylesheet" />
 
@@ -183,6 +186,7 @@
                 <img id="ImageUpload" src="" style="width: 400px; height: auto; margin: 0 auto;" alt="No picture uploaded" />
                 </div> *@
 
+                @*
                 <div class="row my-4 mx-4">
                     <input type="submit" class="btn btn-small btn-light border-primary" value="Submit" />
                 </div>
@@ -221,7 +225,7 @@
             </form>
         </div>
     </div>
-</div>
+</div> 
 
 <script>
     function preview() {
