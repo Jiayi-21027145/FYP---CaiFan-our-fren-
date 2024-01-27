@@ -8,27 +8,22 @@ namespace FYP5.Models;
 
 public partial class Dataset
 {
-    public int ImageId { get; set; }
-
-    public string ImageName { get; set; } = null!;
-
-    public string ImageUrl { get; set; } = null!;
-
-    public string DishName { get; set; } = null!;
-
-    public double Probability { get; set; }
+    public int DatasetId { get; set; }
     [Required]
     public string Location { get; set; } = null!;
     [Required(ErrorMessage = "Please enter Date/Time")]
     [DataType(DataType.DateTime)]
     [Remote(action: "VerifyDate", controller: "DishIden")]
-    public DateTime DateTime { get; set; } = DateTime.Now;
+    public DateTime DateTime { get; set; }
     [NotMapped]
     [Required(ErrorMessage = "Please select Photo")]
     public IFormFile Photo { get; set; } = null!;
 
+    public string Picture { get; set; } = null!;
 
-    public virtual JiakUser? User { get; set; }
+    public string UserId { get; set; } = null!;
 
     public virtual ICollection<Prediction> Prediction { get; set; } = new List<Prediction>();
+
+    public virtual JiakUser User { get; set; } = null!;
 }

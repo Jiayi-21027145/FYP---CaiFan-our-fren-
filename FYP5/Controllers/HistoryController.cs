@@ -14,7 +14,7 @@ namespace FYP5.Controllers
             string userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
             string select = @"SELECT * FROM UserHistory 
                           WHERE UserId = '{0}'";
-            List<UserHistory> list = DBUtl.GetList<UserHistory>(select, userid);
+            List<History> list = DBUtl.GetList<History>(select, userid);
             return View("Index", list);
         }
         public IActionResult Chart()

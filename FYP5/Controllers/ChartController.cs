@@ -1,54 +1,44 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
-
-namespace FYP5.Controllers
+using FYP5.Models;
+namespace FYP5.Controllers;
+public class ChartController : Controller
 {
-    public class ChartController : Controller
+    public IActionResult Bar()
     {
-        public IActionResult Bar()
+        PrepareData(1);
+        ViewData["Chart"] = "bar";
+        ViewData["Title"] = "Fitness Summary";
+        ViewData["ShowLegend"] = "false";
+        return View("Chart");
+    }
+
+
+    private void PrepareData(int x)
+    {
+        int[] dataAvg = new int[] { 0, 0, 0, 0, 0 };
+       
+        List<History> list = DBUtl.GetList<History>("SELECT * FROM History");
+        foreach (History his in list)
         {
-            PrepareData(0);
-            ViewData["Chart"] = "bar";
-            ViewData["Title"] = "Average Calorie Count by Gender";
-            ViewData["ShowLegend"] = "false";
-            return View("Chart");
+            dataAvg[CalcGrade(his.AverageCalories)]++;
+         
         }
 
-        public IActionResult pie()
-        {
-            PrepareData(1);
-            ViewData["Chart"] = "bar";
-            ViewData["Title"] = "Minimum Calories Intake Summary";
-            ViewData["ShowLegend"] = "false";
-            return View("Chart");
-        }
+        string[] colors = new[] {"lightgreen", "pink"};
+        string[] grades = new[] { "A", "B" };
+        ViewData["Legend"] = "History";
+        ViewData["Colors"] = colors;
+        ViewData["Labels"] = grades;
+        if (x == 1)
+            ViewData["Data"] = dataAvg;
+        
+    }
 
-        private void PrepareData(int x)
-        {
-            int[] totalCalories = new int[] { 0, 0, 0, 0, 0 };
+    private int CalcGrade(int c)
+    {
+        if (c >= 700) return 1;
+      
+        else return 0;
+    }
 
-            string userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
-            // Example query using parameterized SQL
-            List<Calories> list = DBUtl.GetList<Calories>("SELECT Id, MinimumCalories FROM Calories WHERE UserId = '{0}'", userid);
-
-           
-                    // Set ViewData for bar chart
-                    ViewData["Legend"] = "Calories Intake Range";
-                    ViewData["Colors"] = new[] { "Yellow" }; // Example colors
-                    ViewData["Labels"] = new[] { "Range 1", "Range 2", "Range 3", "Range 4", "Range 5" };
-                    //ViewData["Data"] = totalIntake;
-
-                }
-            }
-        }
-
-
-
-            
-
-                //List<JiakUser> list = DBUtl.GetList<JiakUser>/("SELECT * FROM JiakUser");
-
-                //foreach (JiakUser user in list)
-
-
-
+}

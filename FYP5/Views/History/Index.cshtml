@@ -1,4 +1,4 @@
-﻿<head>
+﻿@* <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" />
     <link href="~/css/profile.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css" />
@@ -20,7 +20,7 @@
 </head>
 
 
-@model List<UserHistory>
+@model List<History>
 
 @{
     Layout = "_CaiFan";
@@ -42,9 +42,9 @@
 }
 
 <div @*class="container" *@ style="background-color: white; radius-border: 10px;">
-    <div class="row p-2">
+   @* <div class="row p-2">
         @* <h2 class="text-center mb-2">View History</h2> *@
-        <h2 class="text-center">
+        @*<h2 class="text-center">
             <b>
                 View History
             </b>
@@ -55,7 +55,7 @@
             <thead>
                 <tr>
                     @*<th>User</th>*@
-                    <th>No</th>
+                   @* <th>No</th>
                     <th>White rice</th>
                     <th>Crispy Meat With Sauce</th>
                     <th>Crispy Meat</th>
@@ -73,7 +73,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (UserHistory user in Model)
+                @foreach (History user in Model)
                 {
                     var image1 = user.WhiteRice != null && user.WhiteRice.Equals("Yes") ? "tick.png" : "cross.jpg";
                     var image3 = user.CrispyMeatWSauce != null && user.CrispyMeatWSauce.Equals("Yes") ? "tick.png" : "cross.jpg";
@@ -91,7 +91,7 @@
 
                     <tr>
                         @*<td>@user.UserId</td>*@
-                        <td>@user.Id</td>
+                        @*<td>@user.Id</td>
                         <td><img src="/@image1" width="15" /></td>
                         <td><img src="/@image3" width="15" /></td>
                         <td><img src="/@image4" width="15" /></td>
@@ -110,6 +110,6 @@
                 }
         </table>
     </div>
-</div>
+</div>*@
 
-      
+       
