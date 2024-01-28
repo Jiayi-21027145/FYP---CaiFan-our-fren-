@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using FYP5.Models;
+using Lesson05.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace FYP5.Services;
+namespace Lesson05.Services;
 
 public partial class AppDbContext : DbContext
 {
@@ -42,21 +42,21 @@ public partial class AppDbContext : DbContext
     {
         modelBuilder.Entity<BoundingBox>(entity =>
         {
-            entity.HasKey(e => e.BoundingBoxId).HasName("PK__Bounding__8AB42BA026EF29AE");
+            entity.HasKey(e => e.BoundingBoxId).HasName("PK__Bounding__8AB42BA0E5736B93");
 
             entity.HasOne(d => d.Prediction).WithMany(p => p.BoundingBox)
                 .HasForeignKey(d => d.PredictionId)
-                .HasConstraintName("FK__BoundingB__Predi__236943A5");
+                .HasConstraintName("FK__BoundingB__Predi__55009F39");
         });
 
         modelBuilder.Entity<Calories>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Calories__3214EC07EA7E253D");
+            entity.HasKey(e => e.Id).HasName("PK__Calories__3214EC07F4A825F3");
         });
 
         modelBuilder.Entity<Dataset>(entity =>
         {
-            entity.HasKey(e => e.DatasetId).HasName("PK__Dataset__CCE574CB57CC93E7");
+            entity.HasKey(e => e.DatasetId).HasName("PK__Dataset__CCE574CB51312185");
 
             entity.Property(e => e.DateTime).HasColumnType("datetime");
             entity.Property(e => e.Location)
@@ -72,7 +72,7 @@ public partial class AppDbContext : DbContext
             entity.HasOne(d => d.User).WithMany(p => p.Dataset)
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Dataset__UserId__1CBC4616");
+                .HasConstraintName("FK__Dataset__UserId__4E53A1AA");
         });
 
         modelBuilder.Entity<Dates>(entity =>
@@ -86,7 +86,7 @@ public partial class AppDbContext : DbContext
 
         modelBuilder.Entity<History>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__History__3214EC074746B2CE");
+            entity.HasKey(e => e.Id).HasName("PK__History__3214EC0750C82445");
 
             entity.Property(e => e.AveragePrice).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.CaloriesRange)
@@ -130,7 +130,7 @@ public partial class AppDbContext : DbContext
 
         modelBuilder.Entity<Items>(entity =>
         {
-            entity.HasKey(e => e.ItemId).HasName("PK__Items__727E83EBD9D11EFE");
+            entity.HasKey(e => e.ItemId).HasName("PK__Items__727E83EB2CCD82B2");
 
             entity.Property(e => e.ItemId).HasColumnName("ItemID");
             entity.Property(e => e.ItemName)
@@ -140,7 +140,7 @@ public partial class AppDbContext : DbContext
 
         modelBuilder.Entity<JiakUser>(entity =>
         {
-            entity.HasKey(e => e.UserId).HasName("PK__JiakUser__1788CC4CD4FBDD84");
+            entity.HasKey(e => e.UserId).HasName("PK__JiakUser__1788CC4C44450890");
 
             entity.Property(e => e.UserId)
                 .HasMaxLength(10)
@@ -159,13 +159,11 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.UserRole)
                 .HasMaxLength(10)
                 .IsUnicode(false);
-          
-
         });
 
         modelBuilder.Entity<LocationPrice>(entity =>
         {
-            entity.HasKey(e => new { e.LocationId, e.ItemId }).HasName("PK__Location__40D94C49CD444DD3");
+            entity.HasKey(e => new { e.LocationId, e.ItemId }).HasName("PK__Location__40D94C49F48CD418");
 
             entity.Property(e => e.LocationId).HasColumnName("LocationID");
             entity.Property(e => e.ItemId).HasColumnName("ItemID");
@@ -174,17 +172,17 @@ public partial class AppDbContext : DbContext
             entity.HasOne(d => d.Item).WithMany(p => p.LocationPrice)
                 .HasForeignKey(d => d.ItemId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__LocationP__ItemI__2B0A656D");
+                .HasConstraintName("FK__LocationP__ItemI__5CA1C101");
 
             entity.HasOne(d => d.Location).WithMany(p => p.LocationPrice)
                 .HasForeignKey(d => d.LocationId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__LocationP__Locat__2A164134");
+                .HasConstraintName("FK__LocationP__Locat__5BAD9CC8");
         });
 
         modelBuilder.Entity<Locations>(entity =>
         {
-            entity.HasKey(e => e.LocationId).HasName("PK__Location__E7FEA477AF99085E");
+            entity.HasKey(e => e.LocationId).HasName("PK__Location__E7FEA4773560C508");
 
             entity.Property(e => e.LocationId).HasColumnName("LocationID");
             entity.Property(e => e.LocationName)
@@ -194,7 +192,7 @@ public partial class AppDbContext : DbContext
 
         modelBuilder.Entity<Menu>(entity =>
         {
-            entity.HasKey(e => e.MenuId).HasName("PK__Menu__C99ED23013A24915");
+            entity.HasKey(e => e.MenuId).HasName("PK__Menu__C99ED230F2D21502");
 
             entity.Property(e => e.AveragePrice).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.FoodName)
@@ -210,7 +208,7 @@ public partial class AppDbContext : DbContext
 
         modelBuilder.Entity<Prediction>(entity =>
         {
-            entity.HasKey(e => e.PredictionId).HasName("PK__Predicti__BAE4C1A09A22AB91");
+            entity.HasKey(e => e.PredictionId).HasName("PK__Predicti__BAE4C1A0B971BECB");
 
             entity.Property(e => e.HighestPrice).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.LowestPrice).HasColumnType("decimal(18, 2)");
@@ -220,16 +218,16 @@ public partial class AppDbContext : DbContext
 
             entity.HasOne(d => d.Dataset).WithMany(p => p.Prediction)
                 .HasForeignKey(d => d.DatasetId)
-                .HasConstraintName("FK__Predictio__Datas__208CD6FA");
+                .HasConstraintName("FK__Predictio__Datas__5224328E");
 
             entity.HasOne(d => d.Menu).WithMany(p => p.Prediction)
                 .HasForeignKey(d => d.MenuId)
-                .HasConstraintName("FK__Predictio__MenuI__1F98B2C1");
+                .HasConstraintName("FK__Predictio__MenuI__51300E55");
         });
 
         modelBuilder.Entity<Reviews>(entity =>
         {
-            entity.HasKey(e => e.ReviewId).HasName("PK__Reviews__74BC79AE532C14EF");
+            entity.HasKey(e => e.ReviewId).HasName("PK__Reviews__74BC79AEF2F03BD5");
 
             entity.Property(e => e.ReviewId).HasColumnName("ReviewID");
             entity.Property(e => e.Comment).IsUnicode(false);
@@ -241,35 +239,6 @@ public partial class AppDbContext : DbContext
         {
             entity.HasNoKey();
 
-            entity.Property(e => e.BatangFish)
-                .HasMaxLength(50)
-                .IsUnicode(false);
-            entity.Property(e => e.BoiledEgg)
-                .HasMaxLength(50)
-                .IsUnicode(false);
-            entity.Property(e => e.BraisedMeat)
-                .HasMaxLength(50)
-                .IsUnicode(false);
-            entity.Property(e => e.CrispyMeat)
-                .HasMaxLength(50)
-                .IsUnicode(false);
-            entity.Property(e => e.CrispyMeatWsauce)
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("CrispyMeatWSauce");
-            entity.Property(e => e.Image).IsUnicode(false);
-            entity.Property(e => e.Leafy)
-                .HasMaxLength(50)
-                .IsUnicode(false);
-            entity.Property(e => e.NonLeafy)
-                .HasMaxLength(50)
-                .IsUnicode(false);
-            entity.Property(e => e.Omelette)
-                .HasMaxLength(50)
-                .IsUnicode(false);
-            entity.Property(e => e.SteamedEgg)
-                .HasMaxLength(50)
-                .IsUnicode(false);
             entity.Property(e => e.UserId)
                 .HasMaxLength(10)
                 .IsUnicode(false)
