@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿/*using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using FYP5.Models; // Make sure this namespace points to where your DailyCalories model is located
 
@@ -55,7 +55,7 @@ namespace FYP5.Controllers
 
 
 
-/* var calorieData = FetchCalorieData();
+*//* var calorieData = FetchCalorieData();
 
  // Prepare chart data
  ViewBag.Labels = calorieData.Select(c => c.Gender).Distinct().ToArray();

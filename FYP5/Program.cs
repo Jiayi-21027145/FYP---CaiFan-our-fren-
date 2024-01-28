@@ -10,7 +10,13 @@ using System.Net.NetworkInformation;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
+builder.Configuration.AddJsonFile("appsettings.json");
+
 // authentication
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))); //for AdminSummary
+
 builder.Services.AddDbContext<AppDbContext>(
    options => options.UseSqlServer(
        builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -37,6 +43,6 @@ app.MapControllerRoute(
 name: "default",
 pattern: "{controller=Home}/{action=Index}/{id?}");
 
-app.Run();*/
+app.Run();
 
 

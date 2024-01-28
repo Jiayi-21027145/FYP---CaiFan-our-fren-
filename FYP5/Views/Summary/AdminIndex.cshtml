@@ -20,10 +20,6 @@
         <div id="TotalUsers" class="tab-pane fade show active">
             <h3>Total Users</h3>
 
-            <!-- File input for image upload -->
-            <input type="file" id="imageFile" accept=".jpg, .jpeg, .png" />
-            <button onclick="updateChart()">Update Chart</button>
-
             <!-- Chart.js canvas for displaying the prediction results -->
             <canvas id="totalUsersChart" width="400" height="400"></canvas>
         </div>
@@ -92,7 +88,7 @@
 </div> *@
 
 <!-- Index View -->
-@model List<ImageUpload>
+@* @model List<ImageUpload>
 
 <h2>Total Users and Users with Uploads</h2>
 
@@ -120,7 +116,7 @@
             <tr>
                 <td>@upload.User.UserName</td>
 @*                 <td><img src="@upload.ImageData" alt="Uploaded Image" style="max-width: 100px; max-height: 100px;" /></td>
- *@                <!-- Add other relevant columns based on your model -->
+                 <!-- Add other relevant columns based on your model -->
         
             </tr>
         }
@@ -142,6 +138,8 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
 @* <script>
     var ctx = document.getElementById('ratingChart').getContext('2d');
     var data = {

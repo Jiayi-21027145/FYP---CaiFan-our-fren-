@@ -15,7 +15,7 @@ namespace FYP5.Models
 
         public int UserID { get; set; }
         public virtual JiakUser User { get; set; } = new JiakUser(); // Provide a default instance
-        public virtual ICollection<Dish> Dishes { get; set; } = new List<Dish>(); // Provide a default collection
+        //public virtual ICollection<Dish> Dishes { get; set; } = new List<Dish>(); // Provide a default collection
         //public string ImageData { get; set; }
     }
 
@@ -40,6 +40,14 @@ namespace FYP5.Models
     {
         public int Rating { get; set; }
         public int Count { get; set; }
+    }
+
+
+    public class UserPictureUploadViewModel
+    {
+        public int UserId { get; set; }
+        public required string UserName { get; set; }
+        public int TotalUploads { get; set; }
     }
 
 }

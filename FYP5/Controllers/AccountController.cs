@@ -204,6 +204,7 @@ public class AccountController : Controller
         ViewData["UserId"] = id;
         return View();
     }
+}
 
    /* [HttpPost]
     [AllowAnonymous]
