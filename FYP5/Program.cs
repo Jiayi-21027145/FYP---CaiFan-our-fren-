@@ -9,9 +9,7 @@ global using Microsoft.AspNetCore.Mvc.Rendering;
 global using System.ComponentModel.DataAnnotations;
 global using System.Security.Claims;
 global using System.Dynamic;
-
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Data.SqlClient;
 using System.Net.NetworkInformation;
@@ -34,7 +32,7 @@ builder.Services
     options.LoginPath = "/Account/Login";
     options.AccessDeniedPath = "/Account/Forbidden";
 });
-builder.Services.AddScoped<IDBService, DBService>();
+builder.Services.AddScoped<IDbService, DbService>();
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.
@@ -52,6 +50,6 @@ app.MapControllerRoute(
 name: "default",
 pattern: "{controller=Home}/{action=Index}/{id?}");
 
-app.Run();*/
+app.Run();
 
 

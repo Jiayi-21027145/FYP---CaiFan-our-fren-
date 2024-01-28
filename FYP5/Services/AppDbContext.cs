@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Lesson05.Models;
+using FYP5.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Lesson05.Services;
+namespace FYP5.Services;
 
 public partial class AppDbContext : DbContext
 {

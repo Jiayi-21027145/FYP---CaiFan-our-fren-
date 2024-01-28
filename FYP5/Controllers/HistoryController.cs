@@ -8,9 +8,9 @@ namespace FYP5.Controllers
 {
     public class HistoryController : Controller
     {
-        private readonly IDBService _dbSvc;
+        private readonly IDbService _dbSvc;
 
-        public HistoryController(IDBService dbSvc)
+        public HistoryController(IDbService dbSvc)
         {
             _dbSvc = dbSvc;
         }
@@ -282,7 +282,7 @@ namespace FYP5.Controllers
     }
         
     
-
+/*
         public HistoryController(IHttpClientFactory clientFactory)
         {
             _clientFactory = clientFactory;
@@ -338,6 +338,6 @@ namespace FYP5.Controllers
                 return View("Error");
             }
         }
-    }
-}*/
+    }*/
+}
 

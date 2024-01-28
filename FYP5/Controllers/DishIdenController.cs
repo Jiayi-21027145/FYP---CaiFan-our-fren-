@@ -1,4 +1,4 @@
-﻿/*using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using static System.Net.WebRequestMethods;
 using System;
@@ -23,16 +23,14 @@ public class DishIdenController : Controller
     private readonly IWebHostEnvironment _env;
     private readonly AppDbContext _dbCtx;
 
+    public DishIdenController(IWebHostEnvironment environment, AppDbContext dbCtx)
+    {
+        _env = environment;
+        _dbCtx = dbCtx;
+        DbSet<Menu> dbs = _dbCtx.Menu;
 
+    }
 
-
-        /* public IActionResult Index()
-         {
-             ViewData["userid"] =
-             User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
-
-             return View();
-         }*/
 
     private readonly string PREDICTKEY = "0ffd60af00334e318c044feb4c735afa";
     private readonly string ENDPOINT = "https://fyppp.cognitiveservices.azure.com/customvision/v3.0/Prediction/6202816f-770e-4475-bf0f-4439480ee8e6/detect/iterations/Iteration4/image";

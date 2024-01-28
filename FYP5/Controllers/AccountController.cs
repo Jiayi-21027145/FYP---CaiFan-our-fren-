@@ -220,7 +220,7 @@ public class AccountController : Controller
         }*/
 
         // Update password in database
-        string updateSql = @"UPDATE JiakUser SET UserPw = HASHBYTES('SHA1', @p1) WHERE UserId = @p0";
+       /* string updateSql = @"UPDATE JiakUser SET UserPw = HASHBYTES('SHA1', @p1) WHERE UserId = @p0";
         int result = DBUtl.ExecSQL(updateSql, id, user.UserPw);
 
         if (result == 1)
@@ -236,7 +236,7 @@ public class AccountController : Controller
             ViewData["UserId"] = user.UserId;
             return View(user);
         }
-    }
+    }*/
 
     [Authorize]
     public IActionResult ChangePwd()

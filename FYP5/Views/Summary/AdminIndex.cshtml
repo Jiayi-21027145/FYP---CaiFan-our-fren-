@@ -1,4 +1,4 @@
-﻿@{
+﻿@* @{
     Layout = "_CaiFan";
 }
 
@@ -52,7 +52,7 @@
             <p>Review Rating Chart content goes here</p>
         </div>
     </div>
-</div>
+</div> *@
 
     @* <ul class="nav nav-tabs fw-bold">
         <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" data-bs-target="#TotalUsers">Total Users</a></li>
@@ -92,7 +92,7 @@
 </div> *@
 
 <!-- Index View -->
-@model List<ImageUpload>
+@* @model List<ImageUpload>
 
 <h2>Total Users and Users with Uploads</h2>
 
@@ -120,7 +120,7 @@
             <tr>
                 <td>@upload.User.UserName</td>
 @*                 <td><img src="@upload.ImageData" alt="Uploaded Image" style="max-width: 100px; max-height: 100px;" /></td>
- *@                <!-- Add other relevant columns based on your model -->
+                <!-- Add other relevant columns based on your model -->
         
             </tr>
         }
@@ -141,7 +141,7 @@
     <canvas id="ratingChart"></canvas>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script> *@
 @* <script>
     var ctx = document.getElementById('ratingChart').getContext('2d');
     var data = {
