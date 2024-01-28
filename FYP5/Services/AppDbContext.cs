@@ -32,6 +32,14 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<Summary> Summary { get; set; }
 
+    public virtual DbSet<Summary> Items { get; set; }
+    public virtual DbSet<Summary> ItemID { get; set; }
+
+    public virtual DbSet<Summary> Locations { get; set; }
+
+    public virtual DbSet<Summary> Location { get; set; }
+    public virtual DbSet<Summary> LocationPrice { get; set; } 
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Calories>(entity =>
@@ -43,19 +51,19 @@ public partial class AppDbContext : DbContext
         {
             entity.HasKey(e => e.ImageId).HasName("PK__Dataset__7516F70CA181AF10");
 
-            entity.Property(e => e.DateTime).HasColumnType("datetime");
+           /* entity.Property(e => e.DateTime).HasColumnType("datetime");*/
             entity.Property(e => e.DishName)
                 .HasMaxLength(255)
                 .IsUnicode(false);
             entity.Property(e => e.ImageName)
                 .HasMaxLength(255)
                 .IsUnicode(false);
-            entity.Property(e => e.ImageUrl)
+          /*  entity.Property(e => e.ImageUrl)
                 .HasMaxLength(255)
-                .IsUnicode(false);
-            entity.Property(e => e.Location)
+                .IsUnicode(false);*/
+            /*entity.Property(e => e.Location)
                 .HasMaxLength(255)
-                .IsUnicode(false);
+                .IsUnicode(false);*/
         });
 
         modelBuilder.Entity<Dish>(entity =>
@@ -215,6 +223,11 @@ public partial class AppDbContext : DbContext
                 .HasMaxLength(10)
                 .IsUnicode(false)
                 .HasColumnName("UserID");
+            entity.Property(e => e.Item)
+                .HasColumnName("items");
+            entity.Property(e => e.Location)
+                 .HasMaxLength(30);
+
         });
 
         OnModelCreatingPartial(modelBuilder);

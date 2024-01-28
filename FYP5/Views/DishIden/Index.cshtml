@@ -23,30 +23,11 @@
                     Snap your daily meal!
                 </b>
             </h3>
-            <form enctype="multipart/form-data" method="post" 
-            asp-action="Index" asp-controller="DishIden">
-               @* action="@Url.Action("Index", "DishIden")">*@
-                @* <input asp-for="UserId" hidden /> *@
-                <!-- Location Field -->
-              @*   <div class="col-md-8 mb-3">
-                    <label for="location">Location</label>
-                    <select class="form-control" id="location" name="Location" required>
-                        <option value="">Select a location</option>
-                        <!-- Add other options here -->
-                        <option value="Admiralty">Admiralty</option>
-                        <option value="Aljunied">Aljunied</option>
-                        <option value="Ang Mo Kio">Ang Mo Kio</option>
-                        <option value="Bartley">Bartley</option>
-                    </select>
-                </div>
+            <form enctype="multipart/form-data" method="post" action="/DIshIden/Index">
 
-                <!-- DateTime Field -->
-                <div class="col-md-8 mb-3">
-                    <label for="imageDt">Image date/time</label>
-                    <input type="datetime-local" class="form-control" id="imageDt" name="DateTime" required />
-                </div> *@
-                   
-                 
+
+
+
                 <!--Image-->
                 <div class="row mb-2 mx-4">
                     <label class="col-form-label fw-bold" for="formfile">Upload an image:</label>
@@ -60,7 +41,6 @@
                 <div class="row my-4 mx-4">
                     <input type="submit" class="btn btn-small btn-light border-primary" value="Submit" />
                 </div>
-            </form>
                 @if (ViewData["Message"] != null)
                 {
                     <div class="form-group row">
@@ -89,7 +69,7 @@
                         </a>
                     </p>
                 </div>
-          
+            </form>
         </div>
     </div>
     <script>

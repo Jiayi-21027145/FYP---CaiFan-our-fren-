@@ -13,6 +13,9 @@
 		<None Remove="wwwroot\images\imageAI\**" />
 	</ItemGroup>
 	<ItemGroup>
+	  <Compile Remove="Models\ItemLocationViewModel.cs" />
+	</ItemGroup>
+	<ItemGroup>
 		<_ContentIncludedByDefault Remove="wwwroot\css\summary.css" />
 	</ItemGroup>
 	<ItemGroup>
@@ -22,6 +25,7 @@
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.10" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.10" />
 		<PackageReference Include="Microsoft.Rest.ClientRuntime" Version="2.3.24" />
+		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.11" />
 		<PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
 		<PackageReference Include="System.Drawing.Common" Version="6.0.0" />
 		<PackageReference Include="ZXing.Net" Version="0.16.7" />
@@ -54,6 +58,7 @@
 		</Content>
 	</ItemGroup>
 	<ItemGroup>
+		<None Include="Models\ItemLocationViewModel.cs" />
 		<None Include="Views\Account\Forbidden.cshtml" />
 		<None Include="Views\History\Index.cshtml" />
 		<None Include="Views\Shared\_CaiFan.cshtml" />

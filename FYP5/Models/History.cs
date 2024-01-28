@@ -1,4 +1,7 @@
-﻿namespace FYP5.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace FYP5.Models
 {
     public class History
     {
@@ -6,6 +9,8 @@
 
         public int Id { get; set; }
 
+        [DataType(DataType.Date)]
+        public DateTime UploadDate { get; set; }
         public string DishOne { get; set; } = null!;
 
         public string DishTwo { get; set; } = null!;
@@ -15,9 +20,16 @@
         public string DishSix { get; set; } = null!;
 
         public string CaloriesRange { get; set; } = null!;
-        public string AveragePrice { get; set; } = null!;
+
+        public int AverageCalories { get; set; }
+        public string PriceRange { get; set; } = null!;
+
+        public decimal AveragePrice { get; set; }
         public string Image { get; set; } = null!;
 
         public virtual JiakUser User { get; set; } = null!;
     }
+
+
+
 }

@@ -1,57 +1,53 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Linq;
-using FYP5.Models; // Make sure this namespace points to where your DailyCalories model is located
+using FYP5.Models; // Make sure this namespace points to where your History model is located
+using System.Security.Claims;
 
 namespace FYP5.Controllers
 {
     public class ChartController : Controller
     {
-        public IActionResult Bar()
-        {
-            PrepareData(1);
-            ViewData["Chart"] = "bar";
-            ViewData["Title"] = "Count of Pictures of Healthy/Unhealthy Meals Uploaded";
-            ViewData["ShowLegend"] = "true";
-            return View("Chart");
-        }
         public IActionResult Line()
         {
-            PrepareData(2);
-            ViewData["Chart"] = "line";
-            ViewData["Title"] = "Price Range";
-            ViewData["ShowLegend"] = "false";
+            PrepareData();
+            ViewData["Title"] = "Calorie Count of Pictures Uploaded";
             return View("Chart");
+           
         }
 
-        private void PrepareData(int x)
+        private void PrepareData()
         {
-
-            int[] dataMax = new[] { 0, 0, 0, 0, 0 };
-            List<UserHistory> list = DBUtl.GetList<UserHistory>("SELECT * FROM UserHistory");
-            foreach (UserHistory cdt in list)
+            // Fetch data from the database
+            List<History> list = DBUtl.GetList<History>("SELECT * FROM History ORDERED BY Dates");
+            string userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+            // Aggregate data
+            int[] dataMax = new[] { 0, 0 };
+            foreach (History cdt in list)
             {
-
-                dataMax[CalcCal(cdt.MaximumCalories)]++;
+                int index = CalcCal(cdt.AverageCalories);
+                dataMax[index]++;
             }
 
-            string[] colors = new[] { "green", "red" };
-            string[] user = new[] { "Calorie Count < 700", "Calorie Count > 700" };
+            // Chart configurations
+            /*string[] colors = new[] { "green", "red" };
+            string[] labels = new[] { "Calorie Count < 700", "Calorie Count > 700" };*/
 
-            ViewData["Legend"] = "Healthy";
-            ViewData["Colors"] = colors;
-            ViewData["Labels"] = user;
-            if (x == 1)
-                ViewData["Data"] = dataMax;
+            // Assigning data to ViewData
+            /* ViewData["Colors"] = colors;
+             ViewData["Labels"] = labels;
+             ViewData["Data"] = dataMax;
+             ViewData["Legend"] = "Healthy";
+         }*/
+
+         private int CalcCal(int AverageCalories)
+         {
+             return 
+         }
         }
-        private int CalcCal(int c)
-        {
-            if (c > 700) return 1;
-
-            else return 0;
         }
-
     }
-}
+
 
 
 

@@ -22,11 +22,12 @@ public partial class Dataset
     [Required(ErrorMessage = "Please enter Date/Time")]
     [DataType(DataType.DateTime)]
     [Remote(action: "VerifyDate", controller: "DishIden")]
-    public DateTime DateTime { get; set; } = DateTime.Now;
+    public DateTime DateTime { get; set; }
     [NotMapped]
     [Required(ErrorMessage = "Please select Photo")]
     public IFormFile Photo { get; set; } = null!;
 
+    public string? UserId { get; set; }
 
     public virtual JiakUser? User { get; set; }
 

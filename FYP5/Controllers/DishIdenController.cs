@@ -61,6 +61,8 @@ public class DishIdenController : Controller
     [HttpPost]
     public async Task<IActionResult> Index(Dataset set, IFormFile photo)
     {
+
+
         string predictionEndpoint =
        $"{ENDPOINT}?Prediction-Key={PREDICTKEY}&Content-Type=application/octet-stream";
 
@@ -100,7 +102,6 @@ public class DishIdenController : Controller
                     var menuItem = await _dbCtx.Menu
      .Where(m => EF.Functions.Like(m.FoodName, tagName))
      .FirstOrDefaultAsync();
-
                     if (menuItem != null)
                     {
                         // Perform null checks on boundingBox values
@@ -136,14 +137,7 @@ public class DishIdenController : Controller
         }
 
         set.ImageName = picfilename;
-
-       
         return View("Result", set);
-
-
     }
 
 }
-
-
-
