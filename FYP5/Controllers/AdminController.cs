@@ -1,14 +1,93 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using FYP5.Models;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using static FYP5.Models.AdminSummary;
+
+namespace FYP5.Controllers
+{
+    public class AdminSummaryController : Controller
+    {
+        private readonly AppDbContext _context;
+
+        public AdminSummaryController(AppDbContext context)
+        {
+            _context = context;
+        
+
+       /* public ActionResult ImageUploadsChart()
+        {
+            // Assume _context is your database context
+            var imageCountByUser = _context.History
+                .GroupBy(h => h.UserId)
+                .Select(group => new
+                {
+                    UserId = group.Key,
+                    UploadCount = group.Count()
+                })
+                .ToList();
+
+            // Convert the anonymous type to a view model if necessary, or pass it directly to the view
+            return View(imageCountByUser);
+        }*/
+    }
+
+
+public IActionResult AdminIndex()
+{
+    AdminSummary adminSummary = new AdminSummary();
+
+    // 1. Total upload of images by all users based on year
+    adminSummary.TotalImageUploads = _context.History
+        .Count(h => h.UploadDate.Year == DateTime.Now.Year);
+
+    // 2. Table with a dropdown list of all the locations, showing top 10 dish count for the selected location
+    List<LocationDishCount> topDishesByLocation = _context.History
+        .GroupBy(h => h.Location)
+        .Select(g => new LocationDishCount
+        {
+            LocationName = g.Key,
+            DishCount = g.Sum(h => h.DishOne != null ? 1 : 0)
+                         + g.Sum(h => h.DishTwo != null ? 1 : 0)
+                         + g.Sum(h => h.DishThree != null ? 1 : 0)
+                         + g.Sum(h => h.DishFour != null ? 1 : 0)
+                         + g.Sum(h => h.DishFive != null ? 1 : 0)
+                         + g.Sum(h => h.DishSix != null ? 1 : 0)
+        })
+        .OrderByDescending(ldc => ldc.DishCount)
+        .Take(10)
+        .ToList();
+
+    adminSummary.TopDishesByLocation = topDishesByLocation;
+
+    // 3. Review rating (bar chart of 1-5 rating)
+    List<ReviewRatingCount> reviewRatingCounts = _context.Reviews
+        .GroupBy(r => r.Rating)
+        .Select(g => new ReviewRatingCount
+        {
+            Rating = g.Key,
+            Count = g.Count()
+        })
+        .OrderBy(rrc => rrc.Rating)
+        .ToList();
+
+    adminSummary.ReviewRatingCounts = reviewRatingCounts;
+
+    return View(adminSummary);
+}
+    }
+}
+
+
+/*using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Reflection.Metadata.Ecma335;
+using System.Security.Claims;
 using static System.Runtime.InteropServices.JavaScript.JSType;
-
 namespace FYP5.Controllers;
-
 public class AdminController : Controller
 {
     private readonly AppDbContext _context;
@@ -17,328 +96,294 @@ public class AdminController : Controller
     {
         _context = context;
     }
-
-/*    public IActionResult UserActivity() //bar, filter by year month for total no. of users
+    public IActionResult Bar()
     {
-        PrepareDataOne(1);
+        PrepareData(0);
         ViewData["Chart"] = "bar";
-        ViewData["Title"] = "Total Users by Year and Month";
-        ViewData["ShowLegend"] = "true";
-
-        return View("Chart");
-    }
-
-    public ActionResult TotalPicsPerUser()
-    {
-        PrepareDataTwo(2);
-        ViewData["Chart"] = "table"; //need to do the <table> <body> in prepdata2
-        ViewData["Title"] = "Total Images Uploaded per User";
-        ViewData["ShowLegend"] = "true";
-
-        return View("Chart");
-    }
-
-    public ActionResult OrderedDish() //most and least ordered
-    {
-        PrepareDataThree(3);
-        ViewData["Chart"] = "bar";
-        ViewData["Title"] = "Count of Dish Ordered";
-        ViewData["ShowLegend"] = "true";
-
-        return View("Chart");
-    }
-
-    public ActionResult LocationData()  //interactive 
-    {
-        PrepareDataFour(4);
-        ViewData["Chart"] = "bar";
-        ViewData["Title"] = "Rank Dishes by Location";
-        ViewData["ShowLegend"] = "true";
-
-        return View("Chart");
-    }*/
-
-
-    public ActionResult ReviewRating()
-    {
-        PrepareDataFive(5);
-        ViewData["Chart"] = "bar";
-        ViewData["Title"] = "Review Rating Ranking";
-        ViewData["ShowLegend"] = "true";
-
-        return View("Chart");
-    }
-
-
-/*    private void PrepareDataOne(int a)
-    {
-
-    }
-
-    private void PrepareDataTwo(int b) //total upload for each user (table)
-    {
-        List<History> list = DBUtl.GetList<History>("SELECT * FROM History");
-        foreach (History history in list)
-        {
-            var groupedData = historyList
-        .GroupBy(h => h.UserId)
-        .Select(group => new UserPictureUploadViewModel
-        {
-            UserId = group.Key,
-            UserName = GetUserDisplayName(group.Key), // You need to implement a method to get user display names
-            TotalUploads = group.Count()
-        })
-        .ToList();
-
-            return groupedData;
-        }
-    }
-
-    private void PrepareDataThree(int c)
-    {
-        List<History> list = DBUtl.GetList<History>("SELECT * FROM History");
-        List<string> dishNames = new List<string>();
-        List<int> dishCounts = new List<int>();
-
-        // Loop through DishOne to DishSix
-        for (int i = 1; i <= 6; i++)
-        {
-            string dishProperty = $"Dish{i}";
-
-            foreach (History history in list)
-            {
-                // Check if the dish property is not null
-                if (!string.IsNullOrEmpty(history.GetType().GetProperty(dishProperty)?.GetValue(history)?.ToString()))
-                {
-                    // Get the dish name
-                    string dishName = history.GetType().GetProperty(dishProperty)?.GetValue(history)?.ToString();
-
-                    // Check if the dish is already in the list
-                    int index = dishNames.IndexOf(dishName);
-                    if (index >= 0)
-                    {
-                        // Increment dish count
-                        dishCounts[index]++;
-                    }
-                    else
-                    {
-                        // Add the new dish and set count to 1
-                        dishNames.Add(dishName);
-                        dishCounts.Add(1);
-                    }
-                }
-            }
-        }
-
-        // Pass data to the view
-        ViewData["Data"] = dishCounts;
-        ViewData["Labels"] = dishNames;
-    }
-
-    private void PrepareDataFour(int x)
-    {
-        int dataRank = new int();
-        List<History> list = DBUtl.GetList<History>("SELECT * FROM History");
-
-        foreach (History history in list)
-        {
-            int rankIndex = CalcRanking(history.Ranking ?? 0);
-            dataRank[ratingIndex]++;
-        }
-        ViewData["Data"] = dataRank;
-    }*/
-    
-
-    private void PrepareDataFive(int y)
-    {
-        int[] dataRating = new int[5];
-        List<Reviews> list = DBUtl.GetList<Reviews>("SELECT * FROM Reviews");
-
-        foreach (Reviews review in list)
-        {
-            int ratingIndex = CalcRating(review.Rating ?? 0);
-            dataRating[ratingIndex]++;
-        }
-        ViewData["Data"] = dataRating;
-    }
-    private int CalcRating(int rate)
-    {
-        if (rate == 1) return 1;
-        else if (rate == 2) return 2;
-        else if (rate == 3) return 3;
-        else if (rate == 4) return 4;
-        else if (rate == 5) return 5;
-        else return 0;
-    }
-}
-
-
-
-
-
-/*    public async Task<IActionResult> Index()
-    {
-        // Total number of users who upload pictures / no. of registered users
-        var totalUsers = await _context.JiakUser.CountAsync();
-        var usersWithUploads = await _context.ImageUploads.Select(iu => iu.UserID).Distinct().CountAsync();
-
-        // Number of users
-        ViewBag.TotalUsers = totalUsers;
-        ViewBag.UsersWithUploads = usersWithUploads;
-
-        // View all the uploaded dishes for every user
-        var uploadedDishes = await _context.ImageUploads
-            .Include(iu => iu.User)
-            .Include(iu => iu.Dishes)
-            .ToListAsync();
-
-        var adminSummaryViewModel = new AdminSummaryViewModel
-        {
-            TotalUsers = totalUsers,
-            UsersWithUploads = usersWithUploads,
-            UploadedDishes = uploadedDishes
-        };
-
-        return View(adminSummaryViewModel);
-    }
-
-    public IActionResult MostLeastOrderedDish()
-    {
-        // Most / Least ordered dish
-        var mostOrderedDish = _context.Food
-            .GroupBy(f => f.FoodOne)
-            .OrderByDescending(g => g.Count())
-            .Select(g => new DishViewModel { DishName = g.Key, OrderCount = g.Count() })
-            .FirstOrDefault();
-
-        var leastOrderedDish = _context.Food
-            .GroupBy(f => f.FoodOne)
-            .OrderBy(g => g.Count())
-            .Select(g => new DishViewModel { DishName = g.Key, OrderCount = g.Count() })
-            .FirstOrDefault();
-
-        var mostLeastOrderedDishViewModel = new MostLeastOrderedDishViewModel
-        {
-            MostOrderedDish = mostOrderedDish,
-            LeastOrderedDish = leastOrderedDish
-        };
-
-        return View(mostLeastOrderedDishViewModel);
-    }
-
-    public IActionResult ReviewRatingChart()
-    {
-        // Review rating (bar chart of 1-5 rating)
-        var ratingCounts = _context.Reviews
-            .GroupBy(r => r.Rating)
-            .OrderBy(r => r.Key)
-            .Select(g => new ReviewRatingCount { Rating = g.Key, Count = g.Count() })
-            .ToList();
-
-        var reviewRatingChartViewModel = new ReviewRatingChartViewModel
-        {
-            RatingCounts = ratingCounts
-        };
-
-        return View(reviewRatingChartViewModel);
-    }
-}
-*/
-
-
-
-
-
-
-
-
-
-
-
-/*public class AdminController : Controller
-{
-
-
-    public IActionResult ReviewRatingBar()
-    {
-
-        string userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
-        string query = "SELECT Rating, COUNT(*) AS Count FROM Reviews GROUP BY Rating ORDER BY Rating";
-
-
-        var reviewRatings = _context.Reviews
-            .GroupBy(r => r.Rating)
-            .Select(g => new { Rating = g.Key, Count = g.Count() })
-            .OrderBy(r => r.Rating)
-            .ToList();
-
-        PrepareData(reviewRatings, "Review Ratings", "Review Rating Distribution", "Rating", "Count", "Blue");
-
-        return View("Chart");
-    }
-
-    private void PrepareData(IEnumerable<object>data, string charType, string title, string labels, string dataField, string color)
-    {
-        ViewData["Chart"] = charType;
-        ViewData["Title"] = title;
-        ViewData["ShowLegend"] = "true";
-        ViewData["Legend"] = "Data";
-        ViewData["Colors"] = new[] { color };
-        ViewData["Labels"] = labels;
-        ViewData["Data"] = dataField;
-        ViewData["ChartData"] = data;
-    }
-*/
-
-        /*PrepareData();
-        ViewData["Chart"] = "bar";
-        ViewData["Title"] = "No. of Review Rating";
+        ViewData["Title"] = "Rating Summary";
         ViewData["ShowLegend"] = "false";
         return View("Chart");
     }
-
-
-    private void PrepareData()
+    private void PrepareData(int x)
     {
-        int[] dataRating = new int[5];
+        int[] dataRating = new int[] { 0, 0, 0, 0, 0 };
+
         List<Reviews> list = DBUtl.GetList<Reviews>("SELECT * FROM Reviews");
 
-        foreach (Reviews review in list)
+        foreach (Reviews r in list)
         {
-            int ratingIndex = CalcRating(review.Rating ?? 0);
-            dataRating[ratingIndex]++;
+            dataRating[CalcGrade(r.Rating)]++;
         }
-        ViewData["Data"] = dataRating;
+        
+        string[] colors = new[] { "cyan", "lightgreen", "yellow", "pink", "lightgrey" };
+        string[] rate = new[] { "1", "2", "3", "4", "5" };
+        ViewData["Legend"] = "Rating";
+        ViewData["Colors"] = colors;
+        ViewData["Labels"] = rate;
+        if (x == 0)
+            ViewData["Data"] = dataRating;
     }
-        private int CalcRating(int rate)
+
+    private int CalcGrade(int num)
+    {
+        if (num == 1) return 0;
+        else if (num == 2) return 1;
+        else if (num == 3) return 2;
+        else if (num == 4) return 3;
+        else return 4;
+    }
+
+    *//*using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using FYP5.Models;
+
+    namespace FYP5.Controllers
+    {
+        public class AdminController : Controller
         {
-        if (rate == 1) return 1;
-        else if (rate == 2) return 2;
-        else if (rate == 3) return 3;
-        else if (rate == 4) return 4;
-        else if (rate == 5) return 5;
-        else return 0;
-        }*/
-    
+            private readonly AppDbContext _context;
+
+            public AdminController(AppDbContext context)
+            {
+                _context = context;
+            }*//*
+
+    public IActionResult Chart()
+        {
+
+            var userActivityData = PrepareUserActivityData();
+            var totalPicsPerUserData = PrepareTotalPicsPerUserData();
+            var orderedDishData = PrepareOrderedDishData();
+            var locationData = PrepareLocationData();
+            var reviewRatingData = PrepareReviewRatingData();
+
+            // Pass all data to the view
+            ViewData["UserActivityData"] = userActivityData;
+            ViewData["TotalPicsPerUserData"] = totalPicsPerUserData;
+            ViewData["OrderedDishData"] = orderedDishData;
+            ViewData["LocationData"] = locationData;
+            ViewData["ReviewRatingData"] = reviewRatingData;
+
+            return View();
+        }
+
+
+        public IActionResult UserActivity()
+        {
+            var data = PrepareUserActivityData();
+            PrepareChartData("bar", "Total Users by Year and Month", "true", data);
+
+            return View("Chart");
+        }
+
+        public IActionResult TotalPicsPerUser()
+        {
+            var data = PrepareTotalPicsPerUserData();
+            PrepareChartData("table", "Total Images Uploaded per User", "true", data);
+
+            return View("Chart");
+        }
+
+        public IActionResult OrderedDish()
+        {
+            var data = PrepareOrderedDishData();
+            PrepareChartData("bar", "Count of Dish Ordered", "true", data);
+
+            return View("Chart");
+        }
+
+        public IActionResult LocationData()
+        {
+            *//*            var locations = GetLocations(); // Fetch the list of locations
+                        var data = PrepareLocationData(); // Your existing data preparation logic
+
+                        PrepareChartData("bar", "Rank Dishes by Location", "true", data);
+
+                        ViewBag.Locations = new SelectList(locations, "Id", "Name"); // Pass locations to the view
+                        ViewBag.ChartData = data;
+
+                        return View("LocationData");*//*
+
+            var data = PrepareLocationData();
+            PrepareChartData("bar", "Rank Dishes by Location", "true", data);
+
+            return View("Chart");
+        }
+        private List<Location> GetLocations()
+        {
+            // Replace this with your actual method to fetch locations
+            // Example:
+            return new List<Location>
+        {
+            new Location { LocationName = "Location 1" },
+           *//* new Location { LocationId = 2, Name = "Location 2" },*//*
+            // Add more locations as needed
+        };
+        }
+
+        public IActionResult ReviewRating()
+        {
+            var data = PrepareReviewRatingData();
+            PrepareChartData("bar", "Review Rating Ranking", "true", data);
+
+            return View("Chart");
+        }
+
+        private void PrepareChartData(string chartType, string title, string showLegend, object data)
+        {
+            ViewData["ChartType"] = chartType;
+            ViewData["Title"] = title;
+            ViewData["ShowLegend"] = showLegend;
+            ViewData["ChartData"] = data;
+        }
+
+        // Implement the data preparation methods below
+
+        private object PrepareUserActivityData()
+        {
+            // Example SQL query (replace it with your actual query)
+            string sql = "SELECT YEAR(LastLogin) AS Year, MONTH(LastLogin) AS Month, COUNT(UserId) AS TotalUsers FROM JiakUser WHERE LastLogin IS NOT NULL GROUP BY YEAR(LastLogin), MONTH(LastLogin)";
+
+            var data = DBUtl.GetList(sql);
+            return data;
+        }
+
+        private object PrepareTotalPicsPerUserData()
+        {
+
+            string sql = "SELECT UserId as UserName, COUNT(Id) AS TotalUploads " +
+                 "FROM History " +
+                 "GROUP BY UserId";
+
+            var data = DBUtl.GetList(sql);
+            return data;
+        }
+
+        private object PrepareOrderedDishData()
+        {
+            // Example SQL query to get the most and least ordered dishes (excluding empty dishes)
+            string sql = "SELECT TOP 2 Dish, COUNT(*) AS OrderCount " +
+                        "FROM (" +
+                        "    SELECT DishOne AS Dish FROM History WHERE DishOne IS NOT NULL AND DishOne <> '' " +
+                        "    UNION ALL " +
+                        "    SELECT DishTwo FROM History WHERE DishTwo IS NOT NULL AND DishTwo <> '' " +
+                        "    UNION ALL " +
+                        "    SELECT DishThree FROM History WHERE DishThree IS NOT NULL AND DishThree <> '' " +
+                        "    UNION ALL " +
+                        "    SELECT DishFour FROM History WHERE DishFour IS NOT NULL AND DishFour <> '' " +
+                        "    UNION ALL " +
+                        "    SELECT DishFive FROM History WHERE DishFive IS NOT NULL AND DishFive <> '' " +
+                        "    UNION ALL " +
+                        "    SELECT DishSix FROM History WHERE DishSix IS NOT NULL AND DishSix <> '' " +
+                        ") AS AllDishes " +
+                        "GROUP BY Dish " +
+                        "ORDER BY OrderCount DESC";
+
+            var orderedDishes = DBUtl.GetList(sql);
+
+            // Create a list to hold the ordered dish data with colors
+            var data = orderedDishes.Select(dish => new
+            {
+                DishName = dish.Dish,
+                OrderCount = dish.OrderCount,
+                Color = dish.OrderCount == orderedDishes.Max(d => d.OrderCount) ? "green" : "orange"
+            }).ToList<object>();
+
+            return data;
+        }
+
+
+        private object PrepareLocationData()
+        {
+            // Example SQL query to get the top 10 dishes for each location
+            string sql = "SELECT Location, Dish, COUNT(*) AS OrderCount " +
+                        "FROM (" +
+                        "    SELECT Location, DishOne AS Dish FROM History WHERE DishOne IS NOT NULL AND DishOne <> '' " +
+                        "    UNION ALL " +
+                        "    SELECT Location, DishTwo FROM History WHERE DishTwo IS NOT NULL AND DishTwo <> '' " +
+                        "    UNION ALL " +
+                        "    SELECT Location, DishThree FROM History WHERE DishThree IS NOT NULL AND DishThree <> '' " +
+                        "    UNION ALL " +
+                        "    SELECT Location, DishFour FROM History WHERE DishFour IS NOT NULL AND DishFour <> '' " +
+                        "    UNION ALL " +
+                        "    SELECT Location, DishFive FROM History WHERE DishFive IS NOT NULL AND DishFive <> '' " +
+                        "    UNION ALL " +
+                        "    SELECT Location, DishSix FROM History WHERE DishSix IS NOT NULL AND DishSix <> '' " +
+                        ") AS AllDishes " +
+                        "GROUP BY Location, Dish " +
+                        "ORDER BY Location, OrderCount DESC";
+
+            var locationData = DBUtl.GetList(sql);
+
+            // Group the location data by location
+            var groupedByLocation = locationData.GroupBy(ld => ld.Location);
+
+            // Create a list to hold the location data with top 10 dishes for each location
+            var data = new List<object>();
+            foreach (var locationGroup in groupedByLocation)
+            {
+                var location = locationGroup.Key;
+                var top10Dishes = locationGroup.Take(10).Select(dish => new
+                {
+                    DishName = dish.Dish,
+                    OrderCount = dish.OrderCount
+                }).ToList<object>();
+
+                data.Add(new
+                {
+                    Location = location,
+                    Top10Dishes = top10Dishes
+                });
+            }
+
+            return data;
+        }
+
+        private object PrepareLocationData2()
+        {
+            // Implement logic to fetch data for LocationData chart
+            // ...
+
+            // Sample data for testing
+            var data = new List<object> {
+                new { Location = "Location1", Rank = 1 },
+                new { Location = "Location2", Rank = 2 },
+                // Add more data...
+            };
+
+            return data;
+        }
+
+        private object PrepareReviewRatingData()
+        {
+            // Example SQL query to get the count of reviews for each rating
+            string sql = "SELECT Rating, COUNT(*) AS Count FROM Reviews GROUP BY Rating ORDER BY Rating";
+
+            var reviewRatingData = DBUtl.GetList(sql);
+
+            // Create a list to hold the review rating data
+            var data = new List<object>();
+            for (int rating = 1; rating <= 5; rating++)
+            {
+                var ratingCount = reviewRatingData.FirstOrDefault(rr => rr.Rating == rating)?.Count ?? 0;
+                data.Add(new
+                {
+                    Rating = rating,
+                    Count = ratingCount
+                });
+            }
+
+            return data;
+        }
 
 
 
 
+    }
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+*/

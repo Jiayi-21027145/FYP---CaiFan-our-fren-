@@ -1,0 +1,66 @@
+﻿@{
+    var chartData = ViewData["ChartData"] as List<int>;
+    var chartType = ViewData["ChartType"]?.ToString();
+}
+
+@if (chartData != null && chartType != null)
+{
+    <div>
+        <h2>@ViewData["Title"]</h2>
+
+        <!-- Chart rendering logic using chartData -->
+        @if (chartType == "bar")
+        {
+            <canvas class="chart" width="400" height="200"></canvas>
+        }
+        else if (chartType == "table")
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Label</th>
+                        <th>Data</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (var i = 0; i < chartData.Count; i++)
+                    {
+                        <tr>
+                            <td>Label @(i + 1)</td>
+                            <td>@chartData[i]</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+
+    @section Scripts {
+    <script>
+        // Chart rendering logic using chartData
+        var ctx = document.querySelector(".chart").getContext("2d");
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Label1', 'Label2', 'Label3', 'Label4', 'Label5'],
+                datasets: [{
+                    label: 'Chart Data',
+                    data: @Html.Raw(Json.Serialize(chartData)),
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                legend: {
+                    display: true
+                }
+            }
+        });
+    </script>
+    }
+}
+else
+{
+    <p>Error: Chart data or type is missing.</p>
+}

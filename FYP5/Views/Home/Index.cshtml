@@ -17,7 +17,10 @@
 <body>
     <div class="text-left">
         <h1>About Us</h1>
-        <p>To Be Continue...</p>
+        <p>Welcome to JIAKPNG, where culinary exploration meets AI technology. 
+            Upload images, receive dish predictions, and get instant price and 
+            calorie estimations. Track your economy rice journey with our 
+            convenient upload history feature.</p>
     </div>
     <div class="slider">
         <div class="slide-track">
@@ -111,7 +114,39 @@
             </div>
         </div>
 
-        <p class="instagram-text">Jiakpng's Instagram</p>
+        <div class="text-center">
+            <p>JiakPng's Instagram</p>
+            <div id="qrcode" style="width: 150px; height: 150px; margin-left: auto; margin-right: auto;"></div>
+        </div>
+        <script src="path_to_qrcode.js"></script>
+        <script>
+            var qrcode = new QRCode(document.getElementById("qrcode"), {
+                text: "http://www.instagram.com/_jiakpng_",
+                width: 800,
+                height: 800
+            });
+        </script>
+
+@*         <div class="text-center">
+            <p>JiakPng's Instagram</p>
+            <p>
+                <qrcode width="150" height="150">http://www.instagram.com/_jiakpng_</qrcode>
+                
+            </p>
+        </div> *@
+
+
+
+ @*        <div class="text-center">
+            <p>JiakPng's Instagram</p>
+            <img src="http://www.instagram.com/_jiakpng_" alt="JiakPng's Instagram QR Code">
+            <qrcode> width="50px" height="50px"
+                "http://www.instagram.com/_jiakpng_</qrcode> 
+        </div>
+ 
+        
+ 
+         <p class="instagram-text">Jiakpng's Instagram</p>
         <div id="qrcode"></div>
         <script>
             var qrcode = new QRCode(document.getElementById("qrcode"), {
@@ -121,9 +156,8 @@
             });
         }
 
-        generateQRCode("https://www.instagram.com/_jiakpng_?igsh=OGppcXJ4Mm9vendo");
-
-    </script>
+    </script>   *@
+     
 
 </body>
 </html>

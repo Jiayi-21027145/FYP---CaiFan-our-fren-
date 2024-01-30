@@ -1,4 +1,30 @@
-﻿/*using System.Collections.Generic;
+﻿using System.Collections.Generic;
+
+namespace FYP5.Models
+{
+    public class AdminSummary
+    {
+        public class ReviewRatingCount
+        {
+            public int Rating { get; set; }
+            public int Count { get; set; }
+        }
+
+        public class LocationDishCount
+        {
+            public string? LocationName { get; set; }
+            public int DishCount { get; set; }
+        }
+
+        public List<ReviewRatingCount> ReviewRatingCounts { get; set; } = new List<ReviewRatingCount>();
+        public List<LocationDishCount> TopDishesByLocation { get; set; } = new List<LocationDishCount>();
+        public int TotalImageUploads { get; set; }
+    }
+}
+
+
+
+/*using System.Collections.Generic;
 
 namespace FYP5.Models
 {
@@ -32,7 +58,7 @@ namespace FYP5.Models
 
     public class DishViewModel
     {
-        public string DishName { get; set; } = string.Empty; // Provide an empty string as a default
+        public string DishName { get; set; } = string.Empty; //empty string as default
         public int OrderCount { get; set; }
     }
 
@@ -50,4 +76,4 @@ namespace FYP5.Models
         public int TotalUploads { get; set; }
     }
 
-}
+}*/

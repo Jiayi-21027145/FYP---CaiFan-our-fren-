@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Reflection.Metadata.Ecma335;
-/*using Microsoft.AspNetCore.Mvc;
-using FYP5.Models;
-using System.Linq;
 using System.Security.Claims;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -93,10 +90,10 @@ namespace FYP5.Controllers
             {
                 return "Others";
             }
-        
-   
 
-       
+
+
+
 
             // Implement logic to determine if the dish is rice, vegetable, or meat
         }
@@ -221,7 +218,7 @@ namespace FYP5.Controllers
                         Highest = g.Max(b => b.Cost)*/
                     })
                     .ToExpandoList();
-
+                
                 return View(model);
             }
             else if (rmonth <= 0 || rmonth > 12)
@@ -257,12 +254,6 @@ namespace FYP5.Controllers
                          AND MONTH(UploadDate) = {1}",
                         ryear, rmonth);
                 ViewData["reportheader"] = $"Average Price Spent {ryear} Month {rmonth} by Day";
-*//*using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
-using System.Net.Http;
-using System.Threading.Tasks;
-using FYP5.Models; // Assuming this namespace contains your model classes
-using Newtonsoft.Json;
 
                 //Retrieve summary data grouped by Day for a given Year/Month
                 var model = data
@@ -289,64 +280,63 @@ using Newtonsoft.Json;
             return View();
         }*/
     }
-        
-    
-/*
-        public HistoryController(IHttpClientFactory clientFactory)
-        {
-            _clientFactory = clientFactory;
-        }
 
-        public async Task<IActionResult> Index()
-        {
-            string userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
-            var client = _clientFactory.CreateClient();
-            var response = await client.GetAsync($"https://localhost:44328/userhistory/index");
 
-            if (response.IsSuccessStatusCode)
+    /*
+            public HistoryController(IHttpClientFactory clientFactory)
             {
-                var content = await response.Content.ReadAsStringAsync();
-                var list = JsonConvert.DeserializeObject<List<UserHistory>>(content);
-                return View("Index", list);
+                _clientFactory = clientFactory;
             }
-            else
+
+            public async Task<IActionResult> Index()
             {
-                // Handle error, e.g., return an error view
-                return View("Error");
+                string userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+                var client = _clientFactory.CreateClient();
+                var response = await client.GetAsync($"https://localhost:44328/userhistory/index");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    var list = JsonConvert.DeserializeObject<List<UserHistory>>(content);
+                    return View("Index", list);
+                }
+                else
+                {
+                    // Handle error, e.g., return an error view
+                    return View("Error");
+                }
             }
-        }
 
-        public async Task<IActionResult> UserCaloriesChart()
-        {
-            string userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
-            var client = _clientFactory.CreateClient();
-            var response = await client.GetAsync($"https://api.example.com/caloriesdata/{userid}");
-
-            if (response.IsSuccessStatusCode)
+            public async Task<IActionResult> UserCaloriesChart()
             {
-                var content = await response.Content.ReadAsStringAsync();
-                var caloriesData = JsonConvert.DeserializeObject<List<DailyCalories>>(content);
+                string userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+                var client = _clientFactory.CreateClient();
+                var response = await client.GetAsync($"https://api.example.com/caloriesdata/{userid}");
 
-                var groupedData = caloriesData.GroupBy(c => c.Gender)
-                                              .Select(g => new {
-                                                  Gender = g.Key,
-                                                  AverageCalories = g.Average(c => c.AverageCalories)
-                                              }).ToList();
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    var caloriesData = JsonConvert.DeserializeObject<List<DailyCalories>>(content);
 
-                var labels = groupedData.Select(g => g.Gender).ToArray();
-                var data = groupedData.Select(g => g.AverageCalories).ToArray();
+                    var groupedData = caloriesData.GroupBy(c => c.Gender)
+                                                  .Select(g => new {
+                                                      Gender = g.Key,
+                                                      AverageCalories = g.Average(c => c.AverageCalories)
+                                                  }).ToList();
 
-                ViewBag.Labels = labels;
-                ViewBag.Data = data;
+                    var labels = groupedData.Select(g => g.Gender).ToArray();
+                    var data = groupedData.Select(g => g.AverageCalories).ToArray();
 
-                return View("UserCaloriesChart");
+                    ViewBag.Labels = labels;
+                    ViewBag.Data = data;
+
+                    return View("UserCaloriesChart");
+                }
+                else
+                {
+                    // Handle error
+                    return View("Error");
+                }
             }
-            else
-            {
-                // Handle error
-                return View("Error");
-            }
-        }
-    }*/
+        }*/
 }
-

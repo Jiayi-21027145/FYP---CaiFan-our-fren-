@@ -12,22 +12,18 @@
     <script src="~/lib/jquery/jquery.validate.min.js"></script>
     <script src="~/lib/jquery/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/lib/chartjs/Chart.min.js"></script>
-    <script src="~/lib/chartjs/chartjs-plugin-labels.min.js"></script>
 
     @*  <style>
     body {
     background: url('@(Url.Content("~/CaiFan DG.jpg"))') no-repeat center center fixed;
     background-size: cover;
     font-size: small;
-    filter: brightness(1)       
+    filter: brightness(1)
     }
     </style> *@
 
-    @RenderSection("MoreScripts", false)
-    @RenderSection("Scripts", false)
 
-    @RenderSection("ScriptsSection", false)
-   
+
 
     @{
         var pageTitle = "Jiakpng";
@@ -40,7 +36,7 @@
 
 </head>
 <body>
-   
+
     <nav class="navbar navbar-expand-xl navbar-dark ps-2 fw-bold" style="background-color: purple;">
         <div class="container-fluid">
             <a class="navbar-brand" href="https://jiakpng.azurewebsites.net/">Jiakpng</a>
@@ -105,46 +101,57 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item bi bi-binoculars" href="~/Reviews/Index"> Review</a></li>
-                            @if(User.IsInRole("User"))
-                                    {
-                                    <li><a class="dropdown-item bi bi-binoculars" href="~/Reviews/Create"> Create Review</a></li>
-                                    }
-                                    
-                                    
+                                @if (User.IsInRole("User"))
+                                {
+                                <li><a class="dropdown-item bi bi-binoculars" href="~/Reviews/Create"> Create Review</a></li>
+                                }
+
+
 
                         </ul>
                     </li>
                         @*
-                        @if (User.IsInRole("User"))
-                        {
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" role="button"
-                               href="~/Reviews/Index" id="navbarDropdown" data-bs-toggle="dropdown">
-                                Web Review
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item bi bi-binoculars" href="~/Reviews/Index"> Review</a></li>
-                                <li><a class="dropdown-item bi bi-binoculars" href="~/Reviews/Create"> Create Review</a></li>
+                    @if (User.IsInRole("User"))
+                    {
+                    <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" role="button"
+                    href="~/Reviews/Index" id="navbarDropdown" data-bs-toggle="dropdown">
+                    Web Review
+                    </a>
+                    <ul class="dropdown-menu">
+                    <li><a class="dropdown-item bi bi-binoculars" href="~/Reviews/Index"> Review</a></li>
+                    <li><a class="dropdown-item bi bi-binoculars" href="~/Reviews/Create"> Create Review</a></li>
 
-                            </ul>
-                        </li>
-                        }
-                        else
-                        {
-                        <li class="nav-item">
-                            <a class="nav-link" href="~/Reviews/Index">Food Review</a>
-                        </li>
-                        }
-                        *@
+                    </ul>
+                    </li>
+                    }
+                    else
+                    {
+                    <li class="nav-item">
+                    <a class="nav-link" href="~/Reviews/Index">Food Review</a>
+                    </li>
+                    }
+                    *@
                         @if (User.IsInRole("Admin"))
                         {
-                            <li class="nav-item">
-                            <a class="nav-link" href="~/Summary/AdminIndex">Summary</a>
+                            {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" role="button"
+                                   href="~/Summary/UserIndex" id="navbarDropdown" data-bs-toggle="dropdown">
+                                    Summary
+                                </a>
+                                <ul class="dropdown-menu">
+
+                                    <li><a class="dropdown-item bi bi-binoculars" href="~/Summary/AdminIndex"> Year's Total Uploads Summary</a></li>
+                                    <li><a class="dropdown-item bi bi-binoculars" href="~/Summary/AdminIndex"> Location's Top Dishes Summary</a></li>
+                                    <li><a class="dropdown-item bi bi-binoculars" href="~/Summary/AdminIndex"> Review Rating Summary</a></li>
+@*                                     <li><a class="dropdown-item bi bi-binoculars" href="~/Chart/Line"> Rating Summary</a></li> *@
+                                </ul>
                             </li>
-             
+                            }
                         }
 
-                        
+
                         @if (User.IsInRole("User"))
                         {
                             {
@@ -154,7 +161,7 @@
                                     Summary
                                 </a>
                                 <ul class="dropdown-menu">
-                                    
+
                                     <li><a class="dropdown-item bi bi-binoculars" href="~/Chart/bar"> Average Calories Summary</a></li>
                                 </ul>
                             </li>
@@ -162,45 +169,45 @@
                         }
                         else
                         {
-                            <li class="nav-item">
-                                <a class="nav-link" href="~/Summary/UserIndex">Summary</a>
-                            </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="~/Summary/UserIndex">Summary</a>
+                        </li>
                         }
-                 
-                        }
+
+                    }
 
 
 
                         @* <li class="nav-item">
-                        <a class="nav-link" href="~/Account/Login">Login/Sign Up</a>
+                    <a class="nav-link" href="~/Account/Login">Login/Sign Up</a>
                     </li> *@
-                    @if (User.Identity!.IsAuthenticated)
-                    {
-                            <li class="nav-item dropdown m-auto">
-                                <a class="nav-link dropdown-toggle" role="button"
-                                href="#" id="navbarDropdown" data-bs-toggle="dropdown">
-                              
-                             
-                                 <img src="/images/defaultpp.png" class="avatar">
-                           
-                                    Welcome @User.Identity!.Name
+                        @if (User.Identity!.IsAuthenticated)
+                        {
+                        <li class="nav-item dropdown m-auto">
+                            <a class="nav-link dropdown-toggle" role="button"
+                               href="#" id="navbarDropdown" data-bs-toggle="dropdown">
+
+
+                                <img src="/images/defaultpp.png" class="avatar" style="width: 30px;">
+
+                                Welcome @User.Identity!.Name
                             </a>
-                            <ul class="dropdown-menu" >
+                            <ul class="dropdown-menu">
                                 <li><a class="dropdown-item bi bi-binoculars" href="~/Account/Update"> Update Profile</a></li>
                                 <li><a class="dropdown-item bi bi-binoculars" href="~/Account/Logoff"> Logout</a></li>
                                 <li><a class="dropdown-item bi bi-binoculars" href="~/Account/ChangePwd"> Change password</a></li>
                                 <li><a class="dropdown-item bi bi-binoculars" href="~/Account/ChangeUsername"> Change UserName</a></li>
-                                
+
                             </ul>
-                            </li>
-                     
-                    }
-                    else 
-                    {
-                        <li class="nav-item">
-                        <a class="nav-link" href="~/Account/Login">Login/Sign Up</a>
                         </li>
-                    }
+
+                        }
+                        else
+                        {
+                        <li class="nav-item">
+                            <a class="nav-link" href="~/Account/Login">Login/Sign Up</a>
+                        </li>
+                        }
                 </ul>
             </div>
         </div>
@@ -208,6 +215,12 @@
     <div class="container-fluid p-2">
         @RenderBody()
     </div>
-                
+
 </body>
+
+@RenderSection("MoreScripts", false)
+@RenderSection("Scripts", false)
+
+@RenderSection("ScriptsSection", false)
+
 </html>

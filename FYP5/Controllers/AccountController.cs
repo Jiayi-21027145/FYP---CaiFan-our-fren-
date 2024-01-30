@@ -207,37 +207,36 @@ public class AccountController : Controller
         ViewData["UserId"] = id;
         return View();
     }
-}
 
-   /* [HttpPost]
-    [AllowAnonymous]
-    public IActionResult ResetPassword(JiakUser user, string id )
-    {
-        /*if (!ModelState.IsValid)
-        {
-            ViewData["UserId"] = user.UserId;
+    /* [HttpPost]
+     [AllowAnonymous]
+     public IActionResult ResetPassword(JiakUser user, string id )
+     {
+         /*if (!ModelState.IsValid)
+         {
+             ViewData["UserId"] = user.UserId;
 
-            return View(user);
-        }*/
+             return View(user);
+         }*/
 
-        // Update password in database
-       /* string updateSql = @"UPDATE JiakUser SET UserPw = HASHBYTES('SHA1', @p1) WHERE UserId = @p0";
-        int result = DBUtl.ExecSQL(updateSql, id, user.UserPw);
+    // Update password in database
+    /* string updateSql = @"UPDATE JiakUser SET UserPw = HASHBYTES('SHA1', @p1) WHERE UserId = @p0";
+     int result = DBUtl.ExecSQL(updateSql, id, user.UserPw);
 
-        if (result == 1)
-        {
-            TempData["Message"] = "Your password has been updated successfully.";
-            TempData["MsgType"] = "success";
-            return RedirectToAction("Login");
-        }
-        else
-        {
-            TempData["Message"] = "Error updating password: " + DBUtl.DB_Message;
-            TempData["MsgType"] = "danger";
-            ViewData["UserId"] = user.UserId;
-            return View(user);
-        }
-    }*/
+     if (result == 1)
+     {
+         TempData["Message"] = "Your password has been updated successfully.";
+         TempData["MsgType"] = "success";
+         return RedirectToAction("Login");
+     }
+     else
+     {
+         TempData["Message"] = "Error updating password: " + DBUtl.DB_Message;
+         TempData["MsgType"] = "danger";
+         ViewData["UserId"] = user.UserId;
+         return View(user);
+     }
+ }*/
 
     [Authorize]
     public IActionResult ChangePwd()
@@ -314,80 +313,78 @@ public class AccountController : Controller
 
 
 
-    /*return RedirectToAction("Login");
-    string userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+/*return RedirectToAction("Login");
+string userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
 
-    string select = @"SELECT UserPw FROM JiakUser 
-                     WHERE UserId='{0}'";
-    string sql = string.Format(select, userid);
-    List<JiakUser> user = DBUtl.GetList<JiakUser>(sql);
-    if (user.Count == 1)
-    {
-        var userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
-        if (_dbCtx.Database.ExecuteSqlInterpolated(
-            $@"UPDATE JiakUser SET UserName = {un.NewUname} WHERE UserId ={userid} AND UserName = {un.CurrentUsername}") == 1)
+string select = @"SELECT UserPw FROM JiakUser 
+                 WHERE UserId='{0}'";
+string sql = string.Format(select, userid);
+List<JiakUser> user = DBUtl.GetList<JiakUser>(sql);
+if (user.Count == 1)
+{
+    var userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+    if (_dbCtx.Database.ExecuteSqlInterpolated(
+        $@"UPDATE JiakUser SET UserName = {un.NewUname} WHERE UserId ={userid} AND UserName = {un.CurrentUsername}") == 1)
 
-            ViewData["MSG"] = "Username Updated. Please go to the login page";
-        else
-            ViewData["MSG"] = "Failed to Update Username";
+        ViewData["MSG"] = "Username Updated. Please go to the login page";
+    else
+        ViewData["MSG"] = "Failed to Update Username";
 
-        return View();
+    return View();
 
-    }
+}
 
-    [Authorize]
-    public JsonResult VerifyNewUsername(string NewUname)
-    {
-        var userid =
-            User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
-        JiakUser? user = _dbCtx.JiakUser.FromSqlInterpolated(
-             $@"SELECT * FROM JiakUser WHERE UserId = {userid} AND UserName = CONVERT(VARCHAR, {NewUname})")
-            .FirstOrDefault();
-        if (user != null)
-            return Json(false);
-        else
-            return Json(true);
-    }
+[Authorize]
+public JsonResult VerifyNewUsername(string NewUname)
+{
+    var userid =
+        User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+    JiakUser? user = _dbCtx.JiakUser.FromSqlInterpolated(
+         $@"SELECT * FROM JiakUser WHERE UserId = {userid} AND UserName = CONVERT(VARCHAR, {NewUname})")
+        .FirstOrDefault();
+    if (user != null)
+        return Json(false);
+    else
+        return Json(true);
+}
 
-    
 
-        // Use the string ID to retrieve only specific columns for the user from the database
-        var userProjection = _dbCtx.JiakUser
-            .Where(u => u.UserId == userIdClaim.Value)
-            .Select(u => new JiakUser
-            {
-                UserId = u.UserId,
-                UserName = u.UserName,
-                Email = u.Email,
-                Gender = u.Gender
-                // Do not include other properties like Password, UserRole, etc.
-            })
-            .FirstOrDefault();
+
+    // Use the string ID to retrieve only specific columns for the user from the database
+    var userProjection = _dbCtx.JiakUser
+        .Where(u => u.UserId == userIdClaim.Value)
+        .Select(u => new JiakUser
+        {
+            UserId = u.UserId,
+            UserName = u.UserName,
+            Email = u.Email,
+            Gender = u.Gender
+            // Do not include other properties like Password, UserRole, etc.
+        })
+        .FirstOrDefault();
 
 public IActionResult UpdateProfile(int id)
+{
+    string userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+
+    string select = @"SELECT * FROM JiaUser 
+                     WHERE Id={0} AND UserId='{1}'";
+
+    // TODO: Lesson09 Task 2c - Make insecure DB SELECT secure.
+    string sql = string.Format(select, id, userid);
+    List<JiakUser> lstTrip = DBUtl.GetList<JiakUser>(select, id, userid);
+    if (lstTrip.Count == 1)
     {
-        string userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
-
-        string select = @"SELECT * FROM JiaUser 
-                         WHERE Id={0} AND UserId='{1}'";
-
-        // TODO: Lesson09 Task 2c - Make insecure DB SELECT secure.
-        string sql = string.Format(select, id, userid);
-        List<JiakUser> lstTrip = DBUtl.GetList<JiakUser>(select, id, userid);
-        if (lstTrip.Count == 1)
-        {
-            JiakUser trip = lstTrip[0];
-            return View(trip);
-        }
-        else
-        {
-            TempData["Message"] = "Trip Record does not exist";
-            TempData["MsgType"] = "warning";
-            return RedirectToAction("MyTrips");
-        }
+        JiakUser trip = lstTrip[0];
+        return View(trip);
     }
+    else
+    {
+        TempData["Message"] = "Trip Record does not exist";
+        TempData["MsgType"] = "warning";
+        return RedirectToAction("MyTrips");
+    }
+}
 
 }
 */
-
-
