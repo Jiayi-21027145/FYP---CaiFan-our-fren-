@@ -11,6 +11,12 @@
 <link href="~/css/dish.css" rel="stylesheet" />
 <link href="~/css/profile.css" rel="stylesheet" />
 <style>
+    body {
+        background: url('@(Url.Content("~/BG6.jpg"))') no-repeat center center fixed;
+        background-size: cover;
+    }
+</style>
+<style>
     .results-container {
         display: flex;
         flex-wrap: wrap; /* Allows items to wrap as needed */
@@ -46,8 +52,8 @@
         padding: 10px;
         text-align: left; /* Align text to the left */
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional shadow */
+        background-color: #f9f9f9; /* Optional background color */
     }
-
 
 </style>
 <script>
@@ -60,55 +66,52 @@
         var predictions = @Html.Raw(JsonConvert.SerializeObject(Model.Prediction));
 
         predictions.forEach(function (prediction) {
-            if (prediction.Box && prediction.Box.Lefts != null && prediction.Box.Tops != null && prediction.Box.Width != null && prediction.Box.Height != null) {
-                var boxLeft = prediction.Box.Lefts * imageWidth;
-                var boxTop = prediction.Box.Tops * imageHeight;
-                var boxWidth = prediction.Box.Width * imageWidth;
-                var boxHeight = prediction.Box.Height * imageHeight;
+            var boxLeft = prediction.Lefts * imageWidth;
+            var boxTop = prediction.Tops * imageHeight;
+            var boxWidth = prediction.Width * imageWidth;
+            var boxHeight = prediction.Height * imageHeight;
 
-                // Create the bounding box div
-                var box = document.createElement('div');
-                box.classList.add('bounding-box');
-                box.style.position = 'absolute';
-                box.style.left = boxLeft + 'px';
-                box.style.top = boxTop + 'px';
-                box.style.width = boxWidth + 'px';
-                box.style.height = boxHeight + 'px';
-                box.style.border = '2px solid red';
+            // Create the bounding box div
+            var box = document.createElement('div');
+            box.classList.add('bounding-box');
+            box.style.position = 'absolute';
+            box.style.left = boxLeft + 'px';
+            box.style.top = boxTop + 'px';
+            box.style.width = boxWidth + 'px';
+            box.style.height = boxHeight + 'px';
+            box.style.border = '2px solid red';
 
-                // Create a label for the bounding box
-                var label = document.createElement('div');
-                label.classList.add('box-label');
-                label.style.position = 'absolute';
-                label.style.left = '0';
-                label.style.bottom = '-20px'; // Adjust as needed
-                label.style.background = 'red';
-                label.style.color = 'white';
-                label.style.padding = '2px 5px';
-                label.textContent = prediction.TagName + ' - ' + (prediction.Probability * 100).toFixed(1) + '%';
+            // Create a label for the bounding box
+            var label = document.createElement('div');
+            label.classList.add('box-label');
+            label.style.position = 'absolute';
+            label.style.left = '0';
+            label.style.bottom = '-20px'; // Adjust as needed
+            label.style.background = 'red';
+            label.style.color = 'white';
+            label.style.padding = '2px 5px';
+            label.textContent = prediction.TagName + ' - ' + (prediction.Probability * 100).toFixed(1) + '%';
 
-                // Append the label to the box
-                box.appendChild(label);
+            // Append the label to the box
+            box.appendChild(label);
 
-                // Append the box to the container
-                container.appendChild(box);
-            }
+            // Append the box to the container
+            container.appendChild(box);
+
         });
     }
 
     window.onload = adjustBoundingBoxes;
 </script>
 
-@* <form enctype="multipart/form-data" method="post" 
-            asp-action="Result" asp-controller="DishIden"> *@
 <div class="container mt-4">
-    <h2 class="mb-3">Image Result</h2>
+    <h2 class="mb-3" style="color: hotpink;">Image Result</h2>
 
     <div class="results-container">
         @if (Model != null)
         {
             <div class="image-container" id="image-container">
-                <img src="@Url.Content("~/photos/" + Model.Picture)"
+                <img src="@Url.Content("~/UserHistory/" + Model.Picture)"
                      alt="Uploaded Image"
                      onload="adjustBoundingBoxes()"
                      style="width: 500px; height: auto;" /* Fixed width for the image * /
@@ -120,7 +123,7 @@
                 {
                     <div class="prediction-details">
                         <h3>@prediction.TagName</h3>
-                        
+
                         <p>Price: @(prediction.LowestPrice.HasValue && prediction.HighestPrice.HasValue ? "$" + $"{prediction.LowestPrice.Value} - ${prediction.HighestPrice.Value}" : "N/A")</p>
                         <p>Calories: @(prediction.LowestNv.HasValue && prediction.HighestNv.HasValue ? $"{prediction.LowestNv.Value} - {prediction.HighestNv.Value}" : "N/A")</p>
                     </div>
