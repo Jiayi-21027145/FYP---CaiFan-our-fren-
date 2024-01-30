@@ -91,35 +91,23 @@ namespace FYP5.Controllers
                 return "Others";
             }
 
-
-
-
-
-            // Implement logic to determine if the dish is rice, vegetable, or meat
         }
-        //uthorize(Roles ="User, Admin")]
-        /*public IActionResult Index()
-        {
 
-            string userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
-            string select = @"SELECT * FROM History 
-                          WHERE UserId = '{0}'";
-            List<History> list = DBUtl.GetList<History>(select, userid);
-            return View("Index", list);
-        }*/
 
         [Authorize]
         public IActionResult Summary(int ryear, int rmonth)
         {
-            List<History> data = null!;
-
+            /* List<History> data = null!;*/
+            string userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+            string select = @"SELECT * FROM History WHERE UserId = '{0}'";
+            List<History> data = _dbSvc.GetList<History>(select, userid);
             ViewData["ryear"] = ryear;
             ViewData["rmonth"] = rmonth;
 
             if (ryear <= 0)
             {
-                data = _dbSvc.GetList<History>(
-                    @"SELECT * FROM History");
+                /*data = _dbSvc.GetList<History>(
+                    @"SELECT * FROM History");*/
                 ViewData["reportheader"] = "Overall View of Sum of Average Calories Intake Per Year";
 
                 // Retrieve summary data grouped by Year
@@ -130,9 +118,6 @@ namespace FYP5.Controllers
                     {
                         Group = g.Key,
                         Total = g.Sum(b => b.AverageCalories),
-                        /*Average = g.Average(b => b.Cost),
-                        Lowest = g.Min(b => b.Cost),
-                        Highest = g.Max(b => b.Cost)*/
                     })
                     .ToExpandoList();
 
@@ -153,9 +138,6 @@ namespace FYP5.Controllers
                     {
                         Group = g.Key,
                         Total = g.Sum(b => b.AverageCalories),
-                        /*Average = g.Average(b => b.Cost),
-                        Lowest = g.Min(b => b.Cost),
-                        Highest = g.Max(b => b.Cost)*/
                     })
                     .ToExpandoList();
 
@@ -180,9 +162,6 @@ namespace FYP5.Controllers
                     {
                         Group = g.Key,
                         Total = g.Sum(b => b.AverageCalories),
-                        /*Average = g.Average(b => b.Cost),
-                        Lowest = g.Min(b => b.Cost),
-                        Highest = g.Max(b => b.Cost)*/
                     })
                     .ToExpandoList();
 
@@ -194,15 +173,18 @@ namespace FYP5.Controllers
         [Authorize]
         public IActionResult SummaryPrice(int ryear, int rmonth)
         {
-            List<History> data = null!;
+            //List<History> data = null!;
+            string userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+            string select = @"SELECT * FROM History WHERE UserId = '{0}'";
+            List<History> data = _dbSvc.GetList<History>(select, userid);
 
             ViewData["ryear"] = ryear;
             ViewData["rmonth"] = rmonth;
 
             if (ryear <= 0)
             {
-                data = _dbSvc.GetList<History>(
-                    @"SELECT * FROM History");
+                /* data = _dbSvc.GetList<History>(
+                     @"SELECT * FROM History");*/
                 ViewData["reportheader"] = "Overall View of Sum of Average Amount Spent Per Year";
 
                 // Retrieve summary data grouped by Year
@@ -213,9 +195,6 @@ namespace FYP5.Controllers
                     {
                         Group = g.Key,
                         Total = g.Sum(b => b.AveragePrice),
-                        /*Average = g.Average(b => b.Cost),
-                        Lowest = g.Min(b => b.Cost),
-                        Highest = g.Max(b => b.Cost)*/
                     })
                     .ToExpandoList();
 
@@ -226,7 +205,7 @@ namespace FYP5.Controllers
                 data = _dbSvc.GetList<History>(
                         @"SELECT * FROM History
                        WHERE YEAR(UploadDate) = {0}", ryear);
-                ViewData["reportheader"] = $"Total Average Calories Intake {ryear} by Month";
+                ViewData["reportheader"] = $"Total Average Amount Spent Intake {ryear} by Month";
 
                 //Retrieve summary data grouped by Month for a given Year
                 var model = data
@@ -236,9 +215,6 @@ namespace FYP5.Controllers
                     {
                         Group = g.Key,
                         Total = g.Sum(b => b.AveragePrice),
-                        /*Average = g.Average(b => b.Cost),
-                        Lowest = g.Min(b => b.Cost),
-                        Highest = g.Max(b => b.Cost)*/
                     })
                     .ToExpandoList();
 
@@ -263,9 +239,6 @@ namespace FYP5.Controllers
                     {
                         Group = g.Key,
                         Total = g.Sum(b => b.AveragePrice),
-                        /*Average = g.Average(b => b.Cost),
-                        Lowest = g.Min(b => b.Cost),
-                        Highest = g.Max(b => b.Cost)*/
                     })
                     .ToExpandoList();
 
@@ -273,6 +246,9 @@ namespace FYP5.Controllers
                 return View(model);
             }
         }
-
     }
 }
+
+       
+
+

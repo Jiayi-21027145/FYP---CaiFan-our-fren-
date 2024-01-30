@@ -29,7 +29,7 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<Reviews> Reviews { get; set; }
 
-    public virtual DbSet<Summary> Summary { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -315,7 +315,48 @@ public class AccountController : Controller
         else
             return Json(false);
     }
+    [Authorize]
+    public IActionResult ChangeUsername()
+    {
+        ViewData["userid"] =
+            User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+
+        return View();
+    }
+
+    [Authorize]
+    [HttpPost]
+    public IActionResult ChangeUsername(ChangeUsername uu)
+    {
+        var userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+        if (_dbCtx.Database.ExecuteSqlInterpolated(
+            $@"UPDATE JiakUser 
+            SET UserName = {uu.NewUname} 
+            WHERE UserId = {userid} AND UserName = {uu.CurrentUsername}") == 1)
+
+            ViewData["MSG"] = "Username Updated. Please go to the login page";
+        else
+            ViewData["MSG"] = "Failed to Update Username";
+
+        return View();
+
+    }
+
+    [Authorize]
+    public JsonResult VerifyNewUsername(string NewUname)
+    {
+        var userid =
+            User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+        JiakUser? user = _dbCtx.JiakUser.FromSqlInterpolated(
+             $@"SELECT * FROM JiakUser WHERE UserId = {userid} AND UserName = {NewUname}")
+            .FirstOrDefault();
+        if (user != null)
+            return Json(false);
+        else
+            return Json(true);
+    }
 
 }
+
 
 

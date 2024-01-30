@@ -29,6 +29,7 @@ builder.Services
 });
 builder.Services.AddScoped<IDbService, DbService>();
 
+
 var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
