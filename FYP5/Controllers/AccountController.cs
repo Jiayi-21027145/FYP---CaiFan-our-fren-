@@ -79,26 +79,23 @@ public class AccountController : Controller
         }
     }
 
-    private static bool AuthenticateUser(string uid, string pw,
-                                          out ClaimsPrincipal principal)
+    private static bool AuthenticateUser(string uid, string pw, out ClaimsPrincipal principal)
     {
         principal = null!;
-        string sql = @"SELECT * FROM JiakUser
-                       WHERE UserId = '{0}' AND UserPw = HASHBYTES('SHA1', '{1}')";
-        // TODO: Lesson09 Task 1 - Make login secure, use the new way of calling DBUtl
-        //string select = string.Format(sql, uid, pw);
-        DataTable ds = DBUtl.GetTable(sql, uid, pw);
+
+        DataTable ds = DBUtl.GetTable(LOGIN_SQL, uid, pw);
         if (ds.Rows.Count == 1)
         {
             principal =
                new ClaimsPrincipal(
                   new ClaimsIdentity(
                      new Claim[] {
-                        new Claim(ClaimTypes.NameIdentifier, uid),
-                        new Claim(ClaimTypes.Name, ds.Rows[0]["UserName"]!.ToString()!),
-                        new Claim(ClaimTypes.Role, ds.Rows[0]["UserRole"]!.ToString()!)
-                     },
-                     CookieAuthenticationDefaults.AuthenticationScheme));
+                     new Claim(ClaimTypes.NameIdentifier, uid),
+                     new Claim(ClaimTypes.Name, ds.Rows[0][NAME_COL].ToString()!),
+                     new Claim(ClaimTypes.Role, ds.Rows[0][ROLE_COL].ToString()!)
+                     }, "Basic"
+                  )
+               );
             return true;
         }
         return false;
@@ -127,7 +124,7 @@ public class AccountController : Controller
     [HttpPost]
     public IActionResult SignUp(JiakUser usr)
     {
-        ModelState.Remove("UserRole");     // All new users have role set to 'member'.
+        ModelState.Remove("UserRole");     // All new users have role set to 'User'.
         if (!ModelState.IsValid)
         {
             foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
@@ -167,6 +164,17 @@ public class AccountController : Controller
             }
             return View("Login");
         }
+    }
+
+    [AllowAnonymous]
+    public IActionResult VerifyUserID(string userId)
+    {
+        string select = $"SELECT * FROM JiakUser WHERE Userid='{userId}'";
+        if (DBUtl.GetTable(select).Rows.Count > 0)
+        {
+            return Json($"[{userId}] already in use");
+        }
+        return Json(true);
     }
 
     [AllowAnonymous]
@@ -307,24 +315,24 @@ public class AccountController : Controller
         else
             return Json(false);
     }
+    [Authorize]
+    public IActionResult ChangeUsername()
+    {
+        ViewData["userid"] =
+            User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
 
-}
+        return View();
+    }
 
-
-
-
-/*return RedirectToAction("Login");
-string userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
-
-string select = @"SELECT UserPw FROM JiakUser 
-                 WHERE UserId='{0}'";
-string sql = string.Format(select, userid);
-List<JiakUser> user = DBUtl.GetList<JiakUser>(sql);
-if (user.Count == 1)
-{
-    var userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
-    if (_dbCtx.Database.ExecuteSqlInterpolated(
-        $@"UPDATE JiakUser SET UserName = {un.NewUname} WHERE UserId ={userid} AND UserName = {un.CurrentUsername}") == 1)
+    [Authorize]
+    [HttpPost]
+    public IActionResult ChangeUsername(ChangeUsername uu)
+    {
+        var userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+        if (_dbCtx.Database.ExecuteSqlInterpolated(
+            $@"UPDATE JiakUser 
+            SET UserName = {uu.NewUname} 
+            WHERE UserId = {userid} AND UserName = {uu.CurrentUsername}") == 1)
 
         ViewData["MSG"] = "Username Updated. Please go to the login page";
     else
@@ -334,57 +342,21 @@ if (user.Count == 1)
 
 }
 
-[Authorize]
-public JsonResult VerifyNewUsername(string NewUname)
-{
-    var userid =
-        User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
-    JiakUser? user = _dbCtx.JiakUser.FromSqlInterpolated(
-         $@"SELECT * FROM JiakUser WHERE UserId = {userid} AND UserName = CONVERT(VARCHAR, {NewUname})")
-        .FirstOrDefault();
-    if (user != null)
-        return Json(false);
-    else
-        return Json(true);
-}
-
-
-
-    // Use the string ID to retrieve only specific columns for the user from the database
-    var userProjection = _dbCtx.JiakUser
-        .Where(u => u.UserId == userIdClaim.Value)
-        .Select(u => new JiakUser
-        {
-            UserId = u.UserId,
-            UserName = u.UserName,
-            Email = u.Email,
-            Gender = u.Gender
-            // Do not include other properties like Password, UserRole, etc.
-        })
-        .FirstOrDefault();
-
-public IActionResult UpdateProfile(int id)
-{
-    string userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
-
-    string select = @"SELECT * FROM JiaUser 
-                     WHERE Id={0} AND UserId='{1}'";
-
-    // TODO: Lesson09 Task 2c - Make insecure DB SELECT secure.
-    string sql = string.Format(select, id, userid);
-    List<JiakUser> lstTrip = DBUtl.GetList<JiakUser>(select, id, userid);
-    if (lstTrip.Count == 1)
+    [Authorize]
+    public JsonResult VerifyNewUsername(string NewUname)
     {
-        JiakUser trip = lstTrip[0];
-        return View(trip);
+        var userid =
+            User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+        JiakUser? user = _dbCtx.JiakUser.FromSqlInterpolated(
+             $@"SELECT * FROM JiakUser WHERE UserId = {userid} AND UserName = {NewUname}")
+            .FirstOrDefault();
+        if (user != null)
+            return Json(false);
+        else
+            return Json(true);
     }
-    else
-    {
-        TempData["Message"] = "Trip Record does not exist";
-        TempData["MsgType"] = "warning";
-        return RedirectToAction("MyTrips");
-    }
-}
 
 }
-*/
+
+
+

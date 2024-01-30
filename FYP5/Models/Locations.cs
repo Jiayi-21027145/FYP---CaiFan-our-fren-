@@ -9,5 +9,4 @@ public partial class Locations
 
     public string LocationName { get; set; } = null!;
 
-    public virtual ICollection<LocationPrice> LocationPrice { get; set; } = new List<LocationPrice>();
 }

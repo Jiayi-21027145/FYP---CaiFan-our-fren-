@@ -15,12 +15,7 @@ using System.Data.SqlClient;
 using System.Net.NetworkInformation;
 
 var builder = WebApplication.CreateBuilder(args);
-
 builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<AppDbContext>(
-   options => options.UseSqlServer(
-       builder.Configuration.GetConnectionString("DefaultConnection")));
-
 // authentication
 
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -37,6 +32,7 @@ builder.Services
     options.AccessDeniedPath = "/Account/Forbidden";
 });
 builder.Services.AddScoped<IDbService, DbService>();
+
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.

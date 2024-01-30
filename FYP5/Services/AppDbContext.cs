@@ -11,9 +11,6 @@ public partial class AppDbContext : DbContext
         : base(options)
     {
     }
-
-    public virtual DbSet<BoundingBox> BoundingBox { get; set; }
-
     public virtual DbSet<Calories> Calories { get; set; }
 
     public virtual DbSet<Dataset> Dataset { get; set; }
@@ -22,11 +19,7 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<History> History { get; set; }
 
-    public virtual DbSet<Items> Items { get; set; }
-
     public virtual DbSet<JiakUser> JiakUser { get; set; }
-
-    public virtual DbSet<LocationPrice> LocationPrice { get; set; }
 
     public virtual DbSet<Locations> Locations { get; set; }
 
@@ -36,19 +29,11 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<Reviews> Reviews { get; set; }
 
-    public virtual DbSet<Summary> Summary { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<BoundingBox>(entity =>
-        {
-            entity.HasKey(e => e.BoundingBoxId).HasName("PK__Bounding__8AB42BA0E5736B93");
-
-            entity.HasOne(d => d.Prediction).WithMany(p => p.BoundingBox)
-                .HasForeignKey(d => d.PredictionId)
-                .HasConstraintName("FK__BoundingB__Predi__55009F39");
-        });
-
+      
         modelBuilder.Entity<Calories>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Calories__3214EC07F4A825F3");
@@ -128,15 +113,6 @@ public partial class AppDbContext : DbContext
                 .HasConstraintName("FK_History_JiakUser");
         });
 
-        modelBuilder.Entity<Items>(entity =>
-        {
-            entity.HasKey(e => e.ItemId).HasName("PK__Items__727E83EB2CCD82B2");
-
-            entity.Property(e => e.ItemId).HasColumnName("ItemID");
-            entity.Property(e => e.ItemName)
-                .HasMaxLength(255)
-                .IsUnicode(false);
-        });
 
         modelBuilder.Entity<JiakUser>(entity =>
         {
@@ -161,24 +137,7 @@ public partial class AppDbContext : DbContext
                 .IsUnicode(false);
         });
 
-        modelBuilder.Entity<LocationPrice>(entity =>
-        {
-            entity.HasKey(e => new { e.LocationId, e.ItemId }).HasName("PK__Location__40D94C49F48CD418");
-
-            entity.Property(e => e.LocationId).HasColumnName("LocationID");
-            entity.Property(e => e.ItemId).HasColumnName("ItemID");
-            entity.Property(e => e.Price).HasColumnType("decimal(10, 2)");
-
-            entity.HasOne(d => d.Item).WithMany(p => p.LocationPrice)
-                .HasForeignKey(d => d.ItemId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__LocationP__ItemI__5CA1C101");
-
-            entity.HasOne(d => d.Location).WithMany(p => p.LocationPrice)
-                .HasForeignKey(d => d.LocationId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__LocationP__Locat__5BAD9CC8");
-        });
+      
 
         modelBuilder.Entity<Locations>(entity =>
         {
@@ -216,13 +175,13 @@ public partial class AppDbContext : DbContext
                 .HasMaxLength(255)
                 .IsUnicode(false);
 
-            entity.HasOne(d => d.Dataset).WithMany(p => p.Prediction)
-                .HasForeignKey(d => d.DatasetId)
-                .HasConstraintName("FK__Predictio__Datas__5224328E");
+            //entity.HasOne(d => d.Dataset).WithMany(p => p.Prediction)
+            //    .HasForeignKey(d => d.DatasetId)
+            //    .HasConstraintName("FK__Predictio__Datas__5224328E");
 
-            entity.HasOne(d => d.Menu).WithMany(p => p.Prediction)
-                .HasForeignKey(d => d.MenuId)
-                .HasConstraintName("FK__Predictio__MenuI__51300E55");
+            //entity.HasOne(d => d.Menu).WithMany(p => p.Prediction)
+            //    .HasForeignKey(d => d.MenuId)
+            //    .HasConstraintName("FK__Predictio__MenuI__51300E55");
         });
 
         modelBuilder.Entity<Reviews>(entity =>
