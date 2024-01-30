@@ -60,9 +60,9 @@
         var predictions = @Html.Raw(JsonConvert.SerializeObject(Model.Prediction));
 
         predictions.forEach(function (prediction) {
-            if (prediction.Box && prediction.Box.Left != null && prediction.Box.Top != null && prediction.Box.Width != null && prediction.Box.Height != null) {
-                var boxLeft = prediction.Box.Left * imageWidth;
-                var boxTop = prediction.Box.Top * imageHeight;
+            if (prediction.Box && prediction.Box.Lefts != null && prediction.Box.Tops != null && prediction.Box.Width != null && prediction.Box.Height != null) {
+                var boxLeft = prediction.Box.Lefts * imageWidth;
+                var boxTop = prediction.Box.Tops * imageHeight;
                 var boxWidth = prediction.Box.Width * imageWidth;
                 var boxHeight = prediction.Box.Height * imageHeight;
 
@@ -108,7 +108,7 @@
         @if (Model != null)
         {
             <div class="image-container" id="image-container">
-                <img src="@Url.Content("~/photos/" + Model.ImageName)"
+                <img src="@Url.Content("~/photos/" + Model.Picture)"
                      alt="Uploaded Image"
                      onload="adjustBoundingBoxes()"
                      style="width: 500px; height: auto;" /* Fixed width for the image * /

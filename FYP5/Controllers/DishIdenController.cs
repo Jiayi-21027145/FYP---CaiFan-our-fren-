@@ -14,6 +14,7 @@ using RP.SOI.DotNet.Utils;
 using Microsoft.EntityFrameworkCore;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using Mono.TextTemplating;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace FYP5.Controllers;
 
@@ -22,8 +23,6 @@ public class DishIdenController : Controller
     private readonly IWebHostEnvironment _env;
     private readonly AppDbContext _dbCtx;
 
-
-
     public DishIdenController(IWebHostEnvironment environment, AppDbContext dbCtx)
     {
         _env = environment;
@@ -31,6 +30,7 @@ public class DishIdenController : Controller
         DbSet<Menu> dbs = _dbCtx.Menu;
 
     }
+
 
     private readonly string PREDICTKEY = "0ffd60af00334e318c044feb4c735afa";
     private readonly string ENDPOINT = "https://fyppp.cognitiveservices.azure.com/customvision/v3.0/Prediction/6202816f-770e-4475-bf0f-4439480ee8e6/detect/iterations/Iteration4/image";
@@ -59,12 +59,18 @@ public class DishIdenController : Controller
 
     [Authorize]
     [HttpPost]
-    public async Task<IActionResult> Index(Dataset set, IFormFile photo)
+    public IActionResult Index(Dataset set, IFormFile photo)
     {
+        ModelState.Remove("Picture");     // No Need to Validate "Picture" - derived from "Photo".
+
+        //ModelState.Remove("User");
+
+
         string predictionEndpoint =
        $"{ENDPOINT}?Prediction-Key={PREDICTKEY}&Content-Type=application/octet-stream";
 
         string picfilename = DoPhotoUpload(set.Photo);
+        set.Picture = picfilename;
         // Create the HTTP client and request headers
         HttpClient client = new HttpClient();
         // Read the image file into a byte array
@@ -97,9 +103,9 @@ public class DishIdenController : Controller
                 string? tagName = p["tagName"]?.ToString();
                 if (!string.IsNullOrEmpty(tagName))
                 {
-                    var menuItem = await _dbCtx.Menu
+                    var menuItem = _dbCtx.Menu
      .Where(m => EF.Functions.Like(m.FoodName, tagName))
-     .FirstOrDefaultAsync();
+     .FirstOrDefault();
 
                     if (menuItem != null)
                     {
@@ -110,8 +116,8 @@ public class DishIdenController : Controller
                             // Create a BoundingBox object if all required properties are present
                             BoundingBox boundingBox = new BoundingBox
                             {
-                                Left = boundingBoxToken["left"]?.Value<double>() ?? 0,
-                                Top = boundingBoxToken["top"]?.Value<double>() ?? 0,
+                                Lefts = boundingBoxToken["left"]?.Value<double>() ?? 0,
+                                Tops = boundingBoxToken["top"]?.Value<double>() ?? 0,
                                 Width = boundingBoxToken["width"]?.Value<double>() ?? 0,
                                 Height = boundingBoxToken["height"]?.Value<double>() ?? 0
                             };
@@ -135,15 +141,7 @@ public class DishIdenController : Controller
             }
         }
 
-        set.ImageName = picfilename;
-
-       
         return View("Result", set);
-
-
-    }
-
+    } 
 }
-
-
 

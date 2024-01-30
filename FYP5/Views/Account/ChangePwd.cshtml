@@ -1,103 +1,84 @@
 ﻿@model ChangePw
 
 @{
-	Layout = "_CaiFan";
-	var userid = ViewData["userid"];
+    Layout = "_CaiFan";
 }
-
 <link href="~/css/profile.css" rel="stylesheet" />
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<script src="https://unpkg.com/phosphor-icons"></script>
-	<link href="~/css/Update.css" rel="stylesheet" />
-	<title>Vertical Tabs</title>
-</head>
-<body>
-	<style>
-		body {
-			background: url('@(Url.Content("~/bkgppp.jpg"))') no-repeat center center fixed;
-			background-size: cover;
-		}
-	</style>
+<h2>Change Password</h2>
+@*<p3> Enter your new password. Once success and updated, please go to the login page to re-enter your new password for login</p3>*@
 
-	<div class="col-sm-10">
-		@if (ViewData["Msg"] != null)
-		{
-			<div class="mb-3">
-				<div class="alert alert-secondary">
-					<text>@ViewData["Msg"]</text>
-				</div>
-			</div>
-		}
-	<form asp-controller="Account"
-      asp-action="UpdateProfile"
-      method="post">
-	<div class="container">
-		<div class="wrapper">
-			<ul class="indicator">
-				<li data-target="#password"><i class="ph-password"></i>Change Password</li>
-			</ul>
-			<ul class="content">
-				<li class="active" id="password">
-						<h1>Change Password</h1>
-						<div class="row mb-4">
-							<label class="col-form-label col-sm-3 fw-bold" for="CurrentPw">Current Password:</label>
-							<div class="col-sm-8">
-								<input text="text" asp-for="CurrentPwd" class="form-control" />
-								<span asp-validation-for="CurrentPwd" class="text-danger"></span>
-							</div>
-						</div>
-						<div class="row mb-4">
-							<label class="col-form-label col-sm-3 fw-bold" for="NewPw">New Password:</label>
-							<div class="col-sm-8">
-								<input text="text" asp-for="NewPwd" class="form-control" />
-								<span asp-validation-for="NewPwd" class="text-danger"></span>
-							</div>
-						</div>
-						<div class="row mb-4">
-							<label class="col-form-label col-sm-3 fw-bold" for="ConfirmPw">Confirm Password:</label>
-							<div class="col-sm-8">
-								<input text="text" asp-for="ConfirmPwd" class="form-control" />
-								<span asp-validation-for="ConfirmPwd" class="text-danger"></span>
-							</div>
-						</div>
-						<div class="row mb-4">
-							<div class="offset-sm-0 col-sm-4">
-								<input type="submit" value="Update"
-									   class="btn btn-sm btn-primary" />
-							</div>
-						</div>
-					</li>
-					</ul>
-				</div>>
-			</div>
-<script>
-		const allIndicator = document.querySelectorAll('.indicator li');
-		const allContent = document.querySelectorAll('.content li');
+<style>
+    body {
+        background: url('@(Url.Content("~/BG4.jpg"))') no-repeat center center fixed;
+        background-size: cover;
+    }
+</style>
 
-		allIndicator.forEach(item => {
-			item.addEventListener('click', function () {
-				const content = document.querySelector(this.dataset.target);
+<div class="col-sm-10">
+    @if (ViewData["Msg"] != null)
+    {
+        <div class="mb-3">
+            <div class="alert alert-secondary">
+                <text>@ViewData["Msg"]</text>
+            </div>
+        </div>
+    }
+    <div class="link" style="margin-bottom: 20px;">
+        <div>
+            Enter your new password. Once success and updated, please go to the login page to re-enter your new password for login
+        </div>
+    </div>
 
-				allIndicator.forEach(i => {
-					i.classList.remove('active');
-				})
 
-				allContent.forEach(i => {
-					i.classList.remove('active');
-				})
+    <form asp-controller="Account" asp-action="ChangePwd" method="post">
 
-				content.classList.add('active');
-				this.classList.add('active');
-			})
-		})
-	</script>
-	</form>
-	</div>
-</body>
-</html>
+        <div class="row mb-2">
+            <label asp-for="CurrentPwd" class="col-sm-2 col-form-label fw-bold">
+                Current Password:
+            </label>
+            <div class="col-sm-5">
+                <input asp-for="CurrentPwd" class="form-control" />
+            </div>
+            <div class="col-sm-3">
+                <span asp-validation-for="CurrentPwd"
+                      class="text-danger"></span>
+            </div>
+        </div>
 
+        <div class="row mb-2">
+            <label asp-for="NewPwd" class="col-sm-2 col-form-label fw-bold">
+                New Password:
+            </label>
+            <div class="col-sm-5">
+                <input asp-for="NewPwd" class="form-control" />
+            </div>
+            <div class="col-sm-3">
+                <span asp-validation-for="NewPwd"
+                      class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <label asp-for="ConfirmPwd" class="col-sm-2 col-form-label fw-bold">
+                Confirm Password:
+            </label>
+            <div class="col-sm-5">
+                <input asp-for="ConfirmPwd"
+                       class="form-control" />
+            </div>
+            <div class="col-sm-3">
+                <span asp-validation-for="ConfirmPwd"
+                      class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <div class="offset-sm-2 col-sm-10">
+                <input type="submit" value="Update"
+                       class="btn btn-sm btn-primary" />
+            </div>
+        </div>
+
+    </form>
+</div>
 

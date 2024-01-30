@@ -1,0 +1,80 @@
+﻿@model ChangeUsername
+
+@{
+    Layout = "_CaiFan";
+}
+@{
+    var userid = ViewData["userid"];
+}
+<link href="~/css/profile.css" rel="stylesheet" />
+<h2>Change Username</h2>
+
+<p3> Enter your new username. Once success and updated, please go to the login page to re-enter your new username for login</p3>
+
+<style>
+    body {
+        background: url('@(Url.Content("~/BG4.jpg"))') no-repeat center center fixed;
+        background-size: cover;
+    }
+</style>
+
+<div class="col-sm-10">
+    @if (ViewData["Msg"] != null)
+    {
+        <div class="mb-3">
+            <div class="alert alert-secondary">
+                <text>@ViewData["Msg"]</text>
+            </div>
+        </div>
+    }
+    <!-- Link Section with Bottom Margin -->
+    <div class="link" style="margin-bottom: 20px;">
+        <div>
+            Enter your new username. Once success and updated, please go to the login page to re-enter your new username for login
+        </div>
+    </div>
+
+    <form asp-controller="Account" asp-action="ChangeUsername" method="post">
+
+        <div class="row mb-2">
+            <label asp-for="CurrentUsername" class="col-sm-2 col-form-label fw-bold">
+                Current Username:
+            </label>
+            <div class="col-sm-5">
+                <input type="text" value="@userid"
+                       asp-for="CurrentUsername" class="form-control" />
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <label asp-for="NewUname" class="col-sm-2 col-form-label fw-bold">
+                New Username:
+            </label>
+            <div class="col-sm-5">
+                <input asp-for="NewUname" class="form-control" />
+            </div>
+            <div class="col-sm-3">
+                <span asp-validation-for="NewUname" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <label asp-for="ConfirmUname" class="col-sm-2 col-form-label fw-bold">
+                Confirm Username:
+            </label>
+            <div class="col-sm-5">
+                <input asp-for="ConfirmUname" class="form-control" />
+            </div>
+            <div class="col-sm-3">
+                <span asp-validation-for="ConfirmUname" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <div class="offset-sm-2 col-sm-10">
+                <input type="submit" value="Update"
+                       class="btn btn-sm btn-primary" />
+            </div>
+        </div>
+    </form>
+</div>

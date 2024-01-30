@@ -27,11 +27,11 @@ namespace FYP5.Controllers
         {
 
             int[] dataMax = new[] { 0, 0, 0, 0, 0 };
-            List<UserHistory> list = DBUtl.GetList<UserHistory>("SELECT * FROM UserHistory");
-            foreach (UserHistory cdt in list)
+            List<History> list = DBUtl.GetList<History>("SELECT * FROM History");
+            foreach (History cdt in list)
             {
 
-                dataMax[CalcCal(cdt.MaximumCalories)]++;
+                dataMax[CalcCal(cdt.AverageCalories)]++;
             }
 
             string[] colors = new[] { "green", "red" };
@@ -40,7 +40,7 @@ namespace FYP5.Controllers
             ViewData["Legend"] = "Healthy";
             ViewData["Colors"] = colors;
             ViewData["Labels"] = user;
-            if (x == 1)
+            if (x == 2)
                 ViewData["Data"] = dataMax;
         }
         private int CalcCal(int c)

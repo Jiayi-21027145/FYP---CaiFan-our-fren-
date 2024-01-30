@@ -47,6 +47,7 @@
         <table id=jsMenu class="table table-bordered table-condensed table-hover table-striped">
             <thead>
                 <tr>
+                    <th>ID</th>
                     <th>Dish</th>
                     <th>Name</th>
                     <th>Lowest Price</th>
@@ -61,14 +62,15 @@
             @foreach (DataRow row in Model)
             {
                 <tr>
+                    <td>@row["MenuId"]</td>
                     <td><img src="/Menu/@row["ImageData"]" width="100" height="100" /></td>
                     <td>@row["FoodName"]</td>
                     <td>@string.Format("{0:c}", row["LowestPrice"])</td>
                     <td>@string.Format("{0:c}", row["HighestPrice"])</td>
                     <td>@string.Format("{0:c}", row["AveragePrice"])</td>
                     <td>@row["NutrientName"]</td>
-                    <td>@row["HighestNV"]</td>
                     <td>@row["LowestNV"]</td>
+                    <td>@row["HighestNV"]</td>
                     <td>@row["AverageNV"]</td>
                 </tr>
             }
