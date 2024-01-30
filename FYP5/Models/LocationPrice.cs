@@ -14,4 +14,5 @@ public partial class LocationPrice
     public virtual Items Item { get; set; } = null!;
 
     public virtual Locations Location { get; set; } = null!;
+
 }

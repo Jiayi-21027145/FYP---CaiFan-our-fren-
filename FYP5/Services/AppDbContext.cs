@@ -38,13 +38,13 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<Summary> Summary { get; set; }
 
-    public virtual DbSet<Summary> Items { get; set; }
+   /* public virtual DbSet<Summary> Items { get; set; }*/
     public virtual DbSet<Summary> ItemID { get; set; }
 
-    public virtual DbSet<Summary> Locations { get; set; }
+   /* public virtual DbSet<Summary> Locations { get; set; }*/
 
     public virtual DbSet<Summary> Location { get; set; }
-    public virtual DbSet<Summary> LocationPrice { get; set; } 
+   /* public virtual DbSet<Summary> LocationPrice { get; set; } */
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

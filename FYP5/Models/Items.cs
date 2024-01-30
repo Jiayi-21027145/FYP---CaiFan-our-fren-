@@ -10,4 +10,9 @@ public partial class Items
     public string ItemName { get; set; } = null!;
 
     public virtual ICollection<LocationPrice> LocationPrice { get; set; } = new List<LocationPrice>();
+
+    public static implicit operator Items(SelectList v)
+    {
+        throw new NotImplementedException();
+    }
 }

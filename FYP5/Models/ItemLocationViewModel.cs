@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿/*using System.Collections.Generic;
 
 namespace FYP5.Models
 {
@@ -8,3 +8,4 @@ namespace FYP5.Models
         public List<Location> Locations { get; set; }
     }
 }
+*/

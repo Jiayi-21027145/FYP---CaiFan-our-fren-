@@ -17,23 +17,27 @@ namespace FYP5.Controllers
         public IActionResult Index()
         {
             // Replace '1' with the actual location ID you want to filter by
-            int locationIdToFilterBy = 1;
+          /*  int locationIdToFilterBy = 1;
 
             var itemsAtLocation = _dbCtx.Items
-                .Where(item => item.LocationID == locationIdToFilterBy)
-                .Select(item => new SelectListItem
-                {
-                    Value = item.ItemID.ToString(),
-                    Text = item.Name
-                })
-                .ToList();
+         .Where(item => item.LocationPrice.Any(lp => lp.LocationId == locationIdToFilterBy))
+         .Select(item => new SelectListItem
+         {
+             Value = item.ItemId.ToString(),
+             Text = item.ItemName
+         }).ToList();
 
-            var viewModel = new ItemLocationViewModel
+            // Create a new SelectList with the items
+            var itemSelectList = new SelectList(itemsAtLocation, "Value", "Text");
+
+            // Create the view model and set the Items property to the SelectList
+            var viewModel = new LocationPriceViewModel
             {
-                Items = new SelectList(itemsAtLocation, "Value", "Text")
+                Items = itemSelectList
             };
 
-            return View(viewModel);
+            return View(viewModel);*/
+            return View();
         }
     }
 }
