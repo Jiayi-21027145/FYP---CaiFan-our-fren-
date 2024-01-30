@@ -21,7 +21,6 @@ public partial class JiakUser
     [NotMapped]
     [Compare("UserPw", ErrorMessage = "Passwords do not match.")]
     [DataType(DataType.Password)]
-    [NotMapped]
     public string UserPw2 { get; set; } = null!;
 
     [Required(ErrorMessage = "Please enter a username.")]
@@ -42,5 +41,5 @@ public partial class JiakUser
 
     /*public virtual ICollection<ImageUploads> ImageUploads { get; set; } = new List<ImageUploads>();*/
 
-    public virtual ICollection<UserHistory> UserHistory { get; set; } = new List<UserHistory>();
+    public virtual ICollection<History> History { get; set; } = new List<History>();
 }

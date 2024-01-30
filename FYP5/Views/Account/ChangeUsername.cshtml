@@ -27,13 +27,13 @@
             </div>
         </div>
     }
-    <!-- Link Section with Bottom Margin -->
+@*     <!-- Link Section with Bottom Margin -->
     <div class="link" style="margin-bottom: 20px;">
         <div>
             Enter your new username. Once success and updated, please go to the login page to re-enter your new username for login
         </div>
     </div>
-
+ *@
     <form asp-controller="Account" asp-action="ChangeUsername" method="post">
 
         <div class="row mb-2">
@@ -41,8 +41,12 @@
                 Current Username:
             </label>
             <div class="col-sm-5">
-                <input type="text" value="@userid"
-                       asp-for="CurrentUsername" class="form-control" />
+                <input asp-for="CurrentUsername" class="form-control" />
+                    @*  type="text" @* value="CurrentUsername" *@
+                <div class="col-sm-3">
+                    <span asp-validation-for="CurrentUsername"
+                          class="text-danger"></span>
+                </div>
             </div>
         </div>
 

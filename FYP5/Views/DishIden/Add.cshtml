@@ -35,7 +35,7 @@
                 {
                     <input type="hidden" asp-for="UserId" value="@User.FindFirst(ClaimTypes.NameIdentifier)?.Value" />
                 } *@
-                <div class="col-md-8 mb-3 form-floating">
+                @*<div class="col-md-8 mb-3 form-floating">
                         <option value="Aljunied">Aljunied</option>
                         <option value="Ang Mo Kio">Ang Mo Kio</option>
                         <option value="Bartley">Bartley</option>
@@ -186,8 +186,8 @@
                 <img id="ImageUpload" src="" style="width: 400px; height: auto; margin: 0 auto;" alt="No picture uploaded" />
                 </div> *@
 
-                @*
-                <div class="row my-4 mx-4">
+                
+                @*<div class="row my-4 mx-4">
                     <input type="submit" class="btn btn-small btn-light border-primary" value="Submit" />
                 </div>
 
@@ -236,4 +236,4 @@
         document.getElementById('formFile').value = null;
         frame.src = "";
     }
-</script>
+</script>*@

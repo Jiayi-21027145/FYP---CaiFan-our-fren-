@@ -1,4 +1,4 @@
-﻿/*using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using static System.Net.WebRequestMethods;
 using System;
@@ -23,15 +23,13 @@ public class DishIdenController : Controller
     private readonly AppDbContext _dbCtx;
 
 
+    public DishIdenController(IWebHostEnvironment environment, AppDbContext dbCtx)
+    {
+        _env = environment;
+        _dbCtx = dbCtx;
+        DbSet<Menu> dbs = _dbCtx.Menu;
 
-
-        /* public IActionResult Index()
-         {
-             ViewData["userid"] =
-             User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
-
-             return View();
-         }*/
+    }
 
     private readonly string PREDICTKEY = "0ffd60af00334e318c044feb4c735afa";
     private readonly string ENDPOINT = "https://fyppp.cognitiveservices.azure.com/customvision/v3.0/Prediction/6202816f-770e-4475-bf0f-4439480ee8e6/detect/iterations/Iteration4/image";
@@ -58,26 +56,11 @@ public class DishIdenController : Controller
         return fname;
     }
 
-                string insert = string.Format(sql, userid, im.ImageLc, im.ImageDt,
-                                              picfilename);
-
-                if (DBUtl.ExecSQL(insert) == 1)
-                {
-                    TempData["Message"] = "Dish Identification Successfully Added.";
-                    TempData["MsgType"] = "success";
-                    return RedirectToAction("Index");
-                }
-                else
-                {
-                    ViewData["Message"] = DBUtl.DB_Message;
-                    ViewData["ExecSQL"] = DBUtl.DB_SQL;
-                    ViewData["MsgType"] = "danger";
-                    return View("Add");
-                }
-            }
-        }
-
-        /*string predictionEndpoint = 
+    [Authorize]
+    [HttpPost]
+    public IActionResult Index(Dataset set, IFormFile photo)
+    {
+        string predictionEndpoint = 
             $"{ENDPOINT}?Prediction-Key={PREDICTKEY}&Content-Type=application/octet-stream";
 
         string picfilename = DoPhotoUpload(set.Photo);
@@ -103,11 +86,19 @@ public class DishIdenController : Controller
         // Read the response and parse the prediction results
         string responseString = response.Content.ReadAsStringAsync().Result;
         dynamic result = JObject.Parse(responseString);
-        string resultString = JsonConvert.SerializeObject(result);
-        //JArray predictions = (JArray)result.GetValue("predictions");
-
-        return View("Result", resultString);*/
-
+        JArray predictions = result.predictions;
+        set.Prediction = new List<Prediction>();
+        foreach (var p in predictions)
+        {
+            double probability = p["probability"]?.Value<double>() ?? 0;
+            if (probability >= 0.9)
+            {
+                string? tagName = p["tagName"]?.ToString();
+                if (!string.IsNullOrEmpty(tagName))
+                {
+                    var menuItem = _dbCtx.Menu
+     .Where(m => EF.Functions.Like(m.FoodName, tagName))
+     .FirstOrDefault();
 
                     if (menuItem != null)
                     {
@@ -143,14 +134,7 @@ public class DishIdenController : Controller
             }
         }
 
-        set.ImageName = picfilename;
-
-       
         return View("Result", set);
-
-
-    }
-
     }
 }
 
