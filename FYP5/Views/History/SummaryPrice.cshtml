@@ -1,0 +1,95 @@
+﻿@model List<dynamic>
+
+@{
+    Layout = "_CaiFan";
+}
+<link href="~/css/profile.css" rel="stylesheet" />
+
+<style>
+    body {
+        background: url('@(Url.Content("~/BG4.jpg"))') no-repeat center center fixed;
+        background-size: cover;
+       
+    }
+</style>
+
+@{
+    int ryear = (int)ViewData["ryear"]!;
+    int rmonth = (int)ViewData["rmonth"]!;
+}
+
+@if (ryear > 0)
+{
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-action="SummaryPrice">Overall</a></li>
+        @if (rmonth > 0)
+        {
+            <li class="breadcrumb-item">
+                <a asp-action="SummaryPrice"
+                   asp-route-ryear="@ryear">@ryear</a>
+            </li>
+        }
+    </ol>
+}
+
+<h2 style="text-align: center;">@ViewData["reportheader"]</h2>
+<P3> Click to know more about your spending summary based on EACH YEAR, MONTH and DAY you purchase :) </P3>
+
+<body>
+
+    <!-- Link Section with Bottom Margin -->
+    <div class="link" style="margin-bottom: 20px;">
+        <div>
+            Want to have a quick view of your calories intake for the past few year?
+            Click here to view <a href="/History/Summary">Summary - Calories Intake</a>
+        </div>
+    </div>
+
+    <table class="table table-bordered table-condensed table-hover table-striped">
+        <tr>
+            <th class="col-1" width="24%">
+                @if (ryear == 0)
+                {
+                    <text>Year</text>
+                }
+                else if (rmonth == 0)
+                {
+                    <text>Month</text>
+                }
+                else
+                {
+                    <text>Day</text>
+                }
+                @*period   this line should be changed to dynamically reflecting Day, Month or Year. Refer to SingRoom*@
+            </th>
+            <th class="col-1" width="20%">Total Average Amount Spent</th>
+
+        </tr>
+        @foreach (var l in Model)
+        {
+            <tr>
+                <td class="col-1" width="24%">
+                    @if (ryear == 0)
+                    {
+                        <a asp-action="SummaryPrice"
+                           asp-route-ryear="@l.Group">@l.Group</a>
+                    }
+                    else if (rmonth == 0)
+                    {
+                        <a asp-action="SummaryPrice"
+                           asp-route-ryear="@ryear"
+                           asp-route-rmonth="@l.Group">@l.Group</a>
+                    }
+                    else
+                    {
+                        @l.Group
+                    }
+                </td>
+                <td class="col-1" width="19%">@l.Total</td>
+
+            </tr>
+        }
+    </table>
+</body>
+
+

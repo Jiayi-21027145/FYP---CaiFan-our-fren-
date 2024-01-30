@@ -151,6 +151,31 @@ public static class DBServiceHelper
         return dynList;
     }
 
+    public static ExpandoObject ToExpando(this object objAnonymous)
+    {
+        IDictionary<string, object> dictAnonymous = new RouteValueDictionary(objAnonymous)!;
+        IDictionary<string, object> objExpando = new ExpandoObject()!;
+        foreach (var item in dictAnonymous)
+            objExpando.Add(item);
+        return (ExpandoObject)objExpando!;
+    }
+
+    public static List<dynamic> ToExpandoList<T>(this List<T> list)
+    {
+        //return l.Select(o => ToExpando(o!)).ToList<dynamic>();
+        return (from o in list select ToExpando(o)).ToList<dynamic>();
+    }
+
+    public static List<dynamic> ToExpandoList(this IQueryable<dynamic> query)
+    {
+        return query.ToList().ToExpandoList();
+    }
+
+    public static List<dynamic> ToExpandoList<T>(this IEnumerable<T> query)
+    {
+        return query.ToList().ToExpandoList();
+    }
+
     public static string EscQuote(this string line) => line.Replace("'", "''");
 
 }

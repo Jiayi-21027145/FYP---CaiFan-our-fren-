@@ -1,5 +1,6 @@
 ﻿@model Dataset
 
+ 
 @{
     Layout = "_CaiFan";
     var userid = ViewData["userid"];
@@ -25,6 +26,25 @@
             </h3>
             <form enctype="multipart/form-data" method="post" action="/DIshIden/Index">
 
+                @* <input asp-for="UserId" hidden />  *@
+                <!-- Location Field -->
+              @*   <div class="col-md-8 mb-3">
+                    <label for="location">Location</label>
+                    <select class="form-control" id="location" name="Location" required>
+                        <option value="">Select a location</option>
+                        <!-- Add other options here -->
+                        <option value="Admiralty">Admiralty</option>
+                        <option value="Aljunied">Aljunied</option>
+                        <option value="Ang Mo Kio">Ang Mo Kio</option>
+                        <option value="Bartley">Bartley</option>
+                    </select>
+                </div> *@
+
+                <!-- DateTime Field -->
+              @*   <div class="col-md-8 mb-3">
+                    <label for="imageDt">Image date/time</label>
+                    <input type="datetime-local" class="form-control" id="imageDt" name="DateTime" required />
+                </div> *@
 
 
 

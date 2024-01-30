@@ -13,10 +13,7 @@
 		<None Remove="wwwroot\images\imageAI\**" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Compile Remove="Models\ItemLocationViewModel.cs" />
-	</ItemGroup>
-	<ItemGroup>
-		<_ContentIncludedByDefault Remove="wwwroot\css\summary.css" />
+	  <Content Remove="Views\Contact.cshtml" />
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Azure.CognitiveServices.Vision.CustomVision.Prediction" Version="2.0.0" />
@@ -60,6 +57,7 @@
 	<ItemGroup>
 		<None Include="Models\ItemLocationViewModel.cs" />
 		<None Include="Views\Account\Forbidden.cshtml" />
+		<None Include="Views\Home\Contact.cshtml" />
 		<None Include="Views\History\Index.cshtml" />
 		<None Include="Views\Shared\_CaiFan.cshtml" />
 		<None Include="Views\Shared\_History.cshtml" />

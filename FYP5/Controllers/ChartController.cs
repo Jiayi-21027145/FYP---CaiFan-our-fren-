@@ -18,32 +18,30 @@ namespace FYP5.Controllers
 
         private void PrepareData()
         {
-            // Fetch data from the database
-            List<History> list = DBUtl.GetList<History>("SELECT * FROM History ORDERED BY Dates");
-            string userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
-            // Aggregate data
-            int[] dataMax = new[] { 0, 0 };
+
+            int[] dataMax = new[] { 0, 0, 0, 0, 0 };
+            List<History> list = DBUtl.GetList<History>("SELECT * FROM History");
             foreach (History cdt in list)
             {
-                int index = CalcCal(cdt.AverageCalories);
-                dataMax[index]++;
+
+                dataMax[CalcCal(cdt.MaximumCalories)]++;
             }
 
             // Chart configurations
             /*string[] colors = new[] { "green", "red" };
             string[] labels = new[] { "Calorie Count < 700", "Calorie Count > 700" };*/
 
-            // Assigning data to ViewData
-            /* ViewData["Colors"] = colors;
-             ViewData["Labels"] = labels;
-             ViewData["Data"] = dataMax;
-             ViewData["Legend"] = "Healthy";
-         }*/
+            ViewData["Legend"] = "Healthy";
+            ViewData["Colors"] = colors;
+            ViewData["Labels"] = user;
+            if (x == 2)
+                ViewData["Data"] = dataMax;
+        }
+        private int CalcCal(int c)
+        {
+            if (c > 700) return 1;
 
-         private int CalcCal(int AverageCalories)
-         {
-             return 
-         }
+            else return 0;
         }
         }
     }

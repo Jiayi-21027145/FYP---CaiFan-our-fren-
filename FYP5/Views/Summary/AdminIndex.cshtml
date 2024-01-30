@@ -1,56 +1,171 @@
-﻿@{
+﻿@* @{
     Layout = "_CaiFan";
 }
 
+<div class="row">
+    <h2>Admin Summary</h2>
 
+    <!-- Left side navigation bar -->
+    <div id="sidebar">
+        <ul class="nav flex-column">
+            <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#TotalUsers">Total Users</a></li>
+            <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#UsersPerDay">Users per Day</a></li>
+            <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#MostLeastOrdered">Most/Least Ordered</a></li>
+            <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#ReviewRating">Review Rating</a></li>
+        </ul>
+    </div>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <div class="tab-content" style="margin-top:10px">
+        <!-- Total Users Tab -->
+        <div id="TotalUsers" class="tab-pane fade show active">
+            <h3>Total Users</h3>
 
-    <link href="css/summary.css" rel="stylesheet" />
-    <link href="~/css/profile.css" rel="stylesheet" />
+            <!-- File input for image upload -->
+            <input type="file" id="imageFile" accept=".jpg, .jpeg, .png" />
+            <button onclick="updateChart()">Update Chart</button>
 
-   <div class="row">
-       <h2>Admin Summary</h2>
-       <ul class="nav nav-tabs fw-bold">
-            <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" data-bs-target="#Summary1">Total Users</a></li>
-            <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" data-bs-target="#Summary2">Users per Day</a></li>
-            <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" data-bs-target="#Summary3">Track User</a></li>
-       </ul>
+            <!-- Chart.js canvas for displaying the prediction results -->
+            <canvas id="totalUsersChart" width="400" height="400"></canvas>
+        </div>
 
-       <div class="tab-content" style="margin-top:10px">
-           <div id="Summary1" class="tab-pane fade show active">
-               <div>
-                   @{
-                       <p>tableau graph 1</p>
-                       <img src="/images/total user per month.png"/>
-                   }
-               </div>
-           </div>
+        <!-- Users per Day Tab -->
+        <div id="UsersPerDay" class="tab-pane fade">
+            <h3>Users per Day</h3>
 
+            <!-- Placeholder content, replace with actual content -->
+            <img src="/images/users_per_day.png" alt="Users per Day Chart" />
+        </div>
 
-            <div id="Summary2" class="tab-pane fade">
-                @{
-                    <img src="/images/users per day.png" />
+        <!-- Most/Least Ordered Tab -->
+        <div id="MostLeastOrdered" class="tab-pane fade">
+            <h3>Most/Least Ordered</h3>
 
-                }
-            </div>
+            <!-- Placeholder content, replace with actual content -->
+            <p>Most and Least Ordered Dishes content goes here</p>
+        </div>
 
+        <!-- Review Rating Tab -->
+        <div id="ReviewRating" class="tab-pane fade">
+            <h3>Review Rating</h3>
 
-            <div id="Summary3" class="tab-pane fade">
-                @{
-                    //<img src="/images/file.jpg" />
-                        <p>tableau table for tracking user last login time</p>
-                }
-            </div>
+            <!-- Placeholder content, replace with actual content -->
+            <p>Review Rating Chart content goes here</p>
+        </div>
+    </div>
+</div> *@
 
-       </div>
-       
-       
-   </div>
-   </head>
-   </html>
- 
+    @* <ul class="nav nav-tabs fw-bold">
+        <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" data-bs-target="#TotalUsers">Total Users</a></li>
+        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" data-bs-target="#UsersPerDay">Users per Day</a></li>
+        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" data-bs-target="#TrackUser">Track User</a></li>
+    </ul>
+
+    <div class="tab-content" style="margin-top:10px">
+        <!-- Total Users Tab -->
+        <div id="TotalUsers" class="tab-pane fade show active">
+            <h3>Total Users</h3>
+
+            <!-- File input for image upload -->
+            <input type="file" id="imageFile" accept=".jpg, .jpeg, .png" />
+            <button onclick="updateChart()">Update Chart</button>
+
+            <!-- Chart.js canvas for displaying the prediction results -->
+            <canvas id="totalUsersChart" width="400" height="400"></canvas>
+        </div>
+
+        <!-- Users per Day Tab -->
+        <div id="UsersPerDay" class="tab-pane fade">
+            <h3>Users per Day</h3>
+
+            <!-- Placeholder content, replace with actual content -->
+            <img src="/images/users_per_day.png" alt="Users per Day Chart" />
+        </div>
+
+        <!-- Track User Tab -->
+        <div id="TrackUser" class="tab-pane fade">
+            <h3>Track User</h3>
+
+            <!-- Placeholder content, replace with actual content -->
+            <p>Tableau table for tracking user last login time</p>
+        </div>
+    </div>
+</div> *@
+
+<!-- Index View -->
+@* @model List<ImageUpload>
+
+<h2>Total Users and Users with Uploads</h2>
+
+<p>Total Users: @ViewBag.TotalUsers</p>
+<p>Users with Uploads: @ViewBag.UsersWithUploads</p>
+
+<h2>Uploaded Dishes</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>User</th>
+            <th>Image</th>
+            <!-- Add other relevant columns based on your model -->
+        </tr>
+    </thead>
+    <tbody>
+
+        @if (Model != null)
+        {
+            
+        
+        @foreach (var upload in Model)
+        {
+            <tr>
+                <td>@upload.User.UserName</td>
+@*                 <td><img src="@upload.ImageData" alt="Uploaded Image" style="max-width: 100px; max-height: 100px;" /></td>
+                <!-- Add other relevant columns based on your model -->
+        
+            </tr>
+        }
+        }
+    </tbody>
+</table>
+
+<!-- MostLeastOrderedDish View -->
+<h2>Most and Least Ordered Dish</h2>
+
+<p>Most Ordered Dish: @ViewBag.MostOrderedDish.DishName (Order Count: @ViewBag.MostOrderedDish.OrderCount)</p>
+<p>Least Ordered Dish: @ViewBag.LeastOrderedDish.DishName (Order Count: @ViewBag.LeastOrderedDish.OrderCount)</p>
+
+<!-- ReviewRatingChart View -->
+<h2>Review Rating Chart</h2>
+
+<div style="width: 50%;">
+    <canvas id="ratingChart"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script> *@
+@* <script>
+    var ctx = document.getElementById('ratingChart').getContext('2d');
+    var data = {
+        labels: [@foreach (var ratingCount in ViewBag.RatingCounts) { '@ratingCount.Rating'},
+        datasets: [{
+            label: 'Review Ratings',
+            data: [@foreach (var ratingCount in ViewBag.RatingCounts) { '@ratingCount.Count' }],
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
+        }]
+    };
+
+    var options = {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    };
+
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: data,
+        options: options
+    });
+</script> *@
