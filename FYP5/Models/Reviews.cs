@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FYP5.Models;
 
-public class Reviews
+public partial class Reviews
 {
-    public int? ReviewId { get; set; }
+    public int ReviewId { get; set; }
 
     public int? Rating { get; set; }
 

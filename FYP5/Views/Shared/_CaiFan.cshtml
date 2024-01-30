@@ -21,10 +21,10 @@
     font-size: small;
     filter: brightness(1)       
     }
-    </style> *@                                                               
-    
+    </style> *@
+
+    @RenderSection("MoreScripts", false)
     @RenderSection("Scripts", false)
-   
 
     @RenderSection("ScriptsSection", false)
    
@@ -147,10 +147,26 @@
                         
                         @if (User.IsInRole("User"))
                         {
-                            <li class="nav-item">
-                            <a class="nav-link" href="~/Summary/UserIndex">Summary</a>
+                            {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" role="button"
+                                   href="~/Summary/UserIndex" id="navbarDropdown" data-bs-toggle="dropdown">
+                                    Summary
+                                </a>
+                                <ul class="dropdown-menu">
+                                    
+                                    <li><a class="dropdown-item bi bi-binoculars" href="~/Chart/bar"> Average Calories Summary</a></li>
+                                </ul>
                             </li>
-             
+                            }
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" href="~/Summary/UserIndex">Summary</a>
+                            </li>
+                        }
+                 
                         }
 
 

@@ -8,6 +8,7 @@ namespace FYP5.Models;
 
 public partial class JiakUser
 {
+    [Key]
     [Required(ErrorMessage = "Please enter a user Id.")]
     [Remote(action: "VerifyUserID", controller: "Account")]
     [RegularExpression(@"^[a-zA-Z0-9]{3,10}$", ErrorMessage = "Invalid UserId Format. UserId only contain letters and digits.")]
@@ -39,7 +40,7 @@ public partial class JiakUser
 
     public DateTime? LastLogin { get; set; }
 
-    /*public virtual ICollection<ImageUploads> ImageUploads { get; set; } = new List<ImageUploads>();*/
+    public virtual ICollection<Dataset> Dataset { get; set; } = new List<Dataset>();
 
     public virtual ICollection<History> History { get; set; } = new List<History>();
 }

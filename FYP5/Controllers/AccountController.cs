@@ -206,6 +206,36 @@ public class AccountController : Controller
         return View();
     }
 
+   /* [HttpPost]
+    [AllowAnonymous]
+    public IActionResult ResetPassword(JiakUser user, string id )
+    {
+        /*if (!ModelState.IsValid)
+        {
+            ViewData["UserId"] = user.UserId;
+
+            return View(user);
+        }*/
+
+        // Update password in database
+       /* string updateSql = @"UPDATE JiakUser SET UserPw = HASHBYTES('SHA1', @p1) WHERE UserId = @p0";
+        int result = DBUtl.ExecSQL(updateSql, id, user.UserPw);
+
+        if (result == 1)
+        {
+            TempData["Message"] = "Your password has been updated successfully.";
+            TempData["MsgType"] = "success";
+            return RedirectToAction("Login");
+        }
+        else
+        {
+            TempData["Message"] = "Error updating password: " + DBUtl.DB_Message;
+            TempData["MsgType"] = "danger";
+            ViewData["UserId"] = user.UserId;
+            return View(user);
+        }
+    }*/
+
     [Authorize]
     public IActionResult ChangePwd()
     {

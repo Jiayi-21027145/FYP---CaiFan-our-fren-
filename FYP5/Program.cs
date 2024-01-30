@@ -9,7 +9,6 @@ global using Microsoft.AspNetCore.Mvc.Rendering;
 global using System.ComponentModel.DataAnnotations;
 global using System.Security.Claims;
 global using System.Dynamic;
-
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System;
 using System.Data.SqlClient;

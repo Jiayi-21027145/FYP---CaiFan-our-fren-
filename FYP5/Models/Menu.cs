@@ -5,6 +5,8 @@ namespace FYP5.Models;
 
 public partial class Menu
 {
+    public int MenuId { get; set; }
+
     public string FoodName { get; set; } = null!;
 
     public string? ImageData { get; set; }

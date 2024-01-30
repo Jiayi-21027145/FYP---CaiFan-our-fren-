@@ -1,24 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FYP5.Models;
 
-[Owned]
-public class BoundingBox
-{
-   
-    public double Left { get; set; }
-
-    public double Top { get; set; }
-
-    public double Width { get; set; }
-
-    public double Height { get; set; }
-}
-
-    public  class Prediction
+public partial class Prediction
 {
     public int PredictionId { get; set; }
 
@@ -26,23 +11,25 @@ public class BoundingBox
 
     public double? Probability { get; set; }
 
-    public string? MenuId { get; set; }
-
-    public BoundingBox ?Box { get; set; }
+    public int? MenuId { get; set; }
 
     public decimal? LowestPrice { get; set; }
 
     public decimal? HighestPrice { get; set; }
-    [Column("HighestNv")]
+
     public int? HighestNv { get; set; }
-    [Column("LowestNv")]
+
     public int? LowestNv { get; set; }
-    [Column("AverageNv")]
+
     public int? AverageNv { get; set; }
 
     public int? DatasetId { get; set; }
 
+    public virtual ICollection<BoundingBox> BoundingBox { get; set; } = new List<BoundingBox>();
+
     public virtual Dataset? Dataset { get; set; }
 
     public virtual Menu? Menu { get; set; }
+
+    public virtual BoundingBox? Box { get; set; } // Navigation property
 }
