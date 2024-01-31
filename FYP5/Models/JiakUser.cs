@@ -8,7 +8,7 @@ namespace FYP5.Models;
 
 public partial class JiakUser
 {
-    [Key]
+    
     [Required(ErrorMessage = "Please enter a user Id.")]
     [Remote(action: "VerifyUserID", controller: "Account")]
     [RegularExpression(@"^[a-zA-Z0-9]{3,10}$", ErrorMessage = "Invalid UserId Format. UserId only contain letters and digits.")]
@@ -17,7 +17,7 @@ public partial class JiakUser
     [Required(ErrorMessage = "Please enter Password")]
     [DataType(DataType.Password)]
     [RegularExpression(@"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$", ErrorMessage = "Invalid Password Format. Password must have minimum 8 characters, 1 uppercase, 1 lowercase, 1 digit and 1 special character.")]
-    public byte[] UserPw { get; set; } = null!;
+    public string UserPw { get; set; } = null!;
     
     [NotMapped]
     [Compare("UserPw", ErrorMessage = "Passwords do not match.")]
@@ -28,7 +28,7 @@ public partial class JiakUser
     [RegularExpression(@"^[A-Za-z][A-Za-z0-9_]{3,29}$", ErrorMessage = "Invalid UserName Format. UserName does not contain special characters.")]
     public string UserName { get; set; } = null!;
 
-
+    [Required]
     public string Gender { get; set; } = null!;
     [Required(ErrorMessage = "Please enter an email address.")]
     [EmailAddress(ErrorMessage = "Email address is not valid.")]

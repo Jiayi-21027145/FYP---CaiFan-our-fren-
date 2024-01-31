@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
 
 namespace FYP5.Controllers;
 
+
+
 public class AccountController : Controller
 {
     private readonly AppDbContext _dbCtx;
@@ -77,26 +79,23 @@ public class AccountController : Controller
         }
     }
 
-    private static bool AuthenticateUser(string uid, string pw,
-                                          out ClaimsPrincipal principal)
+    private static bool AuthenticateUser(string uid, string pw, out ClaimsPrincipal principal)
     {
         principal = null!;
-        string sql = @"SELECT * FROM JiakUser
-                       WHERE UserId = '{0}' AND UserPw = HASHBYTES('SHA1', '{1}')";
-        // TODO: Lesson09 Task 1 - Make login secure, use the new way of calling DBUtl
-        //string select = string.Format(sql, uid, pw);
-        DataTable ds = DBUtl.GetTable(sql, uid, pw);
+
+        DataTable ds = DBUtl.GetTable(LOGIN_SQL, uid, pw);
         if (ds.Rows.Count == 1)
         {
             principal =
                new ClaimsPrincipal(
                   new ClaimsIdentity(
                      new Claim[] {
-                        new Claim(ClaimTypes.NameIdentifier, uid),
-                        new Claim(ClaimTypes.Name, ds.Rows[0]["UserName"]!.ToString()!),
-                        new Claim(ClaimTypes.Role, ds.Rows[0]["UserRole"]!.ToString()!)
-                     },
-                     CookieAuthenticationDefaults.AuthenticationScheme));
+                     new Claim(ClaimTypes.NameIdentifier, uid),
+                     new Claim(ClaimTypes.Name, ds.Rows[0][NAME_COL].ToString()!),
+                     new Claim(ClaimTypes.Role, ds.Rows[0][ROLE_COL].ToString()!)
+                     }, "Basic"
+                  )
+               );
             return true;
         }
         return false;
@@ -125,7 +124,7 @@ public class AccountController : Controller
     [HttpPost]
     public IActionResult SignUp(JiakUser usr)
     {
-        ModelState.Remove("UserRole");     // All new users have role set to 'member'.
+        ModelState.Remove("UserRole");     // All new users have role set to 'User'.
         if (!ModelState.IsValid)
         {
             foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
@@ -165,6 +164,17 @@ public class AccountController : Controller
             }
             return View("Login");
         }
+    }
+
+    [AllowAnonymous]
+    public IActionResult VerifyUserID(string userId)
+    {
+        string select = $"SELECT * FROM JiakUser WHERE Userid='{userId}'";
+        if (DBUtl.GetTable(select).Rows.Count > 0)
+        {
+            return Json($"[{userId}] already in use");
+        }
+        return Json(true);
     }
 
     [AllowAnonymous]

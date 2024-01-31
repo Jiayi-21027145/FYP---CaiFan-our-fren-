@@ -36,4 +36,6 @@ public partial class History
     public string Image { get; set; } = null!;
 
     public virtual JiakUser User { get; set; } = null!;
+
+   
 }
