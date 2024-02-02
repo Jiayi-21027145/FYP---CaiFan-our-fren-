@@ -31,6 +31,14 @@ public partial class AppDbContext : DbContext
 
 
 
+   /* public virtual DbSet<Summary> Items { get; set; }*/
+    public virtual DbSet<Summary> ItemID { get; set; }
+
+   /* public virtual DbSet<Summary> Locations { get; set; }*/
+
+    public virtual DbSet<Summary> Location { get; set; }
+   /* public virtual DbSet<Summary> LocationPrice { get; set; } */
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
       
@@ -202,6 +210,11 @@ public partial class AppDbContext : DbContext
                 .HasMaxLength(10)
                 .IsUnicode(false)
                 .HasColumnName("UserID");
+            entity.Property(e => e.Item)
+                .HasColumnName("items");
+            entity.Property(e => e.Location)
+                 .HasMaxLength(30);
+
         });
 
         OnModelCreatingPartial(modelBuilder);

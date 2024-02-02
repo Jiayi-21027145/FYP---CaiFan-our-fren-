@@ -216,13 +216,14 @@ public class AccountController : Controller
         return View();
     }
 
-    /* [HttpPost]
-     [AllowAnonymous]
-     public IActionResult ResetPassword(JiakUser user, string id )
-     {
-         /*if (!ModelState.IsValid)
-         {
-             ViewData["UserId"] = user.UserId;
+
+   /* [HttpPost]
+    [AllowAnonymous]
+    public IActionResult ResetPassword(JiakUser user, string id )
+    {
+        /*if (!ModelState.IsValid)
+        {
+            ViewData["UserId"] = user.UserId;
 
              return View(user);
          }*/
