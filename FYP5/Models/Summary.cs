@@ -12,4 +12,8 @@ public partial class Summary
     public int TotalCount { get; set; }
 
     public int TotalPic { get; set; }
+    public string Item { get; set; } = null!;
+    public string Location { get; set; } = null!;
 }
+
+

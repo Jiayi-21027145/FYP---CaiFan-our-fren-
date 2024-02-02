@@ -216,6 +216,7 @@ public class AccountController : Controller
         return View();
     }
 
+
    /* [HttpPost]
     [AllowAnonymous]
     public IActionResult ResetPassword(JiakUser user, string id )

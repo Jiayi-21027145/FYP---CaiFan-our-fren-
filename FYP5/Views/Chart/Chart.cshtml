@@ -1,4 +1,57 @@
-﻿@* @{
+﻿@model Chart
+
+@{
+    ViewData["Title"] = "Monthly Average Calories Chart";
+    Layout = "_CaiFan";
+}
+<link href="~/css/profile.css" rel="stylesheet" />
+<h2>@ViewData["Title"]</h2>
+
+
+<form asp-action="Chart" asp-controller="Chart" method="get">
+    <label for="yearSelect">Select Year:</label>
+    <select id="yearSelect" asp-for="SelectedYear" asp-items="Model.Years"></select>
+    <input type="submit" value="Filter" />
+</form>
+
+<canvas id="caloriesChart"></canvas>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var ctx = document.getElementById('caloriesChart').getContext('2d');
+            var chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Months)),
+                    datasets: [{
+                        label: 'Average Calories',
+                        data: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.AverageCalories)),
+                        borderColor: 'rgb(75, 192, 192)',
+                        fill: false
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+
+  
+}
+
+
+
+
+
+
+@* @{
     ViewData["Title"] = "Bar Chart";
 }
 
@@ -34,8 +87,9 @@
         });
     </script>
 } *@
- <div class="my-3">
-    <h2>Comparing with other users</h2>
+
+ @* <div class="my-3">
+    <h2>Calorie Count</h2>
 </div>
 
 @section MoreScripts {
@@ -73,7 +127,7 @@
 
     </script>
 }
-<canvas id="chart" width="600" height="400"></canvas>  
+<canvas id="chart" width="600" height="400"></canvas>   *@
 
 
 

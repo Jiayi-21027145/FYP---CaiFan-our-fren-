@@ -1,51 +1,51 @@
 ﻿@section MoreScripts {
 
-   <script language="javascript">
-      // var mychart;
-      
-      $(document).ready(
+    <script language="javascript">
+        // var mychart;
 
-         function () {
+        $(document).ready(
 
-            var mychart = new Chart(document.getElementById("chart"), {
-               type: 'line',
-               data: {
-                  labels: ['', '', '', '', '', '', '', '', '', ''],
-                  datasets: [{
-                       label: 'Data Units',
-                  //   backgroundColor: ["green", "red"],
-                       data: [0,0,0,0,0,0,0,0,0,0]
-                  }]
-               },
-               options: {
-                  responsive: false,
-                  title: {
-                     display: true,
-                     text: ''
-                  }
-               }
-            });
+            function () {
 
-            $.ajaxSetup({ cache: false });
-            setInterval(
-               function () {
-                  $.getJSON(
-                     "/Opinion/GetData",
-                     function (data) {
-                        mychart.data.datasets[0].data = data;
-                        mychart.update();
-                     }
-                  );
-               },
-               2000
-            );
+                var mychart = new Chart(document.getElementById("chart"), {
+                    type: 'line',
+                    data: {
+                        labels: ['', '', '', '', '', '', '', '', '', ''],
+                        datasets: [{
+                            label: 'Data Units',
+                            //   backgroundColor: ["green", "red"],
+                            data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+                        }]
+                    },
+                    options: {
+                        responsive: false,
+                        title: {
+                            display: true,
+                            text: ''
+                        }
+                    }
+                });
 
-         }
+                $.ajaxSetup({ cache: false });
+                setInterval(
+                    function () {
+                        $.getJSON(
+                            "/Opinion/GetData",
+                            function (data) {
+                                mychart.data.datasets[0].data = data;
+                                mychart.update();
+                            }
+                        );
+                    },
+                    2000
+                );
 
-         
-      );
+            }
 
-   </script>
+
+        );
+
+    </script>
 
 }
 <h1>Real Time</h1>

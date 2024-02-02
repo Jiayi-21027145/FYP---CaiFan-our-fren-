@@ -125,12 +125,28 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     
-                                    <li><a class="dropdown-item bi bi-binoculars" href="~/Chart/bar"> Average Calories Summary</a></li>
+                                    <li><a class="dropdown-item bi bi-binoculars" href="~/Chart/Chart"> Average Calories Summary</a></li>
+                                    <li><a class="dropdown-item bi bi-binoculars" href="~/Pie/Index"> Frequency of Dish Ordered </a></li>
+                                    <li><a class="dropdown-item bi bi-binoculars" href="~/Summary/UserIndex"> Average Price Spent in the Month </a></li>
+             
                                 </ul>
                             </li>
                             }
                         }
-               
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" href="~/Summary/UserIndex">Summary</a>
+                            </li>
+                        }
+                 
+                        
+
+
+
+                        @* <li class="nav-item">
+                        <a class="nav-link" href="~/Account/Login">Login/Sign Up</a>
+                    </li> *@
                     @if (User.Identity!.IsAuthenticated)
                     {
                             <li class="nav-item dropdown m-auto">
