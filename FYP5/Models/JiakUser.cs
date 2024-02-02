@@ -19,7 +19,7 @@ public partial class JiakUser
     [RegularExpression(@"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$", ErrorMessage = "Invalid Password Format. Password must have minimum 8 characters, 1 uppercase, 1 lowercase, 1 digit and 1 special character.")]
     public string UserPw { get; set; } = null!;
     
-    //[NotMapped]
+    [NotMapped]
     [Compare("UserPw", ErrorMessage = "Passwords do not match.")]
     [DataType(DataType.Password)]
     public string UserPw2 { get; set; } = null!;
