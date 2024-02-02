@@ -1,125 +1,216 @@
 ﻿
 using Microsoft.AspNetCore.Mvc;
-using FYP5.Models;
 using System.Linq;
+using FYP5.Models; // Adjust the namespace to match your project
 using System.Globalization;
+
+public class PieController : Controller
+{
+    private readonly AppDbContext _dbCtx; // Assuming you have a DbContext
+
+    public PieController(AppDbContext dbCtx)
+    {
+        _dbCtx = dbCtx;
+    }
+
+    public IActionResult Index()
+    {
+        return View("Index"); // Specifies the view to return
+    }
+
+    public IActionResult DishFrequencies()
+    {
+        var histories = _dbCtx.History.ToList();
+
+        var dishCounts = histories
+            .SelectMany(h => new[] { h.DishOne, h.DishTwo, h.DishThree, h.DishFour, h.DishFive, h.DishSix })
+            .Where(dish => !string.IsNullOrWhiteSpace(dish))
+            .GroupBy(dish => dish.Trim().ToLower()) // Normalize the keys
+            .Select(group => new { Key = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(group.Key), Count = group.Count() }) // Convert back to Title Case for display
+            .ToList();
+
+        return Json(dishCounts);
+    }
+
+
+}
+
+
+/*using Microsoft.AspNetCore.Mvc;
+using FYP5.Models;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Linq;
+using System.Security.Claims;
 
 namespace FYP5.Controllers
 {
-    public class ChartController : Controller
+    public class PieController : Controller
     {
         public IActionResult Pie()
         {
-            PrepareData(0);
+            var chartData = PrepareData(0);
             ViewData["Chart"] = "pie";
             ViewData["Title"] = "Dish Frequency";
             ViewData["ShowLegend"] = "true";
+            ViewData["ChartData"] = chartData;
             return View("Chart");
         }
-        private void PrepareData(int x)
+        public IActionResult Line()
+        {
+            var chartData = PrepareData(1);
+            ViewData["Chart"] = "line";
+            ViewData["Title"] = "Average Price paid";
+            ViewData["ShowLegend"] = "false";
+            ViewData["ChartData"] = chartData;
+            return View("Chart");
+        }
+        private List<int> PrepareData(int x)
         {
             string userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
-            int[] dataDish = new int[] { 0, 0, 0, 0, 0 };
+            List<History> list = DBUtl.GetList<History>("SELECT * FROM History");
 
+
+            // Dictionary to keep track of dish counts
+            var dishCounts = new Dictionary<string, int>();
+
+            foreach (History historyItem in list)
+            {
+                CountDish(dishCounts, historyItem.DishOne);
+                CountDish(dishCounts, historyItem.DishTwo);
+                CountDish(dishCounts, historyItem.DishThree);
+                CountDish(dishCounts, historyItem.DishFour);
+                CountDish(dishCounts, historyItem.DishFive);
+                CountDish(dishCounts, historyItem.DishSix);
+            }
+
+            // Convert dishCounts to the format required for chart data
+            var dataDish = dishCounts.Values.ToList();
+            var dishNames = dishCounts.Keys.ToList();
+
+            ViewData["Legend"] = dishNames;
+            ViewData["Colors"] = new[] { "cyan", "lightgreen", "yellow", "pink", "lightgrey", "lightpurple", "red", "orange", "lightblue", "brown", "gold" };
+
+            return dataDish;
+        }
+
+        private void CountDish(Dictionary<string, int> dishCounts, string dish)
+        {
+            if (!string.IsNullOrEmpty(dish))
+            {
+                if (dishCounts.ContainsKey(dish))
+                {
+                    dishCounts[dish]++;
+                }
+                else
+                {
+                    dishCounts.Add(dish, 1);
+                }
+            }
+        }
+
+        private void PrepareData(int x)
+        {
+
+            int[] dataMax = new[] { 0, 0, 0, 0, 0 };
+            List<History> list = DBUtl.GetList<History>("SELECT * FROM History ORDERED BY UploadDate");
+            foreach (History cdt in list)
+            {
+
+                dataMax[CalcCal(cdt.AverageCalories)]++;
+            }
+
+
+            string[] user = new[] { "Calorie Count < 700", "Calorie Count > 700" };
+
+            ViewData["Legend"] = "Healthy";
+            // ViewData["Colors"] = colors;
+            //ViewData["Labels"] = user;
+            if (x == 2)
+                ViewData["Data"] = dataMax;
+        }
+
+        private static int CalcCal(int c)
+        {
+            if (c > 700) return 1;
+
+            else return 0;
         }
     }
 }
-      /*      List<History> list = DBUtl.GetList<History>("SELECT * FROM History");
-            foreach (History cdt in list)
-            {
-                dataDish[CalcDish(cdt.Dish)]++;
-                dataShooting[CalcGrade(cdt.Shooting)]++;
-                dataExam[CalcGrade(cdt.Exam)]++;
-            }
-            string[] colors = new[] { "cyan", "lightgreen", "yellow", "pink", "lightgrey", "purple", "red", "orange", "blue", "brown", "gold"};
-            string[] item = new[] { "White Rice", "Crispy Meat with Sauce", "Crispy Meat", "Braised Meat", "Non-Leafy Vegetable", "Leafy Vegetable",
-            "White Fish", "Fried Batang Fish", "Steamed Egg", "Hard Boiled Egg", "Omelette"};
-             ViewData["Legend"] = "Dishes Ordered";
-             ViewData["Colors"] = colors;
-             ViewData["Labels"] = grades;
-    }
-        private int CalcDish(int index)
-        {
-            if (score >= 80) return 0;
-            else if (score >= 70) return 1;
-            else if (score >= 60) return 2;
-            else if (score >= 50) return 3;
-            else return 4;
-        }
-    }*/
-       /* private readonly AppDbContext _context;
+}
+*/
 
-        public ChartController(AppDbContext context)
-        {
-            _context = context;
-        }
+/* private readonly AppDbContext _context;
 
-        public IActionResult Chart(int? year)
-        {
-            DbSet<History> dbs = _context.History;
-            List<History> model = null!;
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
-            model = dbs.Where(mo => mo.UserId == userId).ToList();
-            // Fetch distinct years to populate the year filter dropdown
-            var years = _context.History
-                .Where(h => h.UserId == userId)
-                .Select(h => h.UploadDate.Year)
-                .Distinct()
-                .OrderBy(y => y)
-                .ToList();
-          
+ public ChartController(AppDbContext context)
+ {
+     _context = context;
+ }
 
-            // Ensure there are years to choose from
-            if (!years.Any())
-            {
-                // Handle the case where there are no years
-                // Set an error message or return a different view
-            }
+ public IActionResult Chart(int? year)
+ {
+     DbSet<History> dbs = _context.History;
+     List<History> model = null!;
+     var userId = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+     model = dbs.Where(mo => mo.UserId == userId).ToList();
+     // Fetch distinct years to populate the year filter dropdown
+     var years = _context.History
+         .Where(h => h.UserId == userId)
+         .Select(h => h.UploadDate.Year)
+         .Distinct()
+         .OrderBy(y => y)
+         .ToList();
 
-            // Fetch the data for the chart
-            var data = model;
-            if (year.HasValue)
-            {
-                data = data.Where(h => h.UploadDate.Year == year.Value).ToList();
-            }
-        
 
-           if (!data.Any())
-    {
-        // Handle the case where there's no data
-        // Set an error message or return a different view
-        ViewData["Message"] = $"No data available for the year {year}.";
-        return View();
-    }
+     // Ensure there are years to choose from
+     if (!years.Any())
+     {
+         // Handle the case where there are no years
+         // Set an error message or return a different view
+     }
 
-    var groupedData = data
-                .GroupBy(h => h.UploadDate.Month)
-                .Select(group => new
-                {
-                    Month = group.Key,
-                    AverageCalories = (int)group.Sum(h => h.AverageCalories)
-                })
-                .OrderBy(x => x.Month)
-                .ToList();
-            var yr = years.ToList().Select(y => new { Value = y, Text = y.ToString() }).ToList();
-            var yearsSelectList = new SelectList(years, "Value", "Text", year);
-            var viewModel = new Chart
-            {
+     // Fetch the data for the chart
+     var data = model;
+     if (year.HasValue)
+     {
+         data = data.Where(h => h.UploadDate.Year == year.Value).ToList();
+     }
 
-                *//*Years = new SelectList(years),*//*
-                SelectedYear = year,
-                Years = new SelectList(years.Select(y => new { Value = y, Text = y.ToString() }), "Value", "Text"),
-                UserId = userId,
-                Months = groupedData.Select(c => CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(c.Month)).ToList(),
-                AverageCalories = groupedData.Select(c => c.AverageCalories).ToList()
 
-            };
+    if (!data.Any())
+{
+ // Handle the case where there's no data
+ // Set an error message or return a different view
+ ViewData["Message"] = $"No data available for the year {year}.";
+ return View();
+}
 
-            return View(viewModel);
-        }
-    }
+var groupedData = data
+         .GroupBy(h => h.UploadDate.Month)
+         .Select(group => new
+         {
+             Month = group.Key,
+             AverageCalories = (int)group.Sum(h => h.AverageCalories)
+         })
+         .OrderBy(x => x.Month)
+         .ToList();
+     var yr = years.ToList().Select(y => new { Value = y, Text = y.ToString() }).ToList();
+     var yearsSelectList = new SelectList(years, "Value", "Text", year);
+     var viewModel = new Chart
+     {
+
+         *//*Years = new SelectList(years),*//*
+         SelectedYear = year,
+         Years = new SelectList(years.Select(y => new { Value = y, Text = y.ToString() }), "Value", "Text"),
+         UserId = userId,
+         Months = groupedData.Select(c => CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(c.Month)).ToList(),
+         AverageCalories = groupedData.Select(c => c.AverageCalories).ToList()
+
+     };
+
+     return View(viewModel);
+ }
+}
 }
 
 
@@ -207,51 +298,54 @@ namespace FYP5.Controllers
 
 }
 }*/
-/*     using Microsoft.AspNetCore.Mvc;
+/*using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using FYP5.Models; // Make sure this namespace points to where your DailyCalories model is located
 
 namespace FYP5.Controllers
-    {
-        public class ChartController : Controller
+{
+    public class ChartController : Controller
+    {*/
+
+/*    public IActionResult Line()
+        {
+            PrepareData(2);
+            ViewData["Chart"] = "line";
+            ViewData["Title"] = "Price Range";
+            ViewData["ShowLegend"] = "false";
+            return View("Chart");
+        }
+
+
+        private void PrepareData(int x)
         {
 
-            public IActionResult Line()
-            {
-                PrepareData(2);
-                ViewData["Chart"] = "line";
-                ViewData["Title"] = "Price Range";
-                ViewData["ShowLegend"] = "false";
-                return View("Chart");
-            }
-
-            private void PrepareData(int x)
-            {
-
-                int[] dataMax = new[] { 0, 0, 0, 0, 0 };
-                List<History> list = DBUtl.GetList<History>("SELECT * FROM History ORDERED BY UploadDate");
-            *//*foreach (History cdt in list)
+            int[] dataMax = new[] { 0, 0, 0, 0, 0 };
+            List<History> list = DBUtl.GetList<History>("SELECT * FROM History ORDERED BY UploadDate");
+            foreach (History cdt in list)
             {
 
                 dataMax[CalcCal(cdt.AverageCalories)]++;
-            }*//*
+            }
 
 
             string[] user = new[] { "Calorie Count < 700", "Calorie Count > 700" };
 
-                ViewData["Legend"] = "Healthy";*//*
-// ViewData["Colors"] = colors;
-//ViewData["Labels"] = user;
-*//*if (x == 2)
-    ViewData["Data"] = dataMax;*/
+            ViewData["Legend"] = "Healthy";
+            // ViewData["Colors"] = colors;
+            //ViewData["Labels"] = user;
+            if (x == 2)
+                ViewData["Data"] = dataMax;
+        }
 
-/* private int CalcCal(int c)
- {
-     if (c > 700) return 1;
+        private static int CalcCal(int c)
+        {
+            if (c > 700) return 1;
 
-     else return 0;
- }*/
-
+            else return 0;
+        }
+    }
+}*/
 
 
 

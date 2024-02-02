@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿/*using Microsoft.AspNetCore.Mvc;
 using FYP5.Models;
 using System.Linq;
 using System.Collections.Generic;
@@ -17,11 +17,11 @@ namespace FYP5.Controllers
 
         [Authorize(Roles = "User")]
         public IActionResult UserIndex()
-        {
+        {*//*
             // Your existing code to fetch items and locations...
             ViewData["items"] = _dbCtx.Items.ToList<Items>();
             ViewData["locations"] = _dbCtx.Locations.ToList<Locations>();
-            ViewData["users"] = _dbCtx.JiakUser.ToList<JiakUser>();
+            ViewData["users"] = _dbCtx.JiakUser.ToList<JiakUser>();*/
             /* var items = _dbCtx.Items.ToList();
              var locations = _dbCtx.Location.ToList();
 
@@ -30,12 +30,12 @@ namespace FYP5.Controllers
                  Item = items,
                  Location = locations
              };
- */
+ *//*
             return View();
         }
-        public IActionResult Summary(int itemId, int locationId)
-        {
-            var result = _dbCtx.LocationPrice
+       *//* public IActionResult Summary(int itemId, int locationId)
+        {*/
+           /* var result = _dbCtx.LocationPrice
                 .Where(lp => lp.ItemId == itemId && lp.LocationId == locationId)
                 .Include(lp => lp.Location) // Include to load related Location
                 .Include(lp => lp.Item)     // Include to load related Item
@@ -61,7 +61,7 @@ namespace FYP5.Controllers
                 Price = result.Price
             };
 
-            return View(viewModel);
+            return View(viewModel);*/
             /* var result = _dbCtx.LocationPrice
                  .Where(lp => lp.ItemId == itemId && lp.LocationId == locationId)
                  .Include(lp => lp.Location)
@@ -93,10 +93,10 @@ namespace FYP5.Controllers
                             return NotFound();
                         }
 
-                        return View(viewModel);*/
+                        return View(viewModel);*//*
         }
 
-        /* [HttpPost]
+        *//* [HttpPost]
          public IActionResult CalculatePrice(int[] itemIds)
          {
              // Get the prices for the selected items in each location
@@ -117,5 +117,5 @@ namespace FYP5.Controllers
 
              return View("Summary", totalsByLocation);
          }*/
-    }
-}
+/*    }
+}*/

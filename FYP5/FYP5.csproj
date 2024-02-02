@@ -55,7 +55,6 @@
 		</Content>
 	</ItemGroup>
 	<ItemGroup>
-		<None Include="Models\ItemLocationViewModel.cs" />
 		<None Include="Views\Account\Forbidden.cshtml" />
 		<None Include="Views\Home\Contact.cshtml" />
 		<None Include="Views\History\Index.cshtml" />

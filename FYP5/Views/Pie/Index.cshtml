@@ -3,6 +3,7 @@
     ViewData["Title"] = "Dish Frequency Chart";
 }
 <link href="~/css/profile.css" rel="stylesheet" />
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,23 +12,24 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         #myPieChart {
-            max-width: 300px;
-            max-height: 300px;
-            margin: auto;
+            max-width: 600px; /* Increased size */
+            max-height: 600px; /* Increased size */
+            /* margin: auto; */
         }
     </style>
 </head>
 <body>
     <h2>Dish Frequency Chart</h2>
 
-    <div style="width: 300px; height: 300px; margin: auto;">
+    <div style="width: 600px; height: 600px; margin: auto;">
+        <!-- Increased size -->
         <canvas id="myPieChart"></canvas>
     </div>
 
     <script>
         const ctx = document.getElementById('myPieChart').getContext('2d');
 
-        fetch('/Pie/DishFrequencies') // Corrected fetch URL
+        fetch('/Pie/DishFrequencies') // Assuming this is your data endpoint
             .then(response => response.json())
             .then(data => {
                 const labels = data.map(item => item.key);
@@ -40,14 +42,14 @@
                         datasets: [{
                             data: counts,
                             backgroundColor: [
-                                'red', 'blue', 'green', 'yellow', 'purple', 'orange', 'pink', 'grey', 'lime', 'aqua', 'maroon', 'navy'
+                                'red', 'blue', 'lightgreen', 'yellow', 'purple', 'orange', 'lightpink', 'lightgrey', 'lime', 'cyan', 'maroon', 'lightbrown'
                             ]
                         }]
                     },
                     options: {
                         responsive: true,
-                        maintainAspectRatio: true, // Maintains the aspect ratio defined below
-                        aspectRatio: 1, // Default aspect ratio, adjust as needed
+                        maintainAspectRatio: true,
+                        aspectRatio: 1,
                         plugins: {
                             legend: {
                                 position: 'top',
