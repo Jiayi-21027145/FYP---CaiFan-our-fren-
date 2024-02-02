@@ -130,49 +130,41 @@
                 <input type="submit" class="btn btn-primary" value="Submit" />
             </div>
         </div>
+        </form>
+
+
 
         <div class="text-center">
             <p>JiakPng's Instagram</p>
-            <div id="qrcode" style="width: 150px; height: 150px; margin-left: auto; margin-right: auto;"></div>
+@*             <div id="qrcode"></div>
+ *@            <div id="qrcode" style="width: 100%; margin: auto;"></div>
         </div>
-        <script src="path_to_qrcode.js"></script>
+
+
         <script>
-            var qrcode = new QRCode(document.getElementById("qrcode"), {
-                text: "http://www.instagram.com/_jiakpng_",
-                width: 800,
-                height: 800
-            });
+            // Function to update QR code size
+            function updateQRCodeSize() {
+                var qrcodeContainer = document.getElementById("qrcode");
+                var newSize = Math.min(qrcodeContainer.offsetWidth, qrcodeContainer.offsetHeight);
+
+                // Clear existing QR code before generating a new one
+                qrcodeContainer.innerHTML = '';
+
+                var qrcode = new QRCode(qrcodeContainer, {
+                    text: "http://www.instagram.com/_jiakpng_",
+                    width: newSize,
+                    height: newSize,
+                });
+            }
+
+            // Call the function on window resize and orientation change
+            window.addEventListener("resize", updateQRCodeSize);
+            window.addEventListener("orientationchange", updateQRCodeSize);
+
+            // Initial call to set the size on page load
+            window.addEventListener("load", updateQRCodeSize);
         </script>
-
-@*         <div class="text-center">
-            <p>JiakPng's Instagram</p>
-            <p>
-                <qrcode width="150" height="150">http://www.instagram.com/_jiakpng_</qrcode>
-                
-            </p>
-        </div> *@
-
-
-
- @*        <div class="text-center">
-            <p>JiakPng's Instagram</p>
-            <img src="http://www.instagram.com/_jiakpng_" alt="JiakPng's Instagram QR Code">
-            <qrcode> width="50px" height="50px"
-                "http://www.instagram.com/_jiakpng_</qrcode> 
-        </div>
- 
         
- 
-         <p class="instagram-text">Jiakpng's Instagram</p>
-        <div id="qrcode"></div>
-        <script>
-            var qrcode = new QRCode(document.getElementById("qrcode"), {
-                text: "https://www.instagram.com/_jiakpng_",
-                width: 128,
-                height: 128,
-            });
-        </script>
-    </div>
 </body>
 </html>
 
