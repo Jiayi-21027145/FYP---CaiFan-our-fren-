@@ -20,7 +20,12 @@ public class PieController : Controller
 
     public IActionResult DishFrequencies()
     {
-        var histories = _dbCtx.History.ToList();
+        string userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+        var histories = _dbCtx.History
+            .Where(h => h.UserId == userid) // Add this line to filter by the user ID
+            .ToList();
+        /*string userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+        var histories = _dbCtx.History.ToList();*/
 
         var dishCounts = histories
             .SelectMany(h => new[] { h.DishOne, h.DishTwo, h.DishThree, h.DishFour, h.DishFive, h.DishSix })

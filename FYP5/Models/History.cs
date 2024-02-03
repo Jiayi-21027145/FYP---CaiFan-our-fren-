@@ -31,7 +31,7 @@ public partial class History
 
     public string PriceRange { get; set; } = null!;
 
-    public decimal AveragePrice { get; set; }
+    public decimal AveragePrice { get; set; } 
 
     public string Image { get; set; } = null!;
 
