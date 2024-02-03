@@ -43,7 +43,7 @@ namespace FYP5.Controllers
             string yType = GetDishType(y);
 
             if (xType == yType) return 0;
-            if (xType == "rice") return -1;
+            if (xType == "rice") return -1; //-1 mean come before, 1 mean that it will come after the second dish
             if (yType == "rice") return 1;
             if (xType == "vegetable") return -1;
             if (yType == "vegetable") return 1;

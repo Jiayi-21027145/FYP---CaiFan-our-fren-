@@ -5,6 +5,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 		<RootNamespace>FYP5</RootNamespace>
+		<UserSecretsId>9e2d0d33-ac03-4899-ad18-88fa27304349</UserSecretsId>
 	</PropertyGroup>
 	<ItemGroup>
 		<Compile Remove="wwwroot\images\imageAI\**" />
