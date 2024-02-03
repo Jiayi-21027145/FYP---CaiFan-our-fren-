@@ -32,7 +32,10 @@
 <body>
     <div class="text-left">
         <h1>About Us</h1>
-        
+        <p>Welcome to JIAKPNG, where culinary exploration meets AI technology. 
+            Upload images, receive dish predictions, and get instant price and 
+            calorie estimations. Track your economy rice journey with our 
+            convenient upload history feature.</p>
     </div>
     <div class="slider">
         <div class="slide-track">
@@ -122,23 +125,46 @@
                 </div>
             </div>
 
-            <div class="form-group row">
-                <div class="offset-sm-2 col-sm-3">
-                    <input type="submit" class="btn btn-primary" value="Submit" />
-                </div>
+        <div class="form-group row">
+            <div class="offset-sm-2 col-sm-3">
+                <input type="submit" class="btn btn-primary" value="Submit" />
             </div>
+        </div>
         </form>
 
-        <p class="instagram-text">Jiakpng's Instagram</p>
-        <div id="qrcode"></div>
+
+
+        <div class="text-center">
+            <p>JiakPng's Instagram</p>
+@*             <div id="qrcode"></div>
+ *@            <div id="qrcode" style="width: 100%; margin: auto;"></div>
+        </div>
+
+
         <script>
-            var qrcode = new QRCode(document.getElementById("qrcode"), {
-                text: "https://www.instagram.com/_jiakpng_",
-                width: 128,
-                height: 128,
-            });
+            // Function to update QR code size
+            function updateQRCodeSize() {
+                var qrcodeContainer = document.getElementById("qrcode");
+                var newSize = Math.min(qrcodeContainer.offsetWidth, qrcodeContainer.offsetHeight);
+
+                // Clear existing QR code before generating a new one
+                qrcodeContainer.innerHTML = '';
+
+                var qrcode = new QRCode(qrcodeContainer, {
+                    text: "http://www.instagram.com/_jiakpng_",
+                    width: newSize,
+                    height: newSize,
+                });
+            }
+
+            // Call the function on window resize and orientation change
+            window.addEventListener("resize", updateQRCodeSize);
+            window.addEventListener("orientationchange", updateQRCodeSize);
+
+            // Initial call to set the size on page load
+            window.addEventListener("load", updateQRCodeSize);
         </script>
-    </div>
+        
 </body>
 </html>
 

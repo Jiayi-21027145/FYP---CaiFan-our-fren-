@@ -12,13 +12,11 @@
     <script src="~/lib/jquery/jquery.validate.min.js"></script>
     <script src="~/lib/jquery/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/lib/chartjs/Chart.min.js"></script>
-    <script src="~/lib/chartjs/chartjs-plugin-labels.min.js"></script>
 
     @RenderSection("MoreScripts", false)
     @RenderSection("Scripts", false)
 
-    @RenderSection("ScriptsSection", false)
-   
+
 
     @{
         var pageTitle = "Jiakpng";
@@ -31,7 +29,7 @@
 
 </head>
 <body>
-   
+
     <nav class="navbar navbar-expand-xl navbar-dark ps-2 fw-bold" style="background-color: purple;">
         <div class="container-fluid">
             <a class="navbar-brand" href="https://jiakpng.azurewebsites.net/">Jiakpng</a>
@@ -78,8 +76,8 @@
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item bi bi-binoculars" href="~/DishIden/Index">Dish Identification</a></li>
                                 <li><a class="dropdown-item bi bi-binoculars" href="~/History/Index"> View History</a></li>
-                                <li><a class="dropdown-item bi bi-binoculars" href="~/History/Summary"> Calories Summary</a></li>
-                                <li><a class="dropdown-item bi bi-binoculars" href="~/History/SummaryPrice"> Price Summary</a></li>
+                                <li><a class="dropdown-item bi bi-binoculars" href="~/History/Summary"> Overall Summary</a></li>
+                              
                             </ul>
                         </li>
                         }
@@ -96,25 +94,35 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item bi bi-binoculars" href="~/Reviews/Index"> Review</a></li>
-                            @if(User.IsInRole("User"))
-                                    {
-                                    <li><a class="dropdown-item bi bi-binoculars" href="~/Reviews/Create"> Create Review</a></li>
-                                    }
-                                    
-                                    
+                                @if (User.IsInRole("User"))
+                                {
+                                <li><a class="dropdown-item bi bi-binoculars" href="~/Reviews/Create"> Create Review</a></li>
+                                }
+
+
 
                         </ul>
                     </li>
                      
                         @if (User.IsInRole("Admin"))
                         {
-                            <li class="nav-item">
-                            <a class="nav-link" href="~/Summary/AdminIndex">Summary</a>
+                            {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" role="button"
+                                   href="~/Summary/UserIndex" id="navbarDropdown" data-bs-toggle="dropdown">
+                                    Summary
+                                </a>
+                                <ul class="dropdown-menu">
+
+                                    <li><a class="dropdown-item bi bi-binoculars" href="~/Admin/Line"> Year's Total Uploads Summary</a></li>
+                                    <li><a class="dropdown-item bi bi-binoculars" href="~/Admin/Table"> Location's Top Dishes Summary</a></li>
+                                    <li><a class="dropdown-item bi bi-binoculars" href="~/Admin/Bar"> Review Rating Summary</a></li>
+                                </ul>
                             </li>
-             
+                            }
                         }
 
-                        
+
                         @if (User.IsInRole("User"))
                         {
                             {
@@ -163,15 +171,15 @@
                                 <li><a class="dropdown-item bi bi-binoculars" href="~/Account/ChangePwd"> Change Password</a></li>
                                 <li><a class="dropdown-item bi bi-binoculars" href="~/Account/Logoff"> Logout</a></li>
                             </ul>
-                            </li>
-                     
-                    }
-                    else 
-                    {
-                        <li class="nav-item">
-                        <a class="nav-link" href="~/Account/Login">Login/Sign Up</a>
                         </li>
-                    }
+
+                        }
+                        else
+                        {
+                        <li class="nav-item">
+                            <a class="nav-link" href="~/Account/Login">Login/Sign Up</a>
+                        </li>
+                        }
                 </ul>
             </div>
         </div>
@@ -179,6 +187,12 @@
     <div class="container-fluid p-2">
         @RenderBody()
     </div>
-                
+
 </body>
+
+@* @RenderSection("MoreScripts", false) *@
+@* @RenderSection("Scripts", false) *@
+
+@RenderSection("ScriptsSection", false)
+
 </html>

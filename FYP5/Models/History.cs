@@ -5,9 +5,10 @@ namespace FYP5.Models;
 
 public partial class History
 {
+    public int Id { get; set; }
     public string UserId { get; set; } = null!;
 
-    public int Id { get; set; }
+    public int No { get; set; }
 
     public DateTime UploadDate { get; set; }
 

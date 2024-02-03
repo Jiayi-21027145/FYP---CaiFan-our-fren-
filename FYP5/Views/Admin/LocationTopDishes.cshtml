@@ -1,0 +1,53 @@
+﻿@{
+    Layout = "_CaiFan"; 
+    <link href="~/css/profile.css" rel="stylesheet" />
+    ViewData["Title"] = "Location's Top 10 Dishes";
+}
+
+<div class="container">
+    <h2>@ViewData["Title"]</h2>
+
+    <label for="locationSelect">Choose a location:</label>
+    <select id="locationSelect" name="location" onchange="updateDishes()">
+        <option value="">Select a location</option>
+        @foreach (var location in ViewBag.Locations)
+        {
+            <option value="@location">@location</option>
+        }
+    </select>
+
+    <table id="dishesTable" class="table">
+        <thead>
+            <tr>
+                <th>Dish Name</th>
+                <th>Count</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- dynamic. the dishes will be loaded here and then into the table-->
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function updateDishes() {
+        var selectedLocation = document.getElementById('locationSelect').value;
+        if (!selectedLocation) {
+            return; // Do nothing if no location is selected
+        }
+        fetch(`/Admin/GetTopDishes?location=${encodeURIComponent(selectedLocation)}`)
+            .then(response => response.json())
+            .then(data => {
+                var tableBody = document.getElementById('dishesTable').getElementsByTagName('tbody')[0];
+                tableBody.innerHTML = ""; // Clear the table first
+                data.forEach(dish => {
+                    var row = tableBody.insertRow();
+                    var cell1 = row.insertCell(0);
+                    var cell2 = row.insertCell(1);
+                    cell1.textContent = dish.dish;
+                    cell2.textContent = dish.count;
+                });
+            })
+            .catch(error => console.error('Error:', error));
+    }
+</script>

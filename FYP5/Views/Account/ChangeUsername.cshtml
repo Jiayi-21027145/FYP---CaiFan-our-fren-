@@ -6,14 +6,16 @@
 @{
     var userid = ViewData["userid"];
 }
+<link href="~/css/Update.css" rel="stylesheet" />
 <link href="~/css/profile.css" rel="stylesheet" />
 <h2>Change Username</h2>
 
-<p3> Enter your new username. Once success and updated, please go to the login page to re-enter your new username for login</p3>
+<p3> Enter your new username. Once success, please go to the login page</p3>
+
 
 <style>
     body {
-        background: url('@(Url.Content("~/BG4.jpg"))') no-repeat center center fixed;
+        background: url('@(Url.Content("~/DG Userpage.jpg"))') no-repeat center center fixed;
         background-size: cover;
     }
 </style>
@@ -27,13 +29,7 @@
             </div>
         </div>
     }
-@*     <!-- Link Section with Bottom Margin -->
-    <div class="link" style="margin-bottom: 20px;">
-        <div>
-            Enter your new username. Once success and updated, please go to the login page to re-enter your new username for login
-        </div>
-    </div>
- *@
+
     <form asp-controller="Account" asp-action="ChangeUsername" method="post">
 
         <div class="row mb-2">

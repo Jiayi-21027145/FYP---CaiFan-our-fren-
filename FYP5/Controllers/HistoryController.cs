@@ -93,7 +93,6 @@ namespace FYP5.Controllers
 
         }
 
-
         [Authorize]
         public IActionResult Summary(int ryear, int rmonth)
         {
@@ -106,9 +105,9 @@ namespace FYP5.Controllers
 
             if (ryear <= 0)
             {
-                /*data = _dbSvc.GetList<History>(
+               /* data = _dbSvc.GetList<History>(
                     @"SELECT * FROM History");*/
-                ViewData["reportheader"] = "Overall View of Sum of Average Calories Intake Per Year";
+                ViewData["reportheader"] = "Overall View of Total Average Calories Intake and Spending Per Year";
 
                 // Retrieve summary data grouped by Year
                 var model = data
@@ -118,6 +117,7 @@ namespace FYP5.Controllers
                     {
                         Group = g.Key,
                         Total = g.Sum(b => b.AverageCalories),
+                        T = g.Sum(b => b.AveragePrice),
                     })
                     .ToExpandoList();
 
@@ -125,10 +125,10 @@ namespace FYP5.Controllers
             }
             else if (rmonth <= 0 || rmonth > 12)
             {
-                data = _dbSvc.GetList<History>(
-                        @"SELECT * FROM History
-                       WHERE YEAR(UploadDate) = {0}", ryear);
-                ViewData["reportheader"] = $"Total Average Calories Intake {ryear} by Month";
+                string yearQuery = @"SELECT * FROM History WHERE YEAR(UploadDate) = {0} AND UserId = '{1}'";
+                data = _dbSvc.GetList<History>(yearQuery, ryear, userid);
+
+                ViewData["reportheader"] = $"Total Average Calories Intake and Spending {ryear} by Month";
 
                 // Retrieve summary data grouped by Month for a given Year
                 var model = data
@@ -138,6 +138,7 @@ namespace FYP5.Controllers
                     {
                         Group = g.Key,
                         Total = g.Sum(b => b.AverageCalories),
+                        T = g.Sum(b => b.AveragePrice),
                     })
                     .ToExpandoList();
 
@@ -146,13 +147,10 @@ namespace FYP5.Controllers
             }
             else
             {
-                data =
-                    _dbSvc.GetList<History>(
-                        @"SELECT * FROM History
-                       WHERE YEAR(UploadDate) = {0}
-                         AND MONTH(UploadDate) = {1}",
-                        ryear, rmonth);
-                ViewData["reportheader"] = $"Average Calories Intake {ryear} Month {rmonth} by Day";
+                string monthQuery = @"SELECT * FROM History WHERE YEAR(UploadDate) = {0} AND MONTH(UploadDate) = {1} AND UserId = '{2}'";
+                data = _dbSvc.GetList<History>(monthQuery, ryear, rmonth, userid);
+
+                ViewData["reportheader"] = $"Average Calories Intake and Spending {ryear} Month {rmonth} by Day";
 
                 // Retrieve summary data grouped by Day for a given Year/Month
                 var model = data
@@ -197,7 +195,7 @@ namespace FYP5.Controllers
                         Total = g.Sum(b => b.AveragePrice),
                     })
                     .ToExpandoList();
-
+                
                 return View(model);
             }
             else if (rmonth <= 0 || rmonth > 12)

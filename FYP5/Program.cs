@@ -17,6 +17,10 @@ using System.Net.NetworkInformation;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 // authentication
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))); //for AdminSummary
+
 builder.Services.AddDbContext<AppDbContext>(
    options => options.UseSqlServer(
        builder.Configuration.GetConnectionString("DefaultConnection")));

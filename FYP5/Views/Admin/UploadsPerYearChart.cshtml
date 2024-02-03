@@ -1,0 +1,67 @@
+﻿@{
+    Layout = "_CaiFan"; 
+    <link href="~/css/profile.css" rel="stylesheet" />
+    ViewData["Title"] = "Upload Count Per Year";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@ViewData["Title"]</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h2>@ViewData["Title"]</h2>
+
+    <div style="width: 600px; margin: auto;">
+        <canvas id="imageCountChart"></canvas>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('imageCountChart').getContext('2d');
+
+        fetch('/Admin/UploadsPerYearChart') // must match the controller's route. sends a get request to server to retrieve data from speccified endpoint
+            .then(response => response.json()) //process json response from server
+            .then(data => { //process data, create arrays
+                const years = data.map(x => x.year);
+                const counts = data.map(x => x.count);
+
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: years,
+                        datasets: [{
+                            label: 'Upload Count per Year',
+                            data: counts,
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            })
+            .catch(error => console.error('Error:', error));
+    </script>
+</body>
+</html>
+
+<style>
+    #chart-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 80vh; /* set the container height to fill the viewport */
+    }
+</style>
+
+<div id="chart-container" class="text-center">
+    <canvas id="chart" width="450" height="200"></canvas>
+</div> 
+
