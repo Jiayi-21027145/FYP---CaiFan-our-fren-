@@ -1,13 +1,13 @@
 ﻿@{
     Layout = "_CaiFan"; // Ensure this layout exists and is correct
-    ViewBag.Title = "Calories Chart";
+    ViewBag.Title = "Average Price Spent";
 }
 
 <link href="~/css/profile.css" rel="stylesheet" />
-<h2>Calories Chart</h2>
+<h2>Average Price Spent</h2>
 
 <!-- Form for selecting a year to filter -->
-<form asp-controller="Line" asp-action="Index" method="get">
+<form asp-controller="PLine" asp-action="Index" method="get">
     <label for="year">Year:</label>
     <select id="year" name="year" asp-items="ViewBag.Years as SelectList">
         <option value="">-- Select Year --</option>
@@ -15,28 +15,28 @@
     <input type="submit" value="Filter" />
 </form>
 <style>
-    #caloriesChart {
+    #priceChart {
         /* Set a max-width and max-height for the canvas element */
         max-width: 1500px; /* Adjust as needed */
         max-height: 800px; /* Adjust as needed */
     }
-    </style>
+</style>
 <!-- Canvas for the Chart.js chart -->
-<canvas id="caloriesChart"></canvas>
+<canvas id="priceChart"</canvas>
 
 <!-- Include Chart.js from CDN -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
     // Get a context to draw the chart
-    var ctx = document.getElementById('caloriesChart').getContext('2d');
+    var ctx = document.getElementById('priceChart').getContext('2d');
 
     // Deserialize the ViewBag data into a JavaScript object
     var chartData = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.MonthlyData));
 
     // Extract month names and average calories data
     var months = chartData.map(data => data.MonthName);
-    var avgCalories = chartData.map(data => data.AverageCalories);
+    var avgPrice = chartData.map(data => data.AveragePrice);
 
     // Create the chart
     var myChart = new Chart(ctx, {
@@ -44,8 +44,8 @@
         data: {
             labels: months,
             datasets: [{
-                label: 'Average Calories',
-                data: avgCalories,
+                label: 'Average Price',
+                data: avgPrice,
                 backgroundColor: 'rgba(255, 99, 132, 0.2)',
                 borderColor: 'rgba(255, 99, 132, 1)',
                 borderWidth: 1

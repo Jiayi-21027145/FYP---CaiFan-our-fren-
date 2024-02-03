@@ -160,7 +160,83 @@ namespace FYP5.Controllers
                     {
                         Group = g.Key,
                         Total = g.Sum(b => b.AverageCalories),
-                        T = g.Sum(b => b.AveragePrice),
+                    })
+                    .ToExpandoList();
+
+
+                return View(model);
+            }
+        }
+
+        [Authorize]
+        public IActionResult SummaryPrice(int ryear, int rmonth)
+        {
+            //List<History> data = null!;
+            string userid = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+            string select = @"SELECT * FROM History WHERE UserId = '{0}'";
+            List<History> data = _dbSvc.GetList<History>(select, userid);
+
+            ViewData["ryear"] = ryear;
+            ViewData["rmonth"] = rmonth;
+
+            if (ryear <= 0)
+            {
+                /* data = _dbSvc.GetList<History>(
+                     @"SELECT * FROM History");*/
+                ViewData["reportheader"] = "Overall View of Sum of Average Amount Spent Per Year";
+
+                // Retrieve summary data grouped by Year
+                var model = data
+                    .GroupBy(b => b.UploadDate.Year)
+                    .OrderByDescending(g => g.Key)
+                    .Select(g => new
+                    {
+                        Group = g.Key,
+                        Total = g.Sum(b => b.AveragePrice),
+                    })
+                    .ToExpandoList();
+                
+                return View(model);
+            }
+            else if (rmonth <= 0 || rmonth > 12)
+            {
+                data = _dbSvc.GetList<History>(
+                        @"SELECT * FROM History
+                       WHERE YEAR(UploadDate) = {0}", ryear);
+                ViewData["reportheader"] = $"Total Average Amount Spent Intake {ryear} by Month";
+
+                //Retrieve summary data grouped by Month for a given Year
+                var model = data
+                    .GroupBy(b => b.UploadDate.Month)
+                    .OrderByDescending(g => g.Key)
+                    .Select(g => new
+                    {
+                        Group = g.Key,
+                        Total = g.Sum(b => b.AveragePrice),
+                    })
+                    .ToExpandoList();
+
+
+                return View(model);
+            }
+            else
+            {
+                data =
+                    _dbSvc.GetList<History>(
+                        @"SELECT * FROM History
+                       WHERE YEAR(UploadDate) = {0}
+                         AND MONTH(UploadDate) = {1}",
+                        ryear, rmonth);
+                ViewData["reportheader"] = $"Average Price Spent {ryear} Month {rmonth} by Day";
+
+                //Retrieve summary data grouped by Day for a given Year/Month
+                var model = data
+                    .GroupBy(b => b.UploadDate.Day)
+                    .OrderByDescending(g => g.Key)
+                    .Select(g => new
+                    {
+                        Group = g.Key,
+                        Total = g.Sum(b => b.AveragePrice),
                     })
                     .ToExpandoList();
 

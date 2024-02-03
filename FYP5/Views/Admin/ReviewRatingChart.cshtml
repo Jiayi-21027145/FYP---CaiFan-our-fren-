@@ -1,0 +1,80 @@
+﻿
+@{
+    Layout = "_CaiFan";
+    <link href="~/css/profile.css" rel="stylesheet" />
+}
+
+
+
+@section MoreScripts {
+
+    <script language="javascript">
+        
+        $(document).ready(function () {
+
+            //ADDED THESE FOR HIGHEST COUNT = RED
+
+            var data = @Html.Raw(Json.Serialize(ViewData["Data"]));
+            var maxVal = Math.max(...data); // Find the maximum value in the data array
+
+            // Generate an array of colors, where the color is red for the highest value and grey for others
+            var backgroundColors = data.map(value => value === maxVal ? 'red' : 'grey');
+
+
+
+            new Chart(document.getElementById("chart"), {
+                type: 'bar',
+                data: {
+                    labels: @Json.Serialize(ViewData["Labels"]),
+                    datasets: [{
+                        label: 'Review Ratings', // for legend
+                        backgroundColor: backgroundColors, // dymanically generated colours
+                        data: @Json.Serialize(ViewData["Data"])
+                               }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true, // ensures the scale starts at 0
+                                stepSize: 1, // ensures the y-axis increments in whole numbers
+                                precision: 0  // removes decimal places
+                            }
+                        }]
+                    },
+                    title: {
+                        display: true,
+                    }
+                }
+            });
+        });
+
+    </script>
+
+}
+
+
+<style>
+    #chart-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 80vh; /* set container height to fill the viewport */
+        width: 60%; /* adjust the width of the chart container */
+        padding: 20px;
+        margin: auto; /* centers the container horizontally */
+    }
+</style>
+
+
+<!--title of page-->
+<div class="page-title" style="font-weight: bold; font-size: 30px; text-align: left;">
+    Review Rating Summary
+</div>
+
+<div id="chart-container" class="text-center">
+    <canvas id="chart" width="50" height="100"></canvas>
+</div>
+

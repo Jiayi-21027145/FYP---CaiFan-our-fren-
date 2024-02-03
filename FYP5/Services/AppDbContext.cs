@@ -156,7 +156,7 @@ public partial class AppDbContext : DbContext
                 .HasMaxLength(255)
                 .IsUnicode(false);
         });
-
+        
         modelBuilder.Entity<Menu>(entity =>
         {
             entity.HasKey(e => e.MenuId).HasName("PK__Menu__C99ED230F2D21502");

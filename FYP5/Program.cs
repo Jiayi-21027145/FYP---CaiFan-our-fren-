@@ -17,16 +17,10 @@ using System.Net.NetworkInformation;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 // authentication
-var connection = String.Empty;
-if (builder.Environment.IsDevelopment())
-{
-    builder.Configuration.AddEnvironmentVariables().AddJsonFile("appsettings.Development.json");
-    connection = builder.Configuration.GetConnectionString("DefaultConnection");
-}
-else
-{
-    connection = Environment.GetEnvironmentVariable("DefaultConnection");
-}
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))); //for AdminSummary
+
 builder.Services.AddDbContext<AppDbContext>(
    options => options.UseSqlServer(
        builder.Configuration.GetConnectionString("DefaultConnection")));

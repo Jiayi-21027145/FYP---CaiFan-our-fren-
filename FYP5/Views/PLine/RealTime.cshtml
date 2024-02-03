@@ -1,0 +1,52 @@
+﻿@section MoreScripts {
+
+    <script language="javascript">
+        // var mychart;
+
+        $(document).ready(
+
+            function () {
+
+                var mychart = new Chart(document.getElementById("chart"), {
+                    type: 'line',
+                    data: {
+                        labels: ['', '', '', '', '', '', '', '', '', ''],
+                        datasets: [{
+                            label: 'Data Units',
+                            //   backgroundColor: ["green", "red"],
+                            data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+                        }]
+                    },
+                    options: {
+                        responsive: false,
+                        title: {
+                            display: true,
+                            text: ''
+                        }
+                    }
+                });
+
+                $.ajaxSetup({ cache: false });
+                setInterval(
+                    function () {
+                        $.getJSON(
+                            "/Opinion/GetData",
+                            function (data) {
+                                mychart.data.datasets[0].data = data;
+                                mychart.update();
+                            }
+                        );
+                    },
+                    2000
+                );
+
+            }
+
+
+        );
+
+    </script>
+
+}
+<h1>Real Time</h1>
+<canvas id="chart" width="600" height="450"></canvas>

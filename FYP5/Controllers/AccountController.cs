@@ -225,27 +225,27 @@ public class AccountController : Controller
         {
             ViewData["UserId"] = user.UserId;
 
-            return View(user);
-        }*/
+             return View(user);
+         }*/
 
-        // Update password in database
-       /* string updateSql = @"UPDATE JiakUser SET UserPw = HASHBYTES('SHA1', @p1) WHERE UserId = @p0";
-        int result = DBUtl.ExecSQL(updateSql, id, user.UserPw);
+    // Update password in database
+    /* string updateSql = @"UPDATE JiakUser SET UserPw = HASHBYTES('SHA1', @p1) WHERE UserId = @p0";
+     int result = DBUtl.ExecSQL(updateSql, id, user.UserPw);
 
-        if (result == 1)
-        {
-            TempData["Message"] = "Your password has been updated successfully.";
-            TempData["MsgType"] = "success";
-            return RedirectToAction("Login");
-        }
-        else
-        {
-            TempData["Message"] = "Error updating password: " + DBUtl.DB_Message;
-            TempData["MsgType"] = "danger";
-            ViewData["UserId"] = user.UserId;
-            return View(user);
-        }
-    }*/
+     if (result == 1)
+     {
+         TempData["Message"] = "Your password has been updated successfully.";
+         TempData["MsgType"] = "success";
+         return RedirectToAction("Login");
+     }
+     else
+     {
+         TempData["Message"] = "Error updating password: " + DBUtl.DB_Message;
+         TempData["MsgType"] = "danger";
+         ViewData["UserId"] = user.UserId;
+         return View(user);
+     }
+ }*/
 
     [Authorize]
     public IActionResult ChangePwd()
@@ -335,13 +335,13 @@ public class AccountController : Controller
             SET UserName = {uu.NewUname} 
             WHERE UserId = {userid} AND UserName = {uu.CurrentUsername}") == 1)
 
-            ViewData["MSG"] = "Username Updated. Please go to the login page";
-        else
-            ViewData["MSG"] = "Failed to Update Username";
+        ViewData["MSG"] = "Username Updated. Please go to the login page";
+    else
+        ViewData["MSG"] = "Failed to Update Username";
 
-        return View();
+    return View();
 
-    }
+}
 
     [Authorize]
     public JsonResult VerifyNewUsername(string NewUname)
